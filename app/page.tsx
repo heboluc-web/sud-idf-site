@@ -15,11 +15,6 @@ export default function SudIdfExecutiveTransport() {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault()
-    const mailtoLink = `mailto:contact@sudidfexecutivetransport.fr?subject=Demande de devis corporate&body=Nom: ${form.name}%0AEntreprise: ${form.company}%0ATéléphone: ${form.phone}%0ADate: ${form.date}%0A%0AMessage:%0A${form.message}`
-    window.location.href = mailtoLink
-  }
   const [visible, setVisible] = useState(false)
 useEffect(() => {
   setVisible(true)
@@ -51,6 +46,28 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
   return (
   <div className="min-h-screen bg-black text-white overflow-x-hidden scroll-smooth">
+    <div className="text-center mt-32 mb-16">
+  <img 
+    src="/logo.png"
+    alt="Logo"
+    className="w-28 mx-auto mb-6 animate-fade-in"
+  />
+
+  <h1 className="text-4xl md:text-6xl text-amber-400 tracking-widest mb-4">
+    Chauffeur privé VTC
+  </h1>
+
+  <p className="text-gray-300 mb-6">
+    Transport haut de gamme en Île-de-France
+  </p>
+
+  <a
+    href="/reservation"
+    className="inline-block px-6 py-3 bg-amber-500 text-black rounded-xl hover:bg-amber-400 transition"
+  >
+    Réserver maintenant
+  </a>
+</div>
 
      {/* ================= NAVBAR ================= */}
 <nav className="fixed top-0 w-full bg-black/90 backdrop-blur-2xl border-b border-amber-500/20 z-50">
@@ -401,7 +418,16 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
           Contact
         </h2>
 
-        <form onSubmit={handleSubmit} className="max-w-3xl mx-auto grid gap-8 text-left">
+        <form
+  action="https://formsubmit.co/contact@sudidfexecutivetransport.fr"
+  method="POST"
+  className="max-w-3xl mx-auto grid gap-8 text-left"
+>
+<input type="hidden" name="_captcha" value="false" />
+<input type="hidden" name="_subject" value="Demande de devis corporate" />
+<input type="hidden" name="_template" value="table" />
+<input type="hidden" name="_autoresponse" value="Merci pour votre demande, nous revenons vers vous rapidement." />
+<input type="hidden" name="_next" value="https://sudidfexecutivetransport.fr/merci" />
           <input
             type="text"
             name="name"
@@ -420,6 +446,14 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
             onChange={handleChange}
             className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white focus:outline-none focus:border-amber-400"
           />
+
+          <input
+            type="email"
+            name="email"
+            placeholder="Email"
+            required
+            className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white"
+           />
 
           <input
             type="tel"

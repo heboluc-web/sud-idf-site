@@ -1,33 +1,68 @@
+export const dynamic = "force-dynamic"
+
 export default function Confidentialite() {
   return (
-    <section className="bg-black text-white px-6 py-20 min-h-screen">
-      <div className="max-w-4xl mx-auto space-y-8 text-sm text-neutral-300">
+    <main className="min-h-screen flex flex-col items-center bg-gradient-to-b from-black via-gray-900 to-black text-white px-6 py-12">
 
-        <h1 className="text-3xl text-amber-400 uppercase tracking-[0.4em] text-center">
-          Politique de Confidentialité
-        </h1>
+      {/* LOGO */}
+      <img
+        src="/logo.png"
+        alt="Logo"
+        className="w-28 mb-8 animate-fade-in"
+      />
+
+      {/* TITRE */}
+      <h1 className="text-3xl md:text-4xl text-amber-400 mb-8 text-center">
+        Politique de confidentialité
+      </h1>
+
+      {/* CONTENU */}
+      <div className="max-w-3xl text-gray-300 space-y-6 text-sm md:text-base">
 
         <p>
-          SUD IDF EXECUTIVE TRANSPORT collecte certaines données personnelles
-          via ses formulaires afin de traiter les demandes de réservation.
+          Cette politique de confidentialité décrit comment vos données personnelles sont collectées et utilisées.
         </p>
 
+        <h2 className="text-amber-400 text-lg">1. Données collectées</h2>
         <p>
-          Les données collectées peuvent inclure : nom, email, téléphone,
-          informations de trajet.
+          Nous collectons les informations que vous nous transmettez via le formulaire de contact : nom, email, téléphone, et détails de votre demande.
         </p>
 
+        <h2 className="text-amber-400 text-lg">2. Utilisation des données</h2>
         <p>
-          Ces données sont utilisées uniquement dans le cadre de la relation commerciale
-          et ne sont jamais revendues.
+          Les données sont utilisées uniquement pour répondre à vos demandes et vous fournir un service personnalisé.
         </p>
 
+        <h2 className="text-amber-400 text-lg">3. Conservation des données</h2>
         <p>
-          Conformément au RGPD, vous pouvez demander l’accès, la modification ou la suppression
-          de vos données à tout moment via : contact@sudidfexecutivetransport.fr
+          Les données sont conservées uniquement pendant la durée nécessaire au traitement de votre demande.
+        </p>
+
+        <h2 className="text-amber-400 text-lg">4. Partage des données</h2>
+        <p>
+          Aucune donnée personnelle n’est vendue ou partagée avec des tiers.
+        </p>
+
+        <h2 className="text-amber-400 text-lg">5. Sécurité</h2>
+        <p>
+          Nous mettons en œuvre des mesures techniques pour protéger vos données contre tout accès non autorisé.
+        </p>
+
+        <h2 className="text-amber-400 text-lg">6. Vos droits</h2>
+        <p>
+          Vous pouvez demander l’accès, la modification ou la suppression de vos données en nous contactant par email.
         </p>
 
       </div>
-    </section>
-  );
+
+      {/* BOUTON RETOUR */}
+      <a
+        href="/"
+        className="mt-10 px-6 py-3 border border-amber-500 text-amber-400 rounded-xl hover:bg-amber-500 hover:text-black transition"
+      >
+        Retour à l’accueil
+      </a>
+
+    </main>
+  )
 }

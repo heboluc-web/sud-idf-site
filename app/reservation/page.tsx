@@ -34,16 +34,16 @@ export default function Reservation() {
           Remplissez le formulaire, nous vous répondrons rapidement
         </p>
 
-        <form
-          action="https://formsubmit.co/contact@sudidfexecutivetransport.fr"
-          method="POST"
-          className="space-y-6"
-        >
-
+       <form
+  action="https://formsubmit.co/contact@sudidfexecutivetransport.fr"
+  method="POST"
+  className="space-y-6"
+>
+          <input type="hidden" name="_next" value="http://localhost:3000/merci" />
           <input type="hidden" name="_captcha" value="false" />
           <input type="hidden" name="_subject" value="Nouvelle réservation VTC" />
           <input type="hidden" name="_template" value="table" />
-          <input type="hidden" name="_next" value="https://sudidfexecutivetransport.fr/merci" />
+          
 
           <input name="nom" onChange={handleChange} type="text" placeholder="Nom / Prénom" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
           <input name="email" onChange={handleChange} type="email" placeholder="Email" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
@@ -112,7 +112,7 @@ Message: ${form.message}`;
        {/* APPEL */}
 <div className="flex justify-center mt-6">
   <a
-    href="tel:+33668863673"
+    href="/appel"
     className="border border-amber-500 text-amber-400 px-8 py-3 rounded-xl text-lg hover:bg-amber-500 hover:text-black transition shadow-md"
   >
     📞 Appeler
