@@ -109,15 +109,15 @@ Message: ${form.message}`;
           📲 Envoyer via WhatsApp
         </button>
 
-        {/* APPEL */}
-        <div className="flex gap-4 mt-8 justify-center">
-          <a
-            href="tel:+33668863673"
-            className="border border-amber-500 text-amber-400 px-6 py-3 rounded-lg hover:bg-amber-500 hover:text-black transition"
-          >
-            📞 Appeler
-          </a>
-        </div>
+       {/* APPEL */}
+<div className="flex justify-center mt-6">
+  <a
+    href="tel:+33668863673"
+    className="border border-amber-500 text-amber-400 px-8 py-3 rounded-xl text-lg hover:bg-amber-500 hover:text-black transition shadow-md"
+  >
+    📞 Appeler
+  </a>
+</div>
 
       </div>
     </main>
