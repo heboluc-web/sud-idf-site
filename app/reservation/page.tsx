@@ -39,10 +39,10 @@ export default function Reservation() {
   method="POST"
   className="space-y-6"
 >
-          <input type="hidden" name="_next" value="http://localhost:3000/merci" />
-          <input type="hidden" name="_captcha" value="false" />
-          <input type="hidden" name="_subject" value="Nouvelle réservation VTC" />
-          <input type="hidden" name="_template" value="table" />
+  <input type="hidden" name="_next" value="https://www.sudidfexecutivetransport.fr/merci" />
+  <input type="hidden" name="_captcha" value="false" />
+  <input type="hidden" name="_subject" value="Nouvelle réservation VTC" />
+  <input type="hidden" name="_template" value="table" />
           
 
           <input name="nom" onChange={handleChange} type="text" placeholder="Nom / Prénom" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
