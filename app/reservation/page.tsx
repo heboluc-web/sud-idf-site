@@ -35,7 +35,7 @@ export default function Reservation() {
         </p>
 
        <form
-  action="https://formsubmit.co/contact@sudidfexecutivetransport.fr"
+  action="https://formsubmit.co/heboluc@hotmail.it"
   method="POST"
   className="space-y-6"
 >
