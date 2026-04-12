@@ -39,6 +39,7 @@ export default function Reservation() {
   method="POST"
   className="space-y-6"
 >
+  <input type="hidden" name="_autoresponse" value="Merci pour votre demande, nous revenons vers vous rapidement." />
   <input type="hidden" name="_next" value="https://www.sudidfexecutivetransport.fr/merci" />
   <input type="hidden" name="_captcha" value="false" />
   <input type="hidden" name="_subject" value="Nouvelle réservation VTC" />
