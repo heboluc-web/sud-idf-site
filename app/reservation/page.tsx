@@ -39,46 +39,56 @@ export default function Reservation() {
   method="POST"
   className="space-y-6"
 >
-  <input type="hidden" name="_autoresponse" value="Merci pour votre demande, nous revenons vers vous rapidement." />
-  <input type="hidden" name="_next" value="https://sud-idf-site.vercel.app/merci" />
+
+  {/* CONFIG FORM */}
   <input type="hidden" name="_captcha" value="false" />
   <input type="hidden" name="_subject" value="Nouvelle réservation VTC" />
   <input type="hidden" name="_template" value="table" />
-          
+  <input type="hidden" name="_next" value="https://sud-idf-site.vercel.app/merci" />
 
-          <input name="nom" onChange={handleChange} type="text" placeholder="Nom / Prénom" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
-          <input name="email" onChange={handleChange} type="email" placeholder="Email" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
-          <input name="telephone" onChange={handleChange} type="tel" placeholder="Téléphone" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
+  {/* 🔥 IMPORTANT POUR AUTO-RÉPONSE */}
+  <input type="hidden" name="_autoresponse" value="Merci pour votre demande. Nous vous répondrons rapidement." />
+  <input type="hidden" name="_replyto" value="" />
 
-          <input name="passagers" onChange={handleChange} type="number" placeholder="Nombre de passagers" min="1" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
-          <input name="bagages" onChange={handleChange} type="number" placeholder="Nombre de bagages" min="0" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
+  {/* INPUTS */}
+  <input name="nom" type="text" placeholder="Nom / Prénom" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
 
-          <select name="service" onChange={handleChange} required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20">
-            <option value="">Type de prestation</option>
-            <option>Transfert aéroport</option>
-            <option>Transport gare</option>
-            <option>Mise à disposition</option>
-            <option>Événement</option>
-          </select>
+  {/* ⚠️ EMAIL CLEAN (IMPORTANT) */}
+  <input name="email" type="email" placeholder="Email" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
 
-          <input name="depart" onChange={handleChange} type="text" placeholder="Adresse de départ" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
-          <input name="arrivee" onChange={handleChange} type="text" placeholder="Adresse d’arrivée" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
+  <input name="telephone" type="tel" placeholder="Téléphone" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
 
-          <div className="flex gap-4">
-            <input name="date" onChange={handleChange} type="date" required className="w-1/2 p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
-            <input name="heure" onChange={handleChange} type="time" required className="w-1/2 p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
-          </div>
+  <input name="passagers" type="number" placeholder="Nombre de passagers" min="1" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
 
-          <textarea name="message" onChange={handleChange} placeholder="Informations complémentaires" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"></textarea>
+  <input name="bagages" type="number" placeholder="Nombre de bagages" min="0" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
 
-          <button
-            type="submit"
-            className="w-full py-4 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-semibold rounded-xl shadow-lg hover:scale-105 transition"
-          >
-            Envoyer ma demande
-          </button>
+  <select name="service" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20">
+    <option value="">Type de prestation</option>
+    <option>Transfert aéroport</option>
+    <option>Transport gare</option>
+    <option>Mise à disposition</option>
+    <option>Événement</option>
+  </select>
 
-        </form>
+  <input name="depart" type="text" placeholder="Adresse de départ" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
+
+  <input name="arrivee" type="text" placeholder="Adresse d’arrivée" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
+
+  <div className="flex gap-4">
+    <input name="date" type="date" required className="w-1/2 p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
+    <input name="heure" type="time" required className="w-1/2 p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
+  </div>
+
+  <textarea name="message" placeholder="Informations complémentaires" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"></textarea>
+
+  <button
+    type="submit"
+    className="w-full py-4 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-semibold rounded-xl shadow-lg hover:scale-105 transition"
+  >
+    Envoyer ma demande
+  </button>
+
+</form>
 
         {/* WHATSAPP */}
         <button
