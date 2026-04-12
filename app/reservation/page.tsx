@@ -48,7 +48,7 @@ export default function Reservation() {
 
   {/* 🔥 IMPORTANT POUR AUTO-RÉPONSE */}
   <input type="hidden" name="_autoresponse" value="Merci pour votre demande. Nous vous répondrons rapidement." />
-  <input name="email" type="email" required />
+  
 
   {/* INPUTS */}
   <input name="nom" type="text" placeholder="Nom / Prénom" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
