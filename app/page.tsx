@@ -452,7 +452,7 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 />
 
 <input
-  type="tel"
+  type="tel" pattern="[0-9]{10}" />
   name="phone"
   placeholder="Téléphone"
   required
