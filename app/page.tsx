@@ -409,14 +409,15 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
       </section>
 
-      {/* ================= CONTACT ================= */}
+     {/* ================= CONTACT ================= */}
 <section
   id="contact"
   className={`py-40 px-6 bg-black border-t border-amber-500/20 text-center transition-all duration-1000 ${visibleSections["contact"] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}`}
 >
- <h2 className="text-4xl tracking-[0.7em] uppercase text-amber-400 mb-16 font-light">
-  Demande de devis corporate
-</h2>
+  <h2 className="text-4xl tracking-[0.7em] uppercase text-amber-400 mb-16 font-light">
+    DEMANDE DE DEVIS CORPORATE
+  </h2>
+
   <form
     action="https://formsubmit.co/heboluc@hotmail.it"
     method="POST"
@@ -428,50 +429,51 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
     <input type="hidden" name="_template" value="table" />
 
     <input
-  type="text"
-  name="name"
-  placeholder="Nom & Prénom"
-  required
-  className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
-/>
+      type="text"
+      name="name"
+      placeholder="Nom & Prénom"
+      required
+      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
+    />
 
-<input
-  type="text"
-  name="company"
-  placeholder="Entreprise"
-  className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
-/>
+    <input
+      type="text"
+      name="company"
+      placeholder="Entreprise"
+      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
+    />
 
-<input
-  type="email"
-  name="email"
-  placeholder="Email"
-  required
-  className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
-/>
+    <input
+      type="email"
+      name="email"
+      placeholder="Email"
+      required
+      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
+    />
 
-<input
-  type="tel" pattern="[0-9]{10}" />
-  name="phone"
-  placeholder="Téléphone"
-  required
-  className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
-/>
+    <input
+      type="tel"
+      name="phone"
+      placeholder="Téléphone"
+      pattern="[0-9]{10}"
+      required
+      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
+    />
 
-<input
-  type="date"
-  name="date"
-  required
-  className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white focus:outline-none focus:border-amber-400 transition"
-/>
+    <input
+      type="date"
+      name="date"
+      required
+      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white focus:outline-none focus:border-amber-400 transition"
+    />
 
-<textarea
-  name="message"
-  placeholder="Décrivez votre besoin (lieu, horaire, nombre de passagers...)"
-  rows={5}
-  required
-  className="md:col-span-5 bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
-/>
+    <textarea
+      name="message"
+      placeholder="Décrivez votre besoin (lieu, horaire, nombre de passagers...)"
+      rows={5}
+      required
+      className="md:col-span-5 bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
+    />
 
     <button
       type="submit"
@@ -479,15 +481,19 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
     >
       ENVOYER LA DEMANDE
     </button>
-</form>
-<a
-  href="https://wa.me/33668863673?text=Bonjour%20je%20souhaite%20un%20devis%20VTC"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="mt-6 inline-block px-12 py-5 border border-green-500 text-green-400 rounded-full tracking-[0.2em] text-xs hover:bg-green-500 hover:text-black transition-all duration-500"
->
-  CONTACTER SUR WHATSAPP
-</a>
+  </form>
+
+{/* WhatsApp bouton premium */}
+<div className="mt-10 flex justify-center">
+  <a
+    href="https://wa.me/33668863673"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="bg-amber-500 hover:bg-amber-400 text-black px-10 py-4 rounded-full tracking-[0.3em] transition-all duration-300 shadow-[0_0_30px_rgba(251,191,36,0.3)]"
+  >
+    WHATSAPP DIRECT
+  </a>
+</div>
 
 </section>
 
