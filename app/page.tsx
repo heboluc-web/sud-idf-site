@@ -480,7 +480,16 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
     >
       ENVOYER LA DEMANDE
     </button>
-  </form>
+</form>
+<a
+  href="https://wa.me/336XXXXXXXX?text=Bonjour%20je%20souhaite%20un%20devis%20VTC"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="mt-6 inline-block px-12 py-5 border border-green-500 text-green-400 rounded-full tracking-[0.2em] text-xs hover:bg-green-500 hover:text-black transition-all duration-500"
+>
+  CONTACTER SUR WHATSAPP
+</a>
+
 </section>
 
       {/* ================= FOOTER ================= */}
