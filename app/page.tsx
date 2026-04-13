@@ -410,80 +410,78 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
       </section>
 
       {/* ================= CONTACT ================= */}
-      <section
+<section
   id="contact"
   className={`py-40 px-6 bg-black border-t border-amber-500/20 text-center transition-all duration-1000 ${visibleSections["contact"] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}`}
 >
-        <h2 className="text-4xl tracking-[0.7em] uppercase text-amber-400 mb-16 font-light">
-          Contact
-        </h2>
+  <h2 className="text-4xl tracking-[0.7em] uppercase text-amber-400 mb-16 font-light">
+    Contact
+  </h2>
 
-        <form
-  action="https://formsubmit.co/heboluc@hotmail.it"
-  method="POST"
->
-  <input type="hidden" name="_next" value="https://www.sudidfexecutivetransport.fr/merci" />
-  <input type="hidden" name="_captcha" value="false" />
-  <input type="hidden" name="_subject" value="Demande de devis corporate" />
-  <input type="hidden" name="_template" value="table" />
+  <form
+    action="https://formsubmit.co/heboluc@hotmail.it"
+    method="POST"
+    className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-6 items-center"
+  >
+    <input type="hidden" name="_next" value="https://www.sudidfexecutivetransport.fr/merci" />
+    <input type="hidden" name="_captcha" value="false" />
+    <input type="hidden" name="_subject" value="Demande de devis corporate" />
+    <input type="hidden" name="_template" value="table" />
 
-          <input
-            type="text"
-            name="name"
-            placeholder="Nom & Prénom"
-            required
-            className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white focus:outline-none focus:border-amber-400"
-          />
+    <input
+      type="text"
+      name="name"
+      placeholder="Nom & Prénom"
+      required
+      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
+    />
 
-          <input
-            type="text"
-            name="company"
-            placeholder="Entreprise"
-            className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white focus:outline-none focus:border-amber-400"
-          />
+    <input
+      type="text"
+      name="company"
+      placeholder="Entreprise"
+      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
+    />
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            required
-            className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white"
-           />
+    <input
+      type="email"
+      name="email"
+      placeholder="Email"
+      required
+      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
+    />
 
-          <input
-            type="tel"
-            name="phone"
-            placeholder="Téléphone"
-            required
-            className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white focus:outline-none focus:border-amber-400"
-          />
+    <input
+      type="tel"
+      name="phone"
+      placeholder="Téléphone"
+      required
+      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
+    />
 
-          <input
-            type="date"
-            name="date"
-            required
-            className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white focus:outline-none focus:border-amber-400"
-          />
+    <input
+      type="date"
+      name="date"
+      required
+      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white focus:outline-none focus:border-amber-400 transition"
+    />
 
-          <textarea
-            name="message"
-            placeholder="Décrivez votre besoin (lieu, horaire, nombre de passagers...)"
-            value={form.message}
-            onChange={handleChange}
-            rows={5}
-            required
-            className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white focus:outline-none focus:border-amber-400"
-          />
+    <textarea
+      name="message"
+      placeholder="Décrivez votre besoin (lieu, horaire, nombre de passagers...)"
+      rows={5}
+      required
+      className="md:col-span-5 bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
+    />
 
-          <button
-            type="submit"
-            className="px-12 py-5 bg-amber-500 text-black rounded-full tracking-[0.4em] text-xs hover:bg-amber-400 transition-all duration-500"
-          >
-            ENVOYER LA DEMANDE
-          </button>
-        </form>
-
-      </section>
+    <button
+      type="submit"
+      className="md:col-span-5 px-12 py-5 bg-amber-500 text-black rounded-full tracking-[0.4em] text-xs hover:bg-amber-400 transition-all duration-500"
+    >
+      ENVOYER LA DEMANDE
+    </button>
+  </form>
+</section>
 
       {/* ================= FOOTER ================= */}
       <footer className="py-24 text-center border-t border-amber-500/20 bg-black">
