@@ -431,8 +431,6 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
             type="text"
             name="name"
             placeholder="Nom & Prénom"
-            value={form.name}
-            onChange={handleChange}
             required
             className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white focus:outline-none focus:border-amber-400"
           />
@@ -441,8 +439,6 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
             type="text"
             name="company"
             placeholder="Entreprise"
-            value={form.company}
-            onChange={handleChange}
             className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white focus:outline-none focus:border-amber-400"
           />
 
@@ -458,8 +454,6 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
             type="tel"
             name="phone"
             placeholder="Téléphone"
-            value={form.phone}
-            onChange={handleChange}
             required
             className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white focus:outline-none focus:border-amber-400"
           />
@@ -467,8 +461,7 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
           <input
             type="date"
             name="date"
-            value={form.date}
-            onChange={handleChange}
+            required
             className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white focus:outline-none focus:border-amber-400"
           />
 
