@@ -429,50 +429,50 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
     <input type="hidden" name="_template" value="table" />
 
     <input
-      type="text"
-      name="name"
-      placeholder="Nom & Prénom"
-      required
-      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
-    />
+  type="text"
+  name="name"
+  placeholder="Nom & Prénom"
+  required
+  className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
+/>
 
-    <input
-      type="text"
-      name="company"
-      placeholder="Entreprise"
-      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
-    />
+<input
+  type="text"
+  name="company"
+  placeholder="Entreprise"
+  className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
+/>
 
-    <input
-      type="email"
-      name="email"
-      placeholder="Email"
-      required
-      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
-    />
+<input
+  type="email"
+  name="email"
+  placeholder="Email"
+  required
+  className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
+/>
 
-    <input
-      type="tel"
-      name="phone"
-      placeholder="Téléphone"
-      required
-      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
-    />
+<input
+  type="tel"
+  name="phone"
+  placeholder="Téléphone"
+  required
+  className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
+/>
 
-    <input
-      type="date"
-      name="date"
-      required
-      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white focus:outline-none focus:border-amber-400 transition"
-    />
+<input
+  type="date"
+  name="date"
+  required
+  className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white focus:outline-none focus:border-amber-400 transition"
+/>
 
-    <textarea
-      name="message"
-      placeholder="Décrivez votre besoin (lieu, horaire, nombre de passagers...)"
-      rows={5}
-      required
-      className="md:col-span-5 bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
-    />
+<textarea
+  name="message"
+  placeholder="Décrivez votre besoin (lieu, horaire, nombre de passagers...)"
+  rows={5}
+  required
+  className="md:col-span-5 bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
+/>
 
     <button
       type="submit"
