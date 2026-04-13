@@ -414,10 +414,9 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
   id="contact"
   className={`py-40 px-6 bg-black border-t border-amber-500/20 text-center transition-all duration-1000 ${visibleSections["contact"] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}`}
 >
-  <h2 className="text-4xl tracking-[0.7em] uppercase text-amber-400 mb-16 font-light">
-    Contact
-  </h2>
-
+ <h2 className="text-4xl tracking-[0.7em] uppercase text-amber-400 mb-16 font-light">
+  Demande de devis corporate
+</h2>
   <form
     action="https://formsubmit.co/heboluc@hotmail.it"
     method="POST"
@@ -482,7 +481,7 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
     </button>
 </form>
 <a
-  href="https://wa.me/336XXXXXXXX?text=Bonjour%20je%20souhaite%20un%20devis%20VTC"
+  href="https://wa.me/33668863673?text=Bonjour%20je%20souhaite%20un%20devis%20VTC"
   target="_blank"
   rel="noopener noreferrer"
   className="mt-6 inline-block px-12 py-5 border border-green-500 text-green-400 rounded-full tracking-[0.2em] text-xs hover:bg-green-500 hover:text-black transition-all duration-500"
