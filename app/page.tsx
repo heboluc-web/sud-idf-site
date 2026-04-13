@@ -409,7 +409,7 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
       </section>
 
-     {/* ================= CONTACT ================= */}
+     {/* ================= CONTACT ================= */} 
 <section
   id="contact"
   className={`py-40 px-6 bg-black border-t border-amber-500/20 text-center transition-all duration-1000 ${visibleSections["contact"] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}`}
@@ -418,6 +418,7 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
     DEMANDE DE DEVIS CORPORATE
   </h2>
 
+  {/* FORMULAIRE */}
   <form
     action="https://formsubmit.co/heboluc@hotmail.it"
     method="POST"
@@ -483,18 +484,37 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
     </button>
   </form>
 
-{/* WhatsApp bouton premium */}
-<div className="mt-10 flex justify-center">
-  <a
-    href="https://wa.me/33668863673"
-    target="_blank"
-    rel="noopener noreferrer"
+  {/* WHATSAPP */}
+  <div className="mt-10 flex justify-center">
+  <button
+    type="button"
+    onClick={() => {
+      const name = document.querySelector('input[name="name"]').value;
+      const company = document.querySelector('input[name="company"]').value;
+      const email = document.querySelector('input[name="email"]').value;
+      const phone = document.querySelector('input[name="phone"]').value;
+      const date = document.querySelector('input[name="date"]').value;
+      const messageText = document.querySelector('textarea[name="message"]').value;
+
+      const message = `Bonjour, je souhaite réserver :
+
+Nom: ${name}
+Entreprise: ${company}
+Email: ${email}
+Téléphone: ${phone}
+Date: ${date}
+
+Message: ${messageText}`;
+
+      const url = `https://wa.me/33668863673?text=${encodeURIComponent(message)}`;
+
+      window.location.href = url;
+    }}
     className="bg-amber-500 hover:bg-amber-400 text-black px-10 py-4 rounded-full tracking-[0.3em] transition-all duration-300 shadow-[0_0_30px_rgba(251,191,36,0.3)]"
   >
     WHATSAPP DIRECT
-  </a>
+  </button>
 </div>
-
 </section>
 
       {/* ================= FOOTER ================= */}
