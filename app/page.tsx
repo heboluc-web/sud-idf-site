@@ -489,12 +489,14 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
   <button
     type="button"
     onClick={() => {
-      const name = document.querySelector('input[name="name"]').value;
-      const company = document.querySelector('input[name="company"]').value;
-      const email = document.querySelector('input[name="email"]').value;
-      const phone = document.querySelector('input[name="phone"]').value;
-      const date = document.querySelector('input[name="date"]').value;
-      const messageText = document.querySelector('textarea[name="message"]').value;
+      if (typeof window === "undefined") return;
+
+      const name = (document.querySelector('input[name="name"]') as HTMLInputElement)?.value || "";
+      const company = (document.querySelector('input[name="company"]') as HTMLInputElement)?.value || "";
+      const email = (document.querySelector('input[name="email"]') as HTMLInputElement)?.value || "";
+      const phone = (document.querySelector('input[name="phone"]') as HTMLInputElement)?.value || "";
+      const date = (document.querySelector('input[name="date"]') as HTMLInputElement)?.value || "";
+      const messageText = (document.querySelector('textarea[name="message"]') as HTMLTextAreaElement)?.value || "";
 
       const message = `Bonjour, je souhaite réserver :
 
