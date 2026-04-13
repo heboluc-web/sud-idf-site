@@ -419,15 +419,14 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
         </h2>
 
         <form
-  action="https://formsubmit.co/contact@sudidfexecutivetransport.fr"
+  action="https://formsubmit.co/heboluc@hotmail.it"
   method="POST"
-  className="max-w-3xl mx-auto grid gap-8 text-left"
 >
-<input type="hidden" name="_captcha" value="false" />
-<input type="hidden" name="_subject" value="Demande de devis corporate" />
-<input type="hidden" name="_template" value="table" />
-<input type="hidden" name="_autoresponse" value="Merci pour votre demande, nous revenons vers vous rapidement." />
-<input type="hidden" name="_next" value="https://sudidfexecutivetransport.fr/merci" />
+  <input type="hidden" name="_next" value="https://www.sudidfexecutivetransport.fr/merci" />
+  <input type="hidden" name="_captcha" value="false" />
+  <input type="hidden" name="_subject" value="Demande de devis corporate" />
+  <input type="hidden" name="_template" value="table" />
+
           <input
             type="text"
             name="name"
