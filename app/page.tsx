@@ -57,7 +57,7 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
     Chauffeur privé VTC
   </h1>
 
-  <p className="text-gray-200 text-2xl md:text-3xl mb-6 font-light">
+  <p className="text-gray-200 text-2xl md:text-3xl mb-6 font-light tracking-wide">
     Pour tous vos déplacements en toute sécurité
   </p>
 
