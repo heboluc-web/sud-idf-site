@@ -502,18 +502,27 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
   </form>
 
   {/* WHATSAPP */}
-  <div className="mt-10 flex justify-center">
-    <button
-      type="button"
-      onClick={() => {
-        if (!form.name || !form.email || !form.phone || !form.date || !form.message) {
-          setFormError(true)
-          return
-        }
+  <div className="mt-10 flex flex-col items-center">
 
-        setFormError(false)
+  {formError && (
+    <div className="mb-4 px-6 py-3 bg-red-500/10 border border-red-500 text-red-400 rounded-xl">
+      Merci de remplir tous les champs obligatoires
+    </div>
+  )}
 
-        const message = `Bonjour, demande de devis :
+  <button
+    type="button"
+    onClick={() => {
+
+      // 🔒 VALIDATION
+      if (!form.name || !form.email || !form.phone || !form.date || !form.message) {
+        setFormError(true)
+        return
+      }
+
+      setFormError(false)
+
+      const message = `Bonjour, demande de devis :
 
 Nom: ${form.name}
 Entreprise: ${form.company}
@@ -523,14 +532,16 @@ Date: ${form.date}
 
 Message: ${form.message}`
 
-        window.open(`https://wa.me/33668863673?text=${encodeURIComponent(message)}`, "_blank")
-      }}
-      className="bg-amber-500 hover:bg-amber-400 text-black px-10 py-4 rounded-full tracking-[0.3em] transition-all duration-300 shadow-[0_0_30px_rgba(251,191,36,0.3)]"
-    >
-      WHATSAPP DIRECT
-    </button>
-  </div>
+      window.open(`https://wa.me/33668863673?text=${encodeURIComponent(message)}`, "_blank")
+    }}
+    className="bg-amber-500 hover:bg-amber-400 text-black px-10 py-4 rounded-full tracking-[0.3em] transition-all duration-300 shadow-[0_0_30px_rgba(251,191,36,0.3)]"
+  >
+    WHATSAPP DIRECT
+  </button>
+
+</div>
 </section>
+
       {/* ================= FOOTER ================= */}
       <footer className="py-24 text-center border-t border-amber-500/20 bg-black">
         <div className="max-w-4xl mx-auto px-6">
