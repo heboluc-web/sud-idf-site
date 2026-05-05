@@ -420,7 +420,7 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
   {/* FORMULAIRE */}
   <form
-    action="https://formsubmit.co/heboluc@hotmail.it"
+    action="https://formsubmit.co/contact@sudidfexecutivetransport.fr"
     method="POST"
     className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-6 items-center"
   >

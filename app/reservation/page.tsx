@@ -35,7 +35,7 @@ export default function Reservation() {
         </p>
 
        <form
-  action="https://formsubmit.co/heboluc@hotmail.it"
+  action="https://formsubmit.co/contact@sudidfexecutivetransport.fr"
   method="POST"
   className="space-y-6"
 >
@@ -44,7 +44,7 @@ export default function Reservation() {
   <input type="hidden" name="_captcha" value="false" />
   <input type="hidden" name="_subject" value="Nouvelle réservation VTC" />
   <input type="hidden" name="_template" value="table" />
-  <input type="hidden" name="_next" value="https://sud-idf-site.vercel.app/merci" />
+ <input type="hidden" name="_next" value="https://www.sudidfexecutivetransport.fr/merci" />
 
   {/* 🔥 IMPORTANT POUR AUTO-RÉPONSE */}
   <input type="hidden" name="_autoresponse" value="Merci pour votre demande. Nous vous répondrons rapidement." />
