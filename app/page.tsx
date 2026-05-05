@@ -58,6 +58,10 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
   </h1>
 
   <p className="text-gray-300 mb-6">
+    Pour tous vos déplacements en toute sécurité
+  </p>
+
+  <p className="text-gray-300 mb-6">
     Transport haut de gamme en Île-de-France
   </p>
 
