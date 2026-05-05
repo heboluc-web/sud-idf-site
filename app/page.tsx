@@ -11,6 +11,8 @@ export default function SudIdfExecutiveTransport() {
     message: ''
   })
 
+  const [formError, setFormError] = useState(false)
+
   const handleChange = (e: any) => {
     setForm({ ...form, [e.target.name]: e.target.value })
   }
@@ -422,6 +424,13 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
     DEMANDE DE DEVIS CORPORATE
   </h2>
 
+  {/* MESSAGE ERREUR */}
+  {formError && (
+    <div className="mb-6 px-6 py-3 bg-red-500/10 border border-red-500 text-red-400 rounded-xl max-w-xl mx-auto">
+      Merci de remplir tous les champs obligatoires
+    </div>
+  )}
+
   {/* FORMULAIRE */}
   <form
     action="https://formsubmit.co/contact@sudidfexecutivetransport.fr"
@@ -438,14 +447,16 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
       name="name"
       placeholder="Nom & Prénom"
       required
-      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
+      onChange={handleChange}
+      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white"
     />
 
     <input
       type="text"
       name="company"
       placeholder="Entreprise"
-      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
+      onChange={handleChange}
+      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white"
     />
 
     <input
@@ -453,31 +464,33 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
       name="email"
       placeholder="Email"
       required
-      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
+      onChange={handleChange}
+      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white"
     />
 
     <input
       type="tel"
       name="phone"
       placeholder="Téléphone"
-      pattern="[0-9]{10}"
       required
-      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
+      onChange={handleChange}
+      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white"
     />
 
     <input
       type="date"
       name="date"
       required
-      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white focus:outline-none focus:border-amber-400 transition"
+      onChange={handleChange}
+      className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white"
     />
 
     <textarea
       name="message"
-      placeholder="Décrivez votre besoin (lieu, horaire, nombre de passagers...)"
-      rows={5}
+      placeholder="Décrivez votre besoin..."
       required
-      className="md:col-span-5 bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white placeholder:text-gray-500 focus:outline-none focus:border-amber-400 transition"
+      onChange={handleChange}
+      className="md:col-span-5 bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white"
     />
 
     <button
@@ -489,58 +502,35 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
   </form>
 
   {/* WHATSAPP */}
-<div className="mt-10 flex flex-col items-center">
+  <div className="mt-10 flex justify-center">
+    <button
+      type="button"
+      onClick={() => {
+        if (!form.name || !form.email || !form.phone || !form.date || !form.message) {
+          setFormError(true)
+          return
+        }
 
-  <button
-    type="button"
-    onClick={() => {
-      if (typeof window === "undefined") return;
+        setFormError(false)
 
-      const name = (document.querySelector('input[name="name"]') as HTMLInputElement)?.value || "";
-      const company = (document.querySelector('input[name="company"]') as HTMLInputElement)?.value || "";
-      const email = (document.querySelector('input[name="email"]') as HTMLInputElement)?.value || "";
-      const phone = (document.querySelector('input[name="phone"]') as HTMLInputElement)?.value || "";
-      const date = (document.querySelector('input[name="date"]') as HTMLInputElement)?.value || "";
-      const messageText = (document.querySelector('textarea[name="message"]') as HTMLTextAreaElement)?.value || "";
+        const message = `Bonjour, demande de devis :
 
-      // ✅ VALIDATION
-      if (!name || !email || !phone || !date || !messageText) {
-        const errorDiv = document.getElementById("error-whatsapp");
-        if (errorDiv) errorDiv.innerText = "⚠️ Merci de remplir tous les champs avant WhatsApp.";
-        return;
-      }
+Nom: ${form.name}
+Entreprise: ${form.company}
+Email: ${form.email}
+Téléphone: ${form.phone}
+Date: ${form.date}
 
-      // reset message erreur
-      const errorDiv = document.getElementById("error-whatsapp");
-      if (errorDiv) errorDiv.innerText = "";
+Message: ${form.message}`
 
-      const message = `Bonjour, je souhaite un devis :
-
-Nom: ${name}
-Entreprise: ${company}
-Email: ${email}
-Téléphone: ${phone}
-Date: ${date}
-
-Message: ${messageText}`;
-
-      const url = `https://wa.me/33668863673?text=${encodeURIComponent(message)}`;
-
-      window.open(url, "_blank");
-    }}
-    className="bg-amber-500 hover:bg-amber-400 text-black px-10 py-4 rounded-full tracking-[0.3em] transition-all duration-300 shadow-[0_0_30px_rgba(251,191,36,0.3)]"
-  >
-    WHATSAPP DIRECT
-  </button>
-
-  {/* MESSAGE ERREUR DESIGN */}
-  <div
-    id="error-whatsapp"
-    className="mt-4 text-red-400 text-sm"
-  ></div>
-
-</div>
-
+        window.open(`https://wa.me/33668863673?text=${encodeURIComponent(message)}`, "_blank")
+      }}
+      className="bg-amber-500 hover:bg-amber-400 text-black px-10 py-4 rounded-full tracking-[0.3em] transition-all duration-300 shadow-[0_0_30px_rgba(251,191,36,0.3)]"
+    >
+      WHATSAPP DIRECT
+    </button>
+  </div>
+</section>
       {/* ================= FOOTER ================= */}
       <footer className="py-24 text-center border-t border-amber-500/20 bg-black">
         <div className="max-w-4xl mx-auto px-6">
