@@ -433,10 +433,12 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
   {/* FORMULAIRE */}
   <form
-    action="https://formsubmit.co/contact@sudidfexecutivetransport.fr"
-    method="POST"
-    className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-6 items-center"
-  >
+  id="devisForm"
+  action="https://formsubmit.co/contact@sudidfexecutivetransport.fr"
+  method="POST"
+  className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-6 items-center"
+>
+
     <input type="hidden" name="_next" value="https://www.sudidfexecutivetransport.fr/merci" />
     <input type="hidden" name="_captcha" value="false" />
     <input type="hidden" name="_subject" value="Demande de devis corporate" />
@@ -502,35 +504,31 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
   </form>
 
   {/* WHATSAPP */}
-  <div className="mt-10 flex flex-col items-center">
-
-  {formError && (
-    <div className="mb-4 px-6 py-3 bg-red-500/10 border border-red-500 text-red-400 rounded-xl">
-      Merci de remplir tous les champs obligatoires
-    </div>
-  )}
-
+  <div className="mt-10 flex justify-center">
   <button
     type="button"
     onClick={() => {
 
-      // 🔒 VALIDATION
-      if (!form.name || !form.email || !form.phone || !form.date || !form.message) {
-        setFormError(true)
+      const formEl = document.getElementById("devisForm") as HTMLFormElement
+
+      // 🔒 VALIDATION HTML NATIVE (100% fiable)
+      if (!formEl.checkValidity()) {
+        formEl.reportValidity()
         return
       }
 
-      setFormError(false)
+      // ✅ Récupération des valeurs (fiable)
+      const formData = new FormData(formEl)
 
       const message = `Bonjour, demande de devis :
 
-Nom: ${form.name}
-Entreprise: ${form.company}
-Email: ${form.email}
-Téléphone: ${form.phone}
-Date: ${form.date}
+Nom: ${formData.get("name")}
+Entreprise: ${formData.get("company")}
+Email: ${formData.get("email")}
+Téléphone: ${formData.get("phone")}
+Date: ${formData.get("date")}
 
-Message: ${form.message}`
+Message: ${formData.get("message")}`
 
       window.open(`https://wa.me/33668863673?text=${encodeURIComponent(message)}`, "_blank")
     }}
@@ -538,7 +536,6 @@ Message: ${form.message}`
   >
     WHATSAPP DIRECT
   </button>
-
 </div>
 </section>
 
