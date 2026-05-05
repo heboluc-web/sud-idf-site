@@ -18,6 +18,8 @@ export default function Reservation() {
     message: ""
   });
 
+  const [error, setError] = useState("");
+
   const handleChange = (e: any) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -35,8 +37,9 @@ export default function Reservation() {
         </p>
 
         <form
-          action="https://formsubmit.co/contact@sudidfexecutivetransport.fr"
-          method="POST"
+  id="reservationForm"
+  action="https://formsubmit.co/contact@sudidfexecutivetransport.fr"
+  method="POST"
           className="space-y-6"
         >
 
@@ -86,50 +89,54 @@ export default function Reservation() {
 
         {/* WHATSAPP */}
         <button
-          type="button"
-          onClick={() => {
-            if (
-              !form.nom ||
-              !form.email ||
-              !form.telephone ||
-              !form.passagers ||
-              !form.bagages ||
-              !form.service ||
-              !form.depart ||
-              !form.arrivee ||
-              !form.date ||
-              !form.heure
-            ) {
-              alert("Merci de remplir tous les champs avant WhatsApp.");
-              return;
-            }
+  type="button"
+  onClick={() => {
 
-            const message = `Bonjour, je souhaite réserver :
+    const formEl = document.getElementById("reservationForm") as HTMLFormElement
 
-Nom: ${form.nom}
-Téléphone: ${form.telephone}
-Email: ${form.email}
+    if (!formEl) return
 
-Nombre de passagers: ${form.passagers}
-Nombre de bagages: ${form.bagages}
+    // 🔒 validation native (FIABLE)
+    if (!formEl.checkValidity()) {
+      formEl.reportValidity()
+      return
+    }
 
-Service: ${form.service}
+    const data = new FormData(formEl)
 
-Départ: ${form.depart}
-Arrivée: ${form.arrivee}
+    const message = `Bonjour, je souhaite réserver :
 
-Date: ${form.date}
-Heure: ${form.heure}
+Nom: ${data.get("nom")}
+Téléphone: ${data.get("telephone")}
+Email: ${data.get("email")}
 
-Message: ${form.message}`;
+Passagers: ${data.get("passagers")}
+Bagages: ${data.get("bagages")}
 
-            window.open(`https://wa.me/33668863673?text=${encodeURIComponent(message)}`, "_blank");
-          }}
-          className="w-full mt-4 py-3 border border-amber-500 text-amber-400 rounded-lg hover:bg-amber-500 hover:text-black transition"
-        >
-          📲 Envoyer via WhatsApp
-        </button>
+Service: ${data.get("service")}
 
+Départ: ${data.get("depart")}
+Arrivée: ${data.get("arrivee")}
+
+Date: ${data.get("date")}
+Heure: ${data.get("heure")}
+
+Message: ${data.get("message")}`
+
+    window.open(`https://wa.me/33668863673?text=${encodeURIComponent(message)}`, "_blank")
+  }}
+>
+  📲 Envoyer via WhatsApp
+</button>
+
+        {/* MESSAGE ERREUR DESIGN */}
+        {error && (
+          <div className="mt-3 p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-center text-red-400 text-sm">
+            ⚠️ {error}
+          </div>
+        )}
+
+        {/* APPEL */}
         <div className="flex justify-center mt-6">
           <a
             href="/appel"
