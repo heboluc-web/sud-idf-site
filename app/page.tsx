@@ -489,7 +489,8 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
   </form>
 
   {/* WHATSAPP */}
-  <div className="mt-10 flex justify-center">
+<div className="mt-10 flex flex-col items-center">
+
   <button
     type="button"
     onClick={() => {
@@ -502,7 +503,18 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
       const date = (document.querySelector('input[name="date"]') as HTMLInputElement)?.value || "";
       const messageText = (document.querySelector('textarea[name="message"]') as HTMLTextAreaElement)?.value || "";
 
-      const message = `Bonjour, je souhaite réserver :
+      // ✅ VALIDATION
+      if (!name || !email || !phone || !date || !messageText) {
+        const errorDiv = document.getElementById("error-whatsapp");
+        if (errorDiv) errorDiv.innerText = "⚠️ Merci de remplir tous les champs avant WhatsApp.";
+        return;
+      }
+
+      // reset message erreur
+      const errorDiv = document.getElementById("error-whatsapp");
+      if (errorDiv) errorDiv.innerText = "";
+
+      const message = `Bonjour, je souhaite un devis :
 
 Nom: ${name}
 Entreprise: ${company}
@@ -514,14 +526,20 @@ Message: ${messageText}`;
 
       const url = `https://wa.me/33668863673?text=${encodeURIComponent(message)}`;
 
-      window.location.href = url;
+      window.open(url, "_blank");
     }}
     className="bg-amber-500 hover:bg-amber-400 text-black px-10 py-4 rounded-full tracking-[0.3em] transition-all duration-300 shadow-[0_0_30px_rgba(251,191,36,0.3)]"
   >
     WHATSAPP DIRECT
   </button>
+
+  {/* MESSAGE ERREUR DESIGN */}
+  <div
+    id="error-whatsapp"
+    className="mt-4 text-red-400 text-sm"
+  ></div>
+
 </div>
-</section>
 
       {/* ================= FOOTER ================= */}
       <footer className="py-24 text-center border-t border-amber-500/20 bg-black">
