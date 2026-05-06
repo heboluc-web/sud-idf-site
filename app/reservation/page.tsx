@@ -18,9 +18,7 @@ export default function Reservation() {
     message: ""
   });
 
-  const [formError, setFormError] = useState(false)
-
-  const [error, setError] = useState("");
+  const [formError, setFormError] = useState(false);
 
   const handleChange = (e: any) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -39,29 +37,24 @@ export default function Reservation() {
         </p>
 
         <form
-  id="reservationForm"
-  action="https://formsubmit.co/contact@sudidfexecutivetransport.fr"
-  method="POST"
+          action="https://formsubmit.co/contact@sudidfexecutivetransport.fr"
+          method="POST"
           className="space-y-6"
         >
-
           <input type="hidden" name="_captcha" value="false" />
           <input type="hidden" name="_subject" value="Nouvelle réservation VTC" />
           <input type="hidden" name="_template" value="table" />
           <input type="hidden" name="_next" value="https://www.sudidfexecutivetransport.fr/merci" />
           <input type="hidden" name="_autoresponse" value="Merci pour votre demande. Nous vous répondrons rapidement." />
 
-          <input name="nom" onChange={handleChange} type="text" placeholder="Nom / Prénom" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
+          {/* INPUTS AVEC VALUE (IMPORTANT) */}
+          <input name="nom" value={form.nom} onChange={handleChange} required placeholder="Nom / Prénom" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
+          <input name="email" value={form.email} onChange={handleChange} required type="email" placeholder="Email" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
+          <input name="telephone" value={form.telephone} onChange={handleChange} required placeholder="Téléphone" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
+          <input name="passagers" value={form.passagers} onChange={handleChange} required type="number" min="1" placeholder="Nombre de passagers" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
+          <input name="bagages" value={form.bagages} onChange={handleChange} required type="number" min="0" placeholder="Nombre de bagages" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
 
-          <input name="email" onChange={handleChange} type="email" placeholder="Email" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
-
-          <input name="telephone" onChange={handleChange} type="tel" placeholder="Téléphone" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
-
-          <input name="passagers" onChange={handleChange} type="number" placeholder="Nombre de passagers" min="1" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
-
-          <input name="bagages" onChange={handleChange} type="number" placeholder="Nombre de bagages" min="0" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
-
-          <select name="service" onChange={handleChange} required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20">
+          <select name="service" value={form.service} onChange={handleChange} required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20">
             <option value="">Type de prestation</option>
             <option>Transfert aéroport</option>
             <option>Transport gare</option>
@@ -69,16 +62,15 @@ export default function Reservation() {
             <option>Événement</option>
           </select>
 
-          <input name="depart" onChange={handleChange} type="text" placeholder="Adresse de départ" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
-
-          <input name="arrivee" onChange={handleChange} type="text" placeholder="Adresse d’arrivée" required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
+          <input name="depart" value={form.depart} onChange={handleChange} required placeholder="Adresse de départ" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
+          <input name="arrivee" value={form.arrivee} onChange={handleChange} required placeholder="Adresse d’arrivée" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
 
           <div className="flex gap-4">
-            <input name="date" onChange={handleChange} type="date" required className="w-1/2 p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
-            <input name="heure" onChange={handleChange} type="time" required className="w-1/2 p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
+            <input name="date" value={form.date} onChange={handleChange} required type="date" className="w-1/2 p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
+            <input name="heure" value={form.heure} onChange={handleChange} required type="time" className="w-1/2 p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
           </div>
 
-          <textarea name="message" onChange={handleChange} placeholder="Informations complémentaires" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"></textarea>
+          <textarea name="message" value={form.message} onChange={handleChange} placeholder="Informations complémentaires" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
 
           <button
             type="submit"
@@ -86,33 +78,38 @@ export default function Reservation() {
           >
             Envoyer ma demande
           </button>
-
         </form>
+
+        {/* MESSAGE ERREUR */}
+        {formError && (
+          <div className="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-center">
+            ⚠️ Merci de remplir tous les champs obligatoires
+          </div>
+        )}
 
         {/* WHATSAPP */}
         <button
-  type="button"
-  onClick={() => {
-    // 🔍 Vérification propre
-    if (
-      !form.nom ||
-      !form.email ||
-      !form.telephone ||
-      !form.passagers ||
-      !form.bagages ||
-      !form.service ||
-      !form.depart ||
-      !form.arrivee ||
-      !form.date ||
-      !form.heure
-    ) {
-      setFormError(true)
-      return
-    }
+          type="button"
+          onClick={() => {
+            if (
+              !form.nom ||
+              !form.email ||
+              !form.telephone ||
+              !form.passagers ||
+              !form.bagages ||
+              !form.service ||
+              !form.depart ||
+              !form.arrivee ||
+              !form.date ||
+              !form.heure
+            ) {
+              setFormError(true);
+              return;
+            }
 
-    setFormError(false)
+            setFormError(false);
 
-    const message = `Bonjour, je souhaite réserver :
+            const message = `Bonjour, je souhaite réserver :
 
 Nom: ${form.nom}
 Téléphone: ${form.telephone}
@@ -129,26 +126,17 @@ Arrivée: ${form.arrivee}
 Date: ${form.date}
 Heure: ${form.heure}
 
-Message: ${form.message}`
+Message: ${form.message}`;
 
-    window.open(
-      `https://wa.me/33668863673?text=${encodeURIComponent(message)}`,
-      "_blank"
-    )
-  }}
-  className="w-full mt-4 py-3 border border-amber-500 text-amber-400 rounded-lg hover:bg-amber-500 hover:text-black transition"
->
-  {/* MESSAGE ERREUR */}
-{error && (
-  <div className="mt-3 p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-center">
-    ⚠️ {error}
-  </div>
-)}
-
-{/* BOUTON WHATSAPP */}
-<button ...>
-  📲 Envoyer via WhatsApp
-</button>
+            window.open(
+              `https://wa.me/33668863673?text=${encodeURIComponent(message)}`,
+              "_blank"
+            );
+          }}
+          className="w-full mt-4 py-3 border border-amber-500 text-amber-400 rounded-lg hover:bg-amber-500 hover:text-black transition"
+        >
+          📲 Envoyer via WhatsApp
+        </button>
 
         {/* APPEL */}
         <div className="flex justify-center mt-6">
