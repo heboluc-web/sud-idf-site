@@ -433,65 +433,72 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
   {/* FORMULAIRE */}
   <form
-  id="devisForm"
-  action="https://formsubmit.co/contact@sudidfexecutivetransport.fr"
-  method="POST"
-  className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-6 items-center"
->
+    id="devisForm"
+    action="https://formsubmit.co/contact@sudidfexecutivetransport.fr"
+    method="POST"
+    className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-6 items-center"
+  >
 
     <input type="hidden" name="_next" value="https://www.sudidfexecutivetransport.fr/merci" />
     <input type="hidden" name="_captcha" value="false" />
     <input type="hidden" name="_subject" value="Demande de devis corporate" />
     <input type="hidden" name="_template" value="table" />
 
+    {/* INPUTS CONNECTÉS AU STATE */}
     <input
       type="text"
       name="name"
-      placeholder="Nom & Prénom"
-      required
+      value={form.name}
       onChange={handleChange}
+      required
+      placeholder="Nom & Prénom"
       className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white"
     />
 
     <input
       type="text"
       name="company"
-      placeholder="Entreprise"
+      value={form.company}
       onChange={handleChange}
+      placeholder="Entreprise"
       className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white"
     />
 
     <input
       type="email"
       name="email"
-      placeholder="Email"
-      required
+      value={form.email}
       onChange={handleChange}
+      required
+      placeholder="Email"
       className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white"
     />
 
     <input
       type="tel"
       name="phone"
-      placeholder="Téléphone"
-      required
+      value={form.phone}
       onChange={handleChange}
+      required
+      placeholder="Téléphone"
       className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white"
     />
 
     <input
       type="date"
       name="date"
-      required
+      value={form.date}
       onChange={handleChange}
+      required
       className="bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white"
     />
 
     <textarea
       name="message"
-      placeholder="Décrivez votre besoin..."
-      required
+      value={form.message}
       onChange={handleChange}
+      required
+      placeholder="Décrivez votre besoin..."
       className="md:col-span-5 bg-neutral-900 border border-amber-500/20 p-4 rounded-xl text-white"
     />
 
@@ -505,38 +512,43 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
   {/* WHATSAPP */}
   <div className="mt-10 flex justify-center">
-  <button
-    type="button"
-    onClick={() => {
+    <button
+      type="button"
+      onClick={() => {
 
-      const formEl = document.getElementById("devisForm") as HTMLFormElement
+        if (
+          !form.name ||
+          !form.email ||
+          !form.phone ||
+          !form.date ||
+          !form.message
+        ) {
+          setFormError(true)
+          return
+        }
 
-      // 🔒 VALIDATION HTML NATIVE (100% fiable)
-      if (!formEl.checkValidity()) {
-        formEl.reportValidity()
-        return
-      }
+        setFormError(false)
 
-      // ✅ Récupération des valeurs (fiable)
-      const formData = new FormData(formEl)
+        const message = `Bonjour, demande de devis :
 
-      const message = `Bonjour, demande de devis :
+Nom: ${form.name}
+Entreprise: ${form.company}
+Email: ${form.email}
+Téléphone: ${form.phone}
+Date: ${form.date}
 
-Nom: ${formData.get("name")}
-Entreprise: ${formData.get("company")}
-Email: ${formData.get("email")}
-Téléphone: ${formData.get("phone")}
-Date: ${formData.get("date")}
+Message: ${form.message}`
 
-Message: ${formData.get("message")}`
-
-      window.open(`https://wa.me/33668863673?text=${encodeURIComponent(message)}`, "_blank")
-    }}
-    className="bg-amber-500 hover:bg-amber-400 text-black px-10 py-4 rounded-full tracking-[0.3em] transition-all duration-300 shadow-[0_0_30px_rgba(251,191,36,0.3)]"
-  >
-    WHATSAPP DIRECT
-  </button>
-</div>
+        window.open(
+          `https://wa.me/33668863673?text=${encodeURIComponent(message)}`,
+          "_blank"
+        )
+      }}
+      className="bg-amber-500 hover:bg-amber-400 text-black px-10 py-4 rounded-full tracking-[0.3em] transition-all duration-300 shadow-[0_0_30px_rgba(251,191,36,0.3)]"
+    >
+      WHATSAPP DIRECT
+    </button>
+  </div>
 </section>
 
       {/* ================= FOOTER ================= */}
