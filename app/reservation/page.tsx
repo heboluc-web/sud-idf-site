@@ -8,6 +8,7 @@ export default function Reservation() {
     nom: "",
     email: "",
     telephone: "",
+    vehicule: "",
     passagers: "",
     bagages: "",
     service: "",
@@ -22,6 +23,13 @@ export default function Reservation() {
 
   const handleChange = (e: any) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  // 🔒 limite passagers selon véhicule
+  const getMaxPassagers = () => {
+    if (form.vehicule === "Mercedes Classe V") return 7;
+    if (form.vehicule === "Range Rover") return 4;
+    return 10;
   };
 
   return (
@@ -47,11 +55,35 @@ export default function Reservation() {
           <input type="hidden" name="_next" value="https://www.sudidfexecutivetransport.fr/merci" />
           <input type="hidden" name="_autoresponse" value="Merci pour votre demande. Nous vous répondrons rapidement." />
 
-          {/* INPUTS AVEC VALUE (IMPORTANT) */}
           <input name="nom" value={form.nom} onChange={handleChange} required placeholder="Nom / Prénom" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
           <input name="email" value={form.email} onChange={handleChange} required type="email" placeholder="Email" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
           <input name="telephone" value={form.telephone} onChange={handleChange} required placeholder="Téléphone" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
-          <input name="passagers" value={form.passagers} onChange={handleChange} required type="number" min="1" placeholder="Nombre de passagers" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
+
+          {/* 🚗 NOUVEAU : TYPE DE VEHICULE */}
+          <select
+            name="vehicule"
+            value={form.vehicule}
+            onChange={handleChange}
+            required
+            className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
+          >
+            <option value="">Type de véhicule</option>
+            <option>Mercedes Classe V</option>
+            <option>Range Rover</option>
+          </select>
+
+          <input
+            name="passagers"
+            value={form.passagers}
+            onChange={handleChange}
+            required
+            type="number"
+            min="1"
+            max={getMaxPassagers()}
+            placeholder={`Nombre de passagers (max ${getMaxPassagers()})`}
+            className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
+          />
+
           <input name="bagages" value={form.bagages} onChange={handleChange} required type="number" min="0" placeholder="Nombre de bagages" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
 
           <select name="service" value={form.service} onChange={handleChange} required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20">
@@ -91,10 +123,12 @@ export default function Reservation() {
         <button
           type="button"
           onClick={() => {
+
             if (
               !form.nom ||
               !form.email ||
               !form.telephone ||
+              !form.vehicule ||
               !form.passagers ||
               !form.bagages ||
               !form.service ||
@@ -107,6 +141,12 @@ export default function Reservation() {
               return;
             }
 
+            // 🔒 sécurité passagers
+            if (parseInt(form.passagers) > getMaxPassagers()) {
+              setFormError(true);
+              return;
+            }
+
             setFormError(false);
 
             const message = `Bonjour, je souhaite réserver :
@@ -115,8 +155,9 @@ Nom: ${form.nom}
 Téléphone: ${form.telephone}
 Email: ${form.email}
 
-Nombre de passagers: ${form.passagers}
-Nombre de bagages: ${form.bagages}
+Véhicule: ${form.vehicule}
+Passagers: ${form.passagers}
+Bagages: ${form.bagages}
 
 Service: ${form.service}
 
