@@ -199,7 +199,7 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
         <img
           src="/lucas.jpg"
           alt="Fondateur"
-          className="w-56 h-56 md:w-64 md:h-64 object-cover rounded-full border border-amber-500 shadow-[0_0_40px_rgba(212,175,55,0.25)]"
+          className="w-64 h-64 md:w-72 md:h-72 object-cover object-top rounded-full border border-amber-500 shadow-[0_0_40px_rgba(212,175,55,0.25)]"
         />
       </div>
 
