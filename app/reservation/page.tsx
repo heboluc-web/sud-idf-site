@@ -18,6 +18,8 @@ export default function Reservation() {
     message: ""
   });
 
+  const [formError, setFormError] = useState(false)
+
   const [error, setError] = useState("");
 
   const handleChange = (e: any) => {
@@ -91,50 +93,62 @@ export default function Reservation() {
         <button
   type="button"
   onClick={() => {
-
-    const formEl = document.getElementById("reservationForm") as HTMLFormElement
-
-    if (!formEl) return
-
-    // 🔒 validation native (FIABLE)
-    if (!formEl.checkValidity()) {
-      formEl.reportValidity()
+    // 🔍 Vérification propre
+    if (
+      !form.nom ||
+      !form.email ||
+      !form.telephone ||
+      !form.passagers ||
+      !form.bagages ||
+      !form.service ||
+      !form.depart ||
+      !form.arrivee ||
+      !form.date ||
+      !form.heure
+    ) {
+      setFormError(true)
       return
     }
 
-    const data = new FormData(formEl)
+    setFormError(false)
 
     const message = `Bonjour, je souhaite réserver :
 
-Nom: ${data.get("nom")}
-Téléphone: ${data.get("telephone")}
-Email: ${data.get("email")}
+Nom: ${form.nom}
+Téléphone: ${form.telephone}
+Email: ${form.email}
 
-Passagers: ${data.get("passagers")}
-Bagages: ${data.get("bagages")}
+Nombre de passagers: ${form.passagers}
+Nombre de bagages: ${form.bagages}
 
-Service: ${data.get("service")}
+Service: ${form.service}
 
-Départ: ${data.get("depart")}
-Arrivée: ${data.get("arrivee")}
+Départ: ${form.depart}
+Arrivée: ${form.arrivee}
 
-Date: ${data.get("date")}
-Heure: ${data.get("heure")}
+Date: ${form.date}
+Heure: ${form.heure}
 
-Message: ${data.get("message")}`
+Message: ${form.message}`
 
-    window.open(`https://wa.me/33668863673?text=${encodeURIComponent(message)}`, "_blank")
+    window.open(
+      `https://wa.me/33668863673?text=${encodeURIComponent(message)}`,
+      "_blank"
+    )
   }}
+  className="w-full mt-4 py-3 border border-amber-500 text-amber-400 rounded-lg hover:bg-amber-500 hover:text-black transition"
 >
+  {/* MESSAGE ERREUR */}
+{error && (
+  <div className="mt-3 p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-center">
+    ⚠️ {error}
+  </div>
+)}
+
+{/* BOUTON WHATSAPP */}
+<button ...>
   📲 Envoyer via WhatsApp
 </button>
-
-        {/* MESSAGE ERREUR DESIGN */}
-        {error && (
-          <div className="mt-3 p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-center text-red-400 text-sm">
-            ⚠️ {error}
-          </div>
-        )}
 
         {/* APPEL */}
         <div className="flex justify-center mt-6">
