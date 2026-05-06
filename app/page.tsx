@@ -6,6 +6,7 @@ export default function SudIdfExecutiveTransport() {
   const [form, setForm] = useState({
     name: '',
     company: '',
+    email: '',
     phone: '',
     date: '',
     message: ''
