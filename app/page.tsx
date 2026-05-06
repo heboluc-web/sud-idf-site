@@ -562,7 +562,7 @@ Message: ${form.message}`
             © 2026 Sud IDF Executive Transport
           </p>
           <p className="text-neutral-600 text-xs mt-6 tracking-wider font-light">
-            Au capital social de 1 000€ · SIRET 101 146 637 00018 - TVA FR61 101 146 637
+            SAS au capital social de 1 000€ · SIRET 101 146 637 00018 - TVA FR61 101 146 637
           </p>
           <p className="text-neutral-600 text-xs mt-2 tracking-wider font-light">
             Siège social : Corbeil-Essonnes, France.
