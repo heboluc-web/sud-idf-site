@@ -516,16 +516,18 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
       type="button"
       onClick={() => {
 
-        if (
-          !form.name ||
-          !form.email ||
-          !form.phone ||
-          !form.date ||
-          !form.message
-        ) {
-          setFormError(true)
-          return
-        }
+        const isEmpty = (value: any) => !value || value.trim() === ""
+
+if (
+  isEmpty(form.name) ||
+  isEmpty(form.email) ||
+  isEmpty(form.phone) ||
+  isEmpty(form.date) ||
+  isEmpty(form.message)
+) {
+  setFormError(true)
+  return
+}
 
         setFormError(false)
 
