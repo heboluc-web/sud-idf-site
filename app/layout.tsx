@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   verification: {
-    google: "J1MLtGDD7bV3J",
+   google: "J1MLtGDD7bV3JgivgjiVQjcodSrQ5qSClRxKJglZWVY",
   },
 
   metadataBase: new URL("https://www.sudidfexecutivetransport.fr"),
