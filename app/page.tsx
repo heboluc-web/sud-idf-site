@@ -81,22 +81,62 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
   <div className="max-w-7xl mx-auto px-10 py-6 flex items-center justify-between">
 
     <div className="flex flex-col">
-      <span className="text-xl tracking-[0.5em] uppercase text-white font-light">SUD IDF</span>
+      <span className="text-xl tracking-[0.5em] uppercase text-white font-light">
+        SUD IDF
+      </span>
+
       <span className="text-[10px] tracking-[0.7em] uppercase text-amber-400 mt-1">
         Executive Transport
       </span>
     </div>
 
-    <div className="hidden md:flex items-center gap-14 text-[11px] tracking-[0.35em] uppercase text-neutral-300 font-light">
-      <a href="#signature" className="hover:text-amber-400 transition">Qui nous sommes</a>
-      <a href="#services" className="hover:text-amber-400 transition">Services</a>
-      <a href="#fleet" className="hover:text-amber-400 transition">Flotte</a>
-      <a href="#trust" className="hover:text-amber-400 transition">Références</a>
-      <a href="#contact" className="hover:text-amber-400 transition">Contact</a>
+    <div className="hidden md:flex items-center gap-10 text-[11px] tracking-[0.28em] uppercase text-neutral-300 font-light">
+
+      <a
+        href="/chauffeur-prive-essonne"
+        className="hover:text-amber-400 transition"
+      >
+        Essonne
+      </a>
+
+      <a
+        href="/transfert-orly"
+        className="hover:text-amber-400 transition"
+      >
+        Orly
+      </a>
+
+      <a
+        href="/transfert-cdg"
+        className="hover:text-amber-400 transition"
+      >
+        CDG
+      </a>
+
+      <a
+        href="/chauffeur-business"
+        className="hover:text-amber-400 transition"
+      >
+        Business
+      </a>
+
+      <a
+        href="/mise-a-disposition"
+        className="hover:text-amber-400 transition"
+      >
+        Mise à disposition
+      </a>
+
+      <a
+        href="/contact"
+        className="hover:text-amber-400 transition"
+      >
+        Contact
+      </a>
+
     </div>
   </div>
 </nav>
-
 {/* ================= HERO ================= */}
 <section
  className="relative w-full h-[115vh] min-h-[900px] overflow-hidden flex items-center justify-center pt-32">
@@ -555,31 +595,214 @@ Message: ${form.message}`
 </section>
 
       {/* ================= FOOTER ================= */}
-      <footer className="py-24 text-center border-t border-amber-500/20 bg-black">
-        <div className="max-w-4xl mx-auto px-6">
-          <div className="w-40 h-[1px] bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto mb-10" />
-          <p className="text-neutral-500 text-sm tracking-[0.5em] uppercase font-light">
-            © 2026 Sud IDF Executive Transport
-          </p>
-          <p className="text-neutral-600 text-xs mt-6 tracking-wider font-light">
-            SAS au capital social de 1 000€ · SIRET 101 146 637 00018 - TVA FR61 101 146 637
-          </p>
-          <p className="text-neutral-600 text-xs mt-2 tracking-wider font-light">
-            Siège social : Corbeil-Essonnes, France.
-          </p>
-          <div className="mt-16 border-t border-amber-500/20 pt-6 text-center text-xs text-neutral-500">
+<footer className="border-t border-amber-500/20 bg-black py-24">
+  <div className="mx-auto max-w-7xl px-6">
 
-  <div className="flex justify-center gap-6 mb-3">
-    <a href="/cgv" className="hover:text-amber-400">CGV</a>
-    <a href="/mentions-legales" className="hover:text-amber-400">Mentions légales</a>
-    <a href="/confidentialite" className="hover:text-amber-400">Confidentialité</a>
-  </div>
+    <div className="grid gap-16 md:grid-cols-4">
 
-  <p>© SUD IDF EXECUTIVE TRANSPORT</p>
+      {/* BRAND */}
+      <div>
+        <h3 className="text-xl uppercase tracking-[0.4em] text-white font-light">
+          SUD IDF
+        </h3>
 
-</div>  
+        <p className="mt-3 text-xs uppercase tracking-[0.5em] text-amber-400">
+          Executive Transport
+        </p>
+
+        <p className="mt-8 text-sm leading-7 text-neutral-400">
+          Chauffeur privé premium en Essonne et Île-de-France.
+          Transferts Orly, CDG, déplacements business et mise à disposition 24h/24.
+        </p>
+      </div>
+
+      {/* SERVICES */}
+      <div>
+        <h4 className="mb-6 text-sm uppercase tracking-[0.3em] text-white">
+          Services
+        </h4>
+
+        <div className="flex flex-col gap-4 text-sm text-neutral-400">
+
+          <a
+            href="/transfert-orly"
+            className="hover:text-amber-400 transition"
+          >
+            Transfert Orly
+          </a>
+
+          <a
+            href="/transfert-cdg"
+            className="hover:text-amber-400 transition"
+          >
+            Transfert CDG
+          </a>
+
+          <a
+            href="/chauffeur-business"
+            className="hover:text-amber-400 transition"
+          >
+            Chauffeur business
+          </a>
+
+          <a
+            href="/mise-a-disposition"
+            className="hover:text-amber-400 transition"
+          >
+            Mise à disposition
+          </a>
+
+          <a
+            href="/contact"
+            className="hover:text-amber-400 transition"
+          >
+            Contact
+          </a>
+
         </div>
+      </div>
+
+      {/* ZONES */}
+      <div>
+        <h4 className="mb-6 text-sm uppercase tracking-[0.3em] text-white">
+          Zones desservies
+        </h4>
+
+        <div className="flex flex-col gap-4 text-sm text-neutral-400">
+
+          <a
+            href="/chauffeur-prive-essonne"
+            className="hover:text-amber-400 transition"
+          >
+            Essonne
+          </a>
+
+          <a
+            href="/chauffeur-prive-corbeil-essonnes"
+            className="hover:text-amber-400 transition"
+          >
+            Corbeil-Essonnes
+          </a>
+
+          <a
+            href="/chauffeur-prive-evry"
+            className="hover:text-amber-400 transition"
+          >
+            Évry-Courcouronnes
+          </a>
+
+          <a
+            href="/chauffeur-prive-melun"
+            className="hover:text-amber-400 transition"
+          >
+            Melun
+          </a>
+
+          <a
+            href="/chauffeur-prive-fontainebleau"
+            className="hover:text-amber-400 transition"
+          >
+            Fontainebleau
+          </a>
+
+        </div>
+      </div>
+
+      {/* CONTACT */}
+      <div>
+        <h4 className="mb-6 text-sm uppercase tracking-[0.3em] text-white">
+          Contact
+        </h4>
+
+        <div className="space-y-4 text-sm text-neutral-400">
+
+          <p>
+            📞 06 68 86 36 73
+          </p>
+
+          <p>
+            📧 contact@sudidfexecutivetransport.fr
+          </p>
+
+          <p>
+            📍 Corbeil-Essonnes
+          </p>
+
+          <div className="flex gap-4 pt-4">
+
+            <a
+              href="https://www.instagram.com/sudidfexecutivetransport"
+              target="_blank"
+              className="hover:text-amber-400 transition"
+            >
+              Instagram
+            </a>
+
+            <a
+              href="https://www.tiktok.com/@sudidfexecutivetransport"
+              target="_blank"
+              className="hover:text-amber-400 transition"
+            >
+              TikTok
+            </a>
+
+            <a
+              href="https://www.youtube.com/@SUDIDFEXECUTIVETRANSPORT"
+              target="_blank"
+              className="hover:text-amber-400 transition"
+            >
+              YouTube
+            </a>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* BOTTOM */}
+    <div className="mt-20 border-t border-amber-500/20 pt-10 text-center">
+
+      <div className="mb-6 flex flex-wrap justify-center gap-6 text-xs text-neutral-500">
+
+        <a
+          href="/cgv"
+          className="hover:text-amber-400 transition"
+        >
+          CGV
+        </a>
+
+        <a
+          href="/mentions-legales"
+          className="hover:text-amber-400 transition"
+        >
+          Mentions légales
+        </a>
+
+        <a
+          href="/confidentialite"
+          className="hover:text-amber-400 transition"
+        >
+          Confidentialité
+        </a>
+
+      </div>
+
+      <p className="text-xs uppercase tracking-[0.4em] text-neutral-500">
+        © 2026 SUD IDF EXECUTIVE TRANSPORT
+      </p>
+
+      <p className="mt-4 text-xs text-neutral-600">
+        SAS au capital social de 1 000€ · SIRET 101 146 637 00018 · TVA FR61 101 146 637
+      </p>
+
+      <p className="mt-2 text-xs text-neutral-600">
+        Siège social : Corbeil-Essonnes, France
+      </p>
+
+    </div>
+    </div>
 </footer>
-</div>
-)
+
+    </div>
+  );
 }
