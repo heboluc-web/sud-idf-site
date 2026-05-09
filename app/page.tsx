@@ -457,13 +457,19 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
  <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-20 max-w-7xl mx-auto">
   {[
-    '/rangerover1.jpg',
-    '/rangerover.jpg',
-    '/rangerover2.jpg',
-    '/rangerover3.jpg',
-    '/rangerover4.jpg',
-    '/rangerover5.jpg'
-  ].map((img, index) => (
+  '/rangerover1.jpg',
+  '/rangerover.jpg',
+  '/rangerover2.jpg',
+  '/rangerover3.jpg',
+  '/rangerover4.jpg',
+  '/rangerover5.jpg',
+  '/rangerover6.jpg',
+  '/rangerover7.jpg',
+  '/rangerover8.jpg',
+  '/rangerover9.jpg',
+  '/rangerover10.jpg',
+  '/rangerover11.jpg'
+].map((img, index) => (
     <div
       key={index}
       className="
