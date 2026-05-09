@@ -611,7 +611,7 @@ Message: ${form.message}`
         </p>
 
         <p className="mt-8 text-sm leading-7 text-neutral-400">
-          Chauffeur privé premium en Essonne et Île-de-France.
+          Chauffeur privé premium en Essonne, Seine-et-Marne et Île-de-France.
           Transferts Orly, CDG, déplacements business et mise à disposition 24h/24.
         </p>
       </div>
@@ -678,6 +678,13 @@ Message: ${form.message}`
           </a>
 
           <a
+            href="/chauffeur-prive-seine-et-marne"
+            className="hover:text-amber-400 transition"
+          >
+            Seine-et-Marne
+          </a>
+
+          <a
             href="/chauffeur-prive-corbeil-essonnes"
             className="hover:text-amber-400 transition"
           >
@@ -728,19 +735,30 @@ Message: ${form.message}`
             📍 Corbeil-Essonnes
           </p>
 
-          <div className="flex gap-4 pt-4">
+          <div className="flex flex-wrap gap-4 pt-4">
 
             <a
               href="https://www.instagram.com/sudidfexecutivetransport"
               target="_blank"
+              rel="noopener noreferrer"
               className="hover:text-amber-400 transition"
             >
               Instagram
             </a>
 
             <a
+              href="https://www.facebook.com/sudidfexecutivetransport"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-amber-400 transition"
+            >
+              Facebook
+            </a>
+
+            <a
               href="https://www.tiktok.com/@sudidfexecutivetransport"
               target="_blank"
+              rel="noopener noreferrer"
               className="hover:text-amber-400 transition"
             >
               TikTok
@@ -749,6 +767,7 @@ Message: ${form.message}`
             <a
               href="https://www.youtube.com/@SUDIDFEXECUTIVETRANSPORT"
               target="_blank"
+              rel="noopener noreferrer"
               className="hover:text-amber-400 transition"
             >
               YouTube
@@ -800,9 +819,5 @@ Message: ${form.message}`
       </p>
 
     </div>
-    </div>
+  </div>
 </footer>
-
-    </div>
-  );
-}

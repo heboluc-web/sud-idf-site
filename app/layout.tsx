@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -125,68 +126,86 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-  <html lang="fr">
-    <head>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "LocalBusiness",
+    <html lang="fr">
+      <head>
 
-            name: "Sud IDF Executive Transport",
+        {/* GOOGLE ANALYTICS */}
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtag/js?id=G-H7LN73SM2B"
+        />
 
-            image:
-              "https://www.sudidfexecutivetransport.fr/og-image.jpg",
+        <Script id="google-analytics">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
 
-            url: "https://www.sudidfexecutivetransport.fr",
+            gtag('config', 'G-H7LN73SM2B');
+          `}
+        </Script>
 
-            telephone: "+33668863673",
+        {/* SCHEMA LOCAL BUSINESS */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "LocalBusiness",
 
-            email: "contact@sudidfexecutivetransport.fr",
+              name: "Sud IDF Executive Transport",
 
-            address: {
-              "@type": "PostalAddress",
-              addressLocality: "Corbeil-Essonnes",
-              addressRegion: "Île-de-France",
-              postalCode: "91100",
-              addressCountry: "FR",
-            },
+              image:
+                "https://www.sudidfexecutivetransport.fr/og-image.jpg",
 
-            areaServed: [
-              "Essonne",
-              "Seine-et-Marne",
-              "Corbeil-Essonnes",
-              "Évry-Courcouronnes",
-              "Melun",
-              "Paris",
-              "Orly",
-              "Roissy Charles-de-Gaulle",
-            ],
+              url: "https://www.sudidfexecutivetransport.fr",
 
-            sameAs: [
-              "https://www.instagram.com/sudidfexecutivetransport",
-              "https://www.facebook.com/sudidfexecutivetransport",
-              "https://www.tiktok.com/@sudidfexecutivetransport",
-              "https://www.youtube.com/@SUDIDFEXECUTIVETRANSPORT",
-            ],
+              telephone: "+33668863673",
 
-            openingHours: "Mo-Su 00:00-23:59",
+              email: "contact@sudidfexecutivetransport.fr",
 
-            priceRange: "€€",
+              address: {
+                "@type": "PostalAddress",
+                addressLocality: "Corbeil-Essonnes",
+                addressRegion: "Île-de-France",
+                postalCode: "91100",
+                addressCountry: "FR",
+              },
 
-            description:
-              "Service de chauffeur privé premium en Essonne et Île-de-France. Transferts Orly, CDG, business et mise à disposition 24h/24.",
-          }),
-        }}
-      />
-    </head>
+              areaServed: [
+                "Essonne",
+                "Seine-et-Marne",
+                "Corbeil-Essonnes",
+                "Évry-Courcouronnes",
+                "Melun",
+                "Paris",
+                "Orly",
+                "Roissy Charles-de-Gaulle",
+              ],
 
-    <body
-      className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-    >
-      {children}
-    </body>
-  </html>
-);
+              sameAs: [
+                "https://www.instagram.com/sudidfexecutivetransport",
+                "https://www.facebook.com/sudidfexecutivetransport",
+                "https://www.tiktok.com/@sudidfexecutivetransport",
+                "https://www.youtube.com/@SUDIDFEXECUTIVETRANSPORT",
+              ],
+
+              openingHours: "Mo-Su 00:00-23:59",
+
+              priceRange: "€€",
+
+              description:
+                "Service de chauffeur privé premium en Essonne et Île-de-France. Transferts Orly, CDG, business et mise à disposition 24h/24.",
+            }),
+          }}
+        />
+      </head>
+
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        {children}
+      </body>
+    </html>
+  );
 }
