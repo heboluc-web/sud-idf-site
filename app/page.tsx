@@ -412,7 +412,10 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
     '/classev5.jpg',
     '/classev6.jpg',
     '/classev7.jpg',
-    '/classev8.jpg'
+    '/classev8.jpg',
+    '/classev9.jpg',
+    '/classev10.jpg',
+    '/classev11.jpg'
   ].map((img, index) => (
     <div
       key={index}
