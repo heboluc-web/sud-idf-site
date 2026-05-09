@@ -2,23 +2,24 @@ import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
+
     {
       url: "https://www.sudidfexecutivetransport.fr",
       lastModified: new Date(),
     },
 
     {
-      url: "https://www.sudidfexecutivetransport.fr/transfert-orly",
-      lastModified: new Date(),
-    },
-
-    {
-      url: "https://www.sudidfexecutivetransport.fr/transfert-cdg",
+      url: "https://www.sudidfexecutivetransport.fr/chauffeur-prive-paris",
       lastModified: new Date(),
     },
 
     {
       url: "https://www.sudidfexecutivetransport.fr/chauffeur-prive-essonne",
+      lastModified: new Date(),
+    },
+
+    {
+      url: "https://www.sudidfexecutivetransport.fr/vtc-essonne",
       lastModified: new Date(),
     },
 
@@ -48,6 +49,26 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
 
     {
+      url: "https://www.sudidfexecutivetransport.fr/chauffeur-prive-orly",
+      lastModified: new Date(),
+    },
+
+    {
+      url: "https://www.sudidfexecutivetransport.fr/chauffeur-prive-cdg",
+      lastModified: new Date(),
+    },
+
+    {
+      url: "https://www.sudidfexecutivetransport.fr/chauffeur-aeroport-orly",
+      lastModified: new Date(),
+    },
+
+    {
+      url: "https://www.sudidfexecutivetransport.fr/chauffeur-aeroport-cdg",
+      lastModified: new Date(),
+    },
+
+    {
       url: "https://www.sudidfexecutivetransport.fr/transfert-orly",
       lastModified: new Date(),
     },
@@ -59,6 +80,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     {
       url: "https://www.sudidfexecutivetransport.fr/chauffeur-business",
+      lastModified: new Date(),
+    },
+
+    {
+      url: "https://www.sudidfexecutivetransport.fr/transport-vip",
       lastModified: new Date(),
     },
 
@@ -101,5 +127,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: "https://www.sudidfexecutivetransport.fr/cgv",
       lastModified: new Date(),
     },
+
   ];
 }

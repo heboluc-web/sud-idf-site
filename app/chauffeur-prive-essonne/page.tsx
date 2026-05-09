@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title:
@@ -21,6 +22,57 @@ export const metadata: Metadata = {
 export default function ChauffeurPriveEssonne() {
   return (
     <main className="min-h-screen bg-black text-white px-6 py-16">
+
+      {/* FAQ SCHEMA SEO */}
+      <Script
+        id="faq-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Proposez-vous des transferts vers Orly et CDG ?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text":
+                    "Oui, nous assurons les transferts premium vers les aéroports d’Orly et Roissy Charles-de-Gaulle depuis toute l’Essonne et l’Île-de-France."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Intervenez-vous dans toute l’Essonne ?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text":
+                    "Nos chauffeurs privés interviennent à Corbeil-Essonnes, Évry-Courcouronnes, Melun, Fontainebleau ainsi que dans toute l’Île-de-France."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Peut-on réserver un chauffeur business ?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text":
+                    "Oui, notre service business est destiné aux entreprises, dirigeants, hôtels, séminaires et déplacements professionnels."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Êtes-vous disponible 24h/24 ?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text":
+                    "Notre service de chauffeur privé premium est disponible 24h/24 et 7j/7 sur réservation."
+                }
+              }
+            ]
+          }),
+        }}
+      />
+
       <div className="max-w-5xl mx-auto">
 
         <h1 className="text-4xl md:text-5xl font-bold mb-8">
@@ -109,6 +161,63 @@ export default function ChauffeurPriveEssonne() {
             </p>
           </a>
 
+        </div>
+
+        {/* FAQ SEO */}
+        <div className="mt-24">
+          <h2 className="text-3xl font-semibold text-amber-400 mb-10">
+            Questions fréquentes
+          </h2>
+
+          <div className="space-y-6">
+
+            <div className="bg-neutral-950 border border-amber-500/20 rounded-2xl p-6">
+              <h3 className="text-xl text-white mb-3">
+                Proposez-vous des transferts vers Orly et CDG ?
+              </h3>
+
+              <p className="text-gray-400 leading-7">
+                Oui, nous assurons les transferts premium vers les aéroports
+                d’Orly et Roissy Charles-de-Gaulle depuis toute l’Essonne
+                et l’Île-de-France.
+              </p>
+            </div>
+
+            <div className="bg-neutral-950 border border-amber-500/20 rounded-2xl p-6">
+              <h3 className="text-xl text-white mb-3">
+                Intervenez-vous dans toute l’Essonne ?
+              </h3>
+
+              <p className="text-gray-400 leading-7">
+                Nos chauffeurs privés interviennent à Corbeil-Essonnes,
+                Évry-Courcouronnes, Melun, Fontainebleau ainsi que dans
+                toute l’Île-de-France.
+              </p>
+            </div>
+
+            <div className="bg-neutral-950 border border-amber-500/20 rounded-2xl p-6">
+              <h3 className="text-xl text-white mb-3">
+                Peut-on réserver un chauffeur business ?
+              </h3>
+
+              <p className="text-gray-400 leading-7">
+                Oui, notre service business est destiné aux entreprises,
+                dirigeants, hôtels, séminaires et déplacements professionnels.
+              </p>
+            </div>
+
+            <div className="bg-neutral-950 border border-amber-500/20 rounded-2xl p-6">
+              <h3 className="text-xl text-white mb-3">
+                Êtes-vous disponible 24h/24 ?
+              </h3>
+
+              <p className="text-gray-400 leading-7">
+                Notre service de chauffeur privé premium est disponible
+                24h/24 et 7j/7 sur réservation.
+              </p>
+            </div>
+
+          </div>
         </div>
 
       </div>

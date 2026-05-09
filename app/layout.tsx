@@ -18,7 +18,9 @@ export const metadata: Metadata = {
     google: "J1MLtGDD7bV3JgivgjiVQjcodSrQ5qSClRxKJglZWVY",
   },
 
-  metadataBase: new URL("https://www.sudidfexecutivetransport.fr"),
+  metadataBase: new URL(
+    "https://www.sudidfexecutivetransport.fr"
+  ),
 
   title: {
     default: "Sud IDF Executive Transport",
@@ -52,17 +54,20 @@ export const metadata: Metadata = {
   ],
 
   creator: "Sud IDF Executive Transport",
+
   publisher: "Sud IDF Executive Transport",
 
   category: "transport",
 
   alternates: {
-    canonical: "https://www.sudidfexecutivetransport.fr",
+    canonical:
+      "https://www.sudidfexecutivetransport.fr",
   },
 
   robots: {
     index: true,
     follow: true,
+
     googleBot: {
       index: true,
       follow: true,
@@ -74,11 +79,18 @@ export const metadata: Metadata = {
 
   openGraph: {
     title: "Sud IDF Executive Transport",
+
     description:
       "Service de chauffeur privé premium en Île-de-France. Transferts Orly, CDG, déplacements business et mise à disposition 24h/24.",
-    url: "https://www.sudidfexecutivetransport.fr",
-    siteName: "Sud IDF Executive Transport",
+
+    url:
+      "https://www.sudidfexecutivetransport.fr",
+
+    siteName:
+      "Sud IDF Executive Transport",
+
     locale: "fr_FR",
+
     type: "website",
 
     images: [
@@ -93,9 +105,13 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Sud IDF Executive Transport",
+
+    title:
+      "Sud IDF Executive Transport",
+
     description:
       "Chauffeur privé premium en Essonne et Île-de-France.",
+
     images: ["/og-image.jpg"],
   },
 
@@ -129,7 +145,6 @@ export default function RootLayout({
     <html lang="fr">
       <head>
 
-        {/* GOOGLE ANALYTICS */}
         <Script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-H7LN73SM2B"
@@ -145,57 +160,187 @@ export default function RootLayout({
           `}
         </Script>
 
-        {/* SCHEMA LOCAL BUSINESS */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "LocalBusiness",
 
-              name: "Sud IDF Executive Transport",
+              "@graph": [
 
-              image:
-                "https://www.sudidfexecutivetransport.fr/og-image.jpg",
+                {
+                  "@type": "LocalBusiness",
 
-              url: "https://www.sudidfexecutivetransport.fr",
+                  "@id":
+                    "https://www.sudidfexecutivetransport.fr/#business",
 
-              telephone: "+33668863673",
+                  name:
+                    "Sud IDF Executive Transport",
 
-              email: "contact@sudidfexecutivetransport.fr",
+                  image:
+                    "https://www.sudidfexecutivetransport.fr/og-image.jpg",
 
-              address: {
-                "@type": "PostalAddress",
-                addressLocality: "Corbeil-Essonnes",
-                addressRegion: "Île-de-France",
-                postalCode: "91100",
-                addressCountry: "FR",
-              },
+                  url:
+                    "https://www.sudidfexecutivetransport.fr",
 
-              areaServed: [
-                "Essonne",
-                "Seine-et-Marne",
-                "Corbeil-Essonnes",
-                "Évry-Courcouronnes",
-                "Melun",
-                "Paris",
-                "Orly",
-                "Roissy Charles-de-Gaulle",
+                  telephone:
+                    "+33668863673",
+
+                  email:
+                    "contact@sudidfexecutivetransport.fr",
+
+                  priceRange: "€€",
+
+                  address: {
+                    "@type": "PostalAddress",
+
+                    addressLocality:
+                      "Corbeil-Essonnes",
+
+                    addressRegion:
+                      "Île-de-France",
+
+                    postalCode: "91100",
+
+                    addressCountry: "FR",
+                  },
+
+                  geo: {
+                    "@type": "GeoCoordinates",
+
+                    latitude: "48.6066",
+
+                    longitude: "2.4875",
+                  },
+
+                  areaServed: [
+                    "Paris",
+                    "Essonne",
+                    "Seine-et-Marne",
+                    "Corbeil-Essonnes",
+                    "Évry-Courcouronnes",
+                    "Melun",
+                    "Fontainebleau",
+                    "Orly",
+                    "Roissy Charles-de-Gaulle",
+                  ],
+
+                  openingHoursSpecification: {
+                    "@type":
+                      "OpeningHoursSpecification",
+
+                    dayOfWeek: [
+                      "Monday",
+                      "Tuesday",
+                      "Wednesday",
+                      "Thursday",
+                      "Friday",
+                      "Saturday",
+                      "Sunday",
+                    ],
+
+                    opens: "00:00",
+
+                    closes: "23:59",
+                  },
+
+                  sameAs: [
+                    "https://www.instagram.com/sudidfexecutivetransport",
+                    "https://www.facebook.com/sudidfexecutivetransport",
+                    "https://www.tiktok.com/@sudidfexecutivetransport",
+                    "https://www.youtube.com/@SUDIDFEXECUTIVETRANSPORT",
+                  ],
+
+                  description:
+                    "Service de chauffeur privé premium en Essonne et Île-de-France. Transferts Orly, CDG, déplacements business et transport VIP.",
+                },
+
+                {
+                  "@type": "Service",
+
+                  serviceType:
+                    "Chauffeur privé premium",
+
+                  provider: {
+                    "@id":
+                      "https://www.sudidfexecutivetransport.fr/#business",
+                  },
+
+                  areaServed: [
+                    "Île-de-France",
+                    "Paris",
+                    "Essonne",
+                    "Seine-et-Marne",
+                  ],
+
+                  hasOfferCatalog: {
+                    "@type": "OfferCatalog",
+
+                    name:
+                      "Services de transport",
+
+                    itemListElement: [
+
+                      {
+                        "@type": "Offer",
+
+                        itemOffered: {
+                          "@type": "Service",
+
+                          name:
+                            "Transfert Orly",
+                        },
+                      },
+
+                      {
+                        "@type": "Offer",
+
+                        itemOffered: {
+                          "@type": "Service",
+
+                          name:
+                            "Transfert CDG",
+                        },
+                      },
+
+                      {
+                        "@type": "Offer",
+
+                        itemOffered: {
+                          "@type": "Service",
+
+                          name:
+                            "Transport business",
+                        },
+                      },
+
+                      {
+                        "@type": "Offer",
+
+                        itemOffered: {
+                          "@type": "Service",
+
+                          name:
+                            "Transport VIP",
+                        },
+                      },
+
+                      {
+                        "@type": "Offer",
+
+                        itemOffered: {
+                          "@type": "Service",
+
+                          name:
+                            "Mise à disposition",
+                        },
+                      },
+
+                    ],
+                  },
+                },
+
               ],
-
-              sameAs: [
-                "https://www.instagram.com/sudidfexecutivetransport",
-                "https://www.facebook.com/sudidfexecutivetransport",
-                "https://www.tiktok.com/@sudidfexecutivetransport",
-                "https://www.youtube.com/@SUDIDFEXECUTIVETRANSPORT",
-              ],
-
-              openingHours: "Mo-Su 00:00-23:59",
-
-              priceRange: "€€",
-
-              description:
-                "Service de chauffeur privé premium en Essonne et Île-de-France. Transferts Orly, CDG, business et mise à disposition 24h/24.",
             }),
           }}
         />

@@ -297,7 +297,97 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
         </div>
       </section>
 
+{/* ================= SEO LINKS ================= */}
+<section className="py-24 px-6 bg-black border-t border-amber-500/20">
+  <div className="max-w-7xl mx-auto">
 
+    <h2 className="text-3xl text-amber-400 mb-12 tracking-[0.4em] uppercase text-center">
+      Nos services de chauffeur privé
+    </h2>
+
+    <div className="grid md:grid-cols-3 gap-6">
+
+      <a
+        href="/chauffeur-prive-paris"
+        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
+      >
+        <h3 className="text-xl text-amber-400 mb-3">
+          Chauffeur privé Paris
+        </h3>
+
+        <p className="text-gray-400">
+          Service premium à Paris et Île-de-France.
+        </p>
+      </a>
+
+      <a
+        href="/chauffeur-prive-orly"
+        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
+      >
+        <h3 className="text-xl text-amber-400 mb-3">
+          Chauffeur privé Orly
+        </h3>
+
+        <p className="text-gray-400">
+          Transport premium vers l’aéroport d’Orly.
+        </p>
+      </a>
+
+      <a
+        href="/chauffeur-prive-cdg"
+        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
+      >
+        <h3 className="text-xl text-amber-400 mb-3">
+          Chauffeur privé CDG
+        </h3>
+
+        <p className="text-gray-400">
+          Chauffeur haut de gamme vers Roissy CDG.
+        </p>
+      </a>
+
+      <a
+        href="/transport-vip"
+        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
+      >
+        <h3 className="text-xl text-amber-400 mb-3">
+          Transport VIP
+        </h3>
+
+        <p className="text-gray-400">
+          Déplacements exécutifs et clientèle premium.
+        </p>
+      </a>
+
+      <a
+        href="/chauffeur-business"
+        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
+      >
+        <h3 className="text-xl text-amber-400 mb-3">
+          Chauffeur business
+        </h3>
+
+        <p className="text-gray-400">
+          Service professionnel pour entreprises.
+        </p>
+      </a>
+
+      <a
+        href="/vtc-essonne"
+        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
+      >
+        <h3 className="text-xl text-amber-400 mb-3">
+          VTC Essonne
+        </h3>
+
+        <p className="text-gray-400">
+          Chauffeur privé premium en Essonne.
+        </p>
+      </a>
+
+    </div>
+  </div>
+</section>
 
 {/* ================= FLOTTE ================= */}
 <section
@@ -594,6 +684,169 @@ Message: ${form.message}`
   </div>
 </section>
 
+{/* ================= SEO LINKS ================= */}
+<section className="py-32 px-6 bg-neutral-950 border-t border-amber-500/10">
+
+  <div className="max-w-7xl mx-auto">
+
+    <h2 className="text-3xl md:text-4xl tracking-[0.5em] uppercase text-amber-400 mb-16 text-center font-light">
+      Chauffeur privé premium en Île-de-France
+    </h2>
+
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <a
+        href="/chauffeur-prive-paris"
+        className="bg-black border border-amber-500/20 rounded-3xl p-8 hover:border-amber-400 transition-all duration-500"
+      >
+        <h3 className="text-xl text-amber-400 mb-4">
+          Chauffeur privé Paris
+        </h3>
+
+        <p className="text-neutral-400 leading-7">
+          Service de chauffeur privé premium à Paris
+          pour déplacements business, événements
+          et transferts aéroports.
+        </p>
+      </a>
+
+      <a
+        href="/chauffeur-prive-orly"
+        className="bg-black border border-amber-500/20 rounded-3xl p-8 hover:border-amber-400 transition-all duration-500"
+      >
+        <h3 className="text-xl text-amber-400 mb-4">
+          Chauffeur privé Orly
+        </h3>
+
+        <p className="text-neutral-400 leading-7">
+          Transport premium vers l’aéroport d’Orly
+          depuis Paris et toute l’Île-de-France.
+        </p>
+      </a>
+
+      <a
+        href="/chauffeur-prive-cdg"
+        className="bg-black border border-amber-500/20 rounded-3xl p-8 hover:border-amber-400 transition-all duration-500"
+      >
+        <h3 className="text-xl text-amber-400 mb-4">
+          Chauffeur privé CDG
+        </h3>
+
+        <p className="text-neutral-400 leading-7">
+          Chauffeur haut de gamme vers Roissy
+          Charles-de-Gaulle pour tous vos déplacements.
+        </p>
+      </a>
+
+      <a
+        href="/chauffeur-aeroport-orly"
+        className="bg-black border border-amber-500/20 rounded-3xl p-8 hover:border-amber-400 transition-all duration-500"
+      >
+        <h3 className="text-xl text-amber-400 mb-4">
+          Chauffeur aéroport Orly
+        </h3>
+
+        <p className="text-neutral-400 leading-7">
+          Service VTC premium vers l’aéroport d’Orly
+          avec ponctualité et confort.
+        </p>
+      </a>
+
+      <a
+        href="/chauffeur-aeroport-cdg"
+        className="bg-black border border-amber-500/20 rounded-3xl p-8 hover:border-amber-400 transition-all duration-500"
+      >
+        <h3 className="text-xl text-amber-400 mb-4">
+          Chauffeur aéroport CDG
+        </h3>
+
+        <p className="text-neutral-400 leading-7">
+          Transferts premium vers l’aéroport
+          Roissy Charles-de-Gaulle.
+        </p>
+      </a>
+
+      <a
+        href="/transport-vip"
+        className="bg-black border border-amber-500/20 rounded-3xl p-8 hover:border-amber-400 transition-all duration-500"
+      >
+        <h3 className="text-xl text-amber-400 mb-4">
+          Transport VIP
+        </h3>
+
+        <p className="text-neutral-400 leading-7">
+          Chauffeur privé haut de gamme
+          pour clientèle business et premium.
+        </p>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+{/* ================= FAQ SEO ================= */}
+<section className="py-32 px-6 bg-black border-t border-amber-500/10">
+
+  <div className="max-w-5xl mx-auto">
+
+    <h2 className="text-3xl md:text-4xl tracking-[0.5em] uppercase text-amber-400 mb-16 text-center font-light">
+      Questions fréquentes
+    </h2>
+
+    <div className="space-y-8">
+
+      <div className="border border-amber-500/20 rounded-3xl p-8 bg-neutral-950">
+        <h3 className="text-xl text-white mb-4">
+          Proposez-vous des transferts vers Orly et CDG ?
+        </h3>
+
+        <p className="text-neutral-400 leading-7">
+          Oui, nous assurons des transferts premium vers
+          les aéroports d’Orly et Roissy Charles-de-Gaulle
+          depuis Paris et toute l’Île-de-France.
+        </p>
+      </div>
+
+      <div className="border border-amber-500/20 rounded-3xl p-8 bg-neutral-950">
+        <h3 className="text-xl text-white mb-4">
+          Dans quelles zones intervenez-vous ?
+        </h3>
+
+        <p className="text-neutral-400 leading-7">
+          Nous intervenons principalement en Essonne,
+          Seine-et-Marne, Paris et dans toute
+          l’Île-de-France pour les déplacements privés
+          et professionnels.
+        </p>
+      </div>
+
+      <div className="border border-amber-500/20 rounded-3xl p-8 bg-neutral-950">
+        <h3 className="text-xl text-white mb-4">
+          Proposez-vous un service business et VIP ?
+        </h3>
+
+        <p className="text-neutral-400 leading-7">
+          Oui, nos prestations sont adaptées aux entreprises,
+          dirigeants, hôtels, événements privés
+          et clientèle premium.
+        </p>
+      </div>
+
+      <div className="border border-amber-500/20 rounded-3xl p-8 bg-neutral-950">
+        <h3 className="text-xl text-white mb-4">
+          Comment réserver un chauffeur privé ?
+        </h3>
+
+        <p className="text-neutral-400 leading-7">
+          Vous pouvez réserver directement via notre formulaire,
+          par téléphone ou par WhatsApp pour une prise en charge rapide.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
            {/* ================= FOOTER ================= */}
 <footer className="border-t border-amber-500/20 bg-black py-24">
   <div className="mx-auto max-w-7xl px-6">
@@ -663,165 +916,214 @@ Message: ${form.message}`
       </div>
 
       {/* ZONES */}
-      <div>
-        <h4 className="mb-6 text-sm uppercase tracking-[0.3em] text-white">
-          Zones desservies
-        </h4>
+<div>
+  <h4 className="mb-6 text-sm uppercase tracking-[0.3em] text-white">
+    Zones desservies
+  </h4>
 
-        <div className="flex flex-col gap-4 text-sm text-neutral-400">
+  <div className="flex flex-col gap-4 text-sm text-neutral-400">
 
-          <a
-            href="/chauffeur-prive-essonne"
-            className="hover:text-amber-400 transition"
-          >
-            Essonne
-          </a>
+    <a
+      href="/chauffeur-prive-essonne"
+      className="hover:text-amber-400 transition"
+    >
+      Essonne
+    </a>
 
-          <a
-            href="/chauffeur-prive-seine-et-marne"
-            className="hover:text-amber-400 transition"
-          >
-            Seine-et-Marne
-          </a>
+    <a
+      href="/chauffeur-prive-seine-et-marne"
+      className="hover:text-amber-400 transition"
+    >
+      Seine-et-Marne
+    </a>
 
-          <a
-            href="/chauffeur-prive-corbeil-essonnes"
-            className="hover:text-amber-400 transition"
-          >
-            Corbeil-Essonnes
-          </a>
+    <a
+      href="/chauffeur-prive-corbeil-essonnes"
+      className="hover:text-amber-400 transition"
+    >
+      Corbeil-Essonnes
+    </a>
 
-          <a
-            href="/chauffeur-prive-evry"
-            className="hover:text-amber-400 transition"
-          >
-            Évry-Courcouronnes
-          </a>
+    <a
+      href="/chauffeur-prive-evry"
+      className="hover:text-amber-400 transition"
+    >
+      Évry-Courcouronnes
+    </a>
 
-          <a
-            href="/chauffeur-prive-melun"
-            className="hover:text-amber-400 transition"
-          >
-            Melun
-          </a>
+    <a
+      href="/chauffeur-prive-melun"
+      className="hover:text-amber-400 transition"
+    >
+      Melun
+    </a>
 
-          <a
-            href="/chauffeur-prive-fontainebleau"
-            className="hover:text-amber-400 transition"
-          >
-            Fontainebleau
-          </a>
+    <a
+      href="/chauffeur-prive-fontainebleau"
+      className="hover:text-amber-400 transition"
+    >
+      Fontainebleau
+    </a>
 
-        </div>
-      </div>
+    <a
+      href="/chauffeur-prive-paris"
+      className="hover:text-amber-400 transition"
+    >
+      Paris
+    </a>
 
-      {/* CONTACT */}
-      <div>
-        <h4 className="mb-6 text-sm uppercase tracking-[0.3em] text-white">
-          Contact
-        </h4>
+    <a
+      href="/chauffeur-prive-orly"
+      className="hover:text-amber-400 transition"
+    >
+      Orly
+    </a>
 
-        <div className="space-y-4 text-sm text-neutral-400">
+    <a
+      href="/chauffeur-prive-cdg"
+      className="hover:text-amber-400 transition"
+    >
+      Roissy CDG
+    </a>
 
-          <p>
-            📞 06 68 86 36 73
-          </p>
+    <a
+      href="/chauffeur-aeroport-orly"
+      className="hover:text-amber-400 transition"
+    >
+      Chauffeur Aéroport Orly
+    </a>
 
-          <p>
-            📧 contact@sudidfexecutivetransport.fr
-          </p>
+    <a
+      href="/chauffeur-aeroport-cdg"
+      className="hover:text-amber-400 transition"
+    >
+      Chauffeur Aéroport CDG
+    </a>
 
-          <p>
-            📍 Corbeil-Essonnes
-          </p>
+    <a
+      href="/transport-vip"
+      className="hover:text-amber-400 transition"
+    >
+      Transport VIP
+    </a>
 
-          <div className="flex flex-wrap gap-4 pt-4">
+    <a
+      href="/vtc-essonne"
+      className="hover:text-amber-400 transition"
+    >
+      VTC Essonne
+    </a>
 
-            <a
-              href="https://www.instagram.com/sudidfexecutivetransport"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-amber-400 transition"
-            >
-              Instagram
-            </a>
+  </div>
+</div>
 
-            <a
-              href="https://www.facebook.com/sudidfexecutivetransport"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-amber-400 transition"
-            >
-              Facebook
-            </a>
+{/* CONTACT */}
+<div>
+  <h4 className="mb-6 text-sm uppercase tracking-[0.3em] text-white">
+    Contact
+  </h4>
 
-            <a
-              href="https://www.tiktok.com/@sudidfexecutivetransport"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-amber-400 transition"
-            >
-              TikTok
-            </a>
+  <div className="space-y-4 text-sm text-neutral-400">
 
-            <a
-              href="https://www.youtube.com/@SUDIDFEXECUTIVETRANSPORT"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-amber-400 transition"
-            >
-              YouTube
-            </a>
+    <p>
+      📞 06 68 86 36 73
+    </p>
 
-          </div>
-        </div>
-      </div>
-    </div>
+    <p>
+      📧 contact@sudidfexecutivetransport.fr
+    </p>
 
-    {/* BOTTOM */}
-    <div className="mt-20 border-t border-amber-500/20 pt-10 text-center">
+    <p>
+      📍 Corbeil-Essonnes
+    </p>
 
-      <div className="mb-6 flex flex-wrap justify-center gap-6 text-xs text-neutral-500">
+    <div className="flex flex-wrap gap-4 pt-4">
 
-        <a
-          href="/cgv"
-          className="hover:text-amber-400 transition"
-        >
-          CGV
-        </a>
+      <a
+        href="https://www.instagram.com/sudidfexecutivetransport"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover:text-amber-400 transition"
+      >
+        Instagram
+      </a>
 
-        <a
-          href="/mentions-legales"
-          className="hover:text-amber-400 transition"
-        >
-          Mentions légales
-        </a>
+      <a
+        href="https://www.facebook.com/sudidfexecutivetransport"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover:text-amber-400 transition"
+      >
+        Facebook
+      </a>
 
-        <a
-          href="/confidentialite"
-          className="hover:text-amber-400 transition"
-        >
-          Confidentialité
-        </a>
+      <a
+        href="https://www.tiktok.com/@sudidfexecutivetransport"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover:text-amber-400 transition"
+      >
+        TikTok
+      </a>
 
-      </div>
-
-      <p className="text-xs uppercase tracking-[0.4em] text-neutral-500">
-        © 2026 SUD IDF EXECUTIVE TRANSPORT
-      </p>
-
-      <p className="mt-4 text-xs text-neutral-600">
-        SAS au capital social de 1 000€ · SIRET 101 146 637 00018 · TVA FR61 101 146 637
-      </p>
-
-      <p className="mt-2 text-xs text-neutral-600">
-        Siège social : Corbeil-Essonnes, France
-      </p>
+      <a
+        href="https://www.youtube.com/@SUDIDFEXECUTIVETRANSPORT"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="hover:text-amber-400 transition"
+      >
+        YouTube
+      </a>
 
     </div>
   </div>
+</div>
+</div>
+
+{/* BOTTOM */}
+<div className="mt-20 border-t border-amber-500/20 pt-10 text-center">
+
+  <div className="mb-6 flex flex-wrap justify-center gap-6 text-xs text-neutral-500">
+
+    <a
+      href="/cgv"
+      className="hover:text-amber-400 transition"
+    >
+      CGV
+    </a>
+
+    <a
+      href="/mentions-legales"
+      className="hover:text-amber-400 transition"
+    >
+      Mentions légales
+    </a>
+
+    <a
+      href="/confidentialite"
+      className="hover:text-amber-400 transition"
+    >
+      Confidentialité
+    </a>
+
+  </div>
+
+  <p className="text-xs uppercase tracking-[0.4em] text-neutral-500">
+    © 2026 SUD IDF EXECUTIVE TRANSPORT
+  </p>
+
+  <p className="mt-4 text-xs text-neutral-600">
+    SAS au capital social de 1 000€ · SIRET 101 146 637 00018 · TVA FR61 101 146 637
+  </p>
+
+  <p className="mt-2 text-xs text-neutral-600">
+    Siège social : Corbeil-Essonnes, France
+  </p>
+
+</div>
+</div>
 </footer>
 
-  </div>
-  );
+</div>
+);
 }

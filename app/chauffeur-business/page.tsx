@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Script from "next/script";
 
 export const metadata = {
   title:
@@ -15,12 +16,65 @@ export const metadata = {
     "chauffeur privé business",
     "transport premium entreprise",
     "chauffeur VIP Paris",
+    "chauffeur business Essonne",
+    "chauffeur business Paris",
   ],
 };
 
 export default function ChauffeurBusinessPage() {
   return (
     <main className="min-h-screen bg-black px-6 py-20 text-white">
+
+      {/* FAQ SCHEMA SEO */}
+      <Script
+        id="faq-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Proposez-vous un service de chauffeur business pour entreprises ?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text":
+                    "Oui, nous accompagnons entreprises, dirigeants, hôtels et professionnels avec un service de transport exécutif premium en Île-de-France."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Intervenez-vous à Paris et en Île-de-France ?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text":
+                    "Nos chauffeurs business interviennent à Paris, La Défense, Évry-Courcouronnes, Corbeil-Essonnes, Melun, Orly et Roissy Charles-de-Gaulle."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Peut-on réserver une mise à disposition ?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text":
+                    "Oui, nous proposons un service de mise à disposition avec chauffeur pour réunions, séminaires, événements et déplacements longue durée."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Êtes-vous disponible 24h/24 ?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text":
+                    "Notre service de chauffeur business premium est disponible 24h/24 et 7j/7 sur réservation."
+                }
+              }
+            ]
+          }),
+        }}
+      />
+
       <section className="mx-auto max-w-5xl">
 
         <h1 className="mb-10 text-5xl font-bold leading-tight">
@@ -118,6 +172,65 @@ export default function ChauffeurBusinessPage() {
             </p>
           </a>
 
+        </div>
+
+        {/* FAQ SEO */}
+        <div className="mt-24">
+          <h2 className="text-3xl font-semibold text-amber-400 mb-10">
+            Questions fréquentes
+          </h2>
+
+          <div className="space-y-6">
+
+            <div className="bg-neutral-950 border border-amber-500/20 rounded-2xl p-6">
+              <h3 className="text-xl text-white mb-3">
+                Proposez-vous un service de chauffeur business pour entreprises ?
+              </h3>
+
+              <p className="text-gray-400 leading-7">
+                Oui, nous accompagnons entreprises, dirigeants,
+                hôtels et professionnels avec un service de transport
+                exécutif premium en Île-de-France.
+              </p>
+            </div>
+
+            <div className="bg-neutral-950 border border-amber-500/20 rounded-2xl p-6">
+              <h3 className="text-xl text-white mb-3">
+                Intervenez-vous à Paris et en Île-de-France ?
+              </h3>
+
+              <p className="text-gray-400 leading-7">
+                Nos chauffeurs business interviennent à Paris,
+                La Défense, Évry-Courcouronnes,
+                Corbeil-Essonnes, Melun,
+                Orly et Roissy Charles-de-Gaulle.
+              </p>
+            </div>
+
+            <div className="bg-neutral-950 border border-amber-500/20 rounded-2xl p-6">
+              <h3 className="text-xl text-white mb-3">
+                Peut-on réserver une mise à disposition ?
+              </h3>
+
+              <p className="text-gray-400 leading-7">
+                Oui, nous proposons un service de mise à disposition
+                avec chauffeur pour réunions, séminaires,
+                événements et déplacements longue durée.
+              </p>
+            </div>
+
+            <div className="bg-neutral-950 border border-amber-500/20 rounded-2xl p-6">
+              <h3 className="text-xl text-white mb-3">
+                Êtes-vous disponible 24h/24 ?
+              </h3>
+
+              <p className="text-gray-400 leading-7">
+                Notre service de chauffeur business premium est disponible
+                24h/24 et 7j/7 sur réservation.
+              </p>
+            </div>
+
+          </div>
         </div>
 
         {/* CTA */}
