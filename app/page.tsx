@@ -594,7 +594,7 @@ Message: ${form.message}`
   </div>
 </section>
 
-      {/* ================= FOOTER ================= */}
+           {/* ================= FOOTER ================= */}
 <footer className="border-t border-amber-500/20 bg-black py-24">
   <div className="mx-auto max-w-7xl px-6">
 
@@ -821,3 +821,7 @@ Message: ${form.message}`
     </div>
   </div>
 </footer>
+
+  </div>
+  );
+}
