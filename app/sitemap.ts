@@ -9,6 +9,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
 
     {
+      url: "https://www.sudidfexecutivetransport.fr/chauffeur-prive",
+      lastModified: new Date(),
+    },
+
+    {
       url: "https://www.sudidfexecutivetransport.fr/chauffeur-prive-paris",
       lastModified: new Date(),
     },
@@ -85,6 +90,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
     {
       url: "https://www.sudidfexecutivetransport.fr/transport-vip",
+      lastModified: new Date(),
+    },
+
+    {
+      url: "https://www.sudidfexecutivetransport.fr/mariage",
       lastModified: new Date(),
     },
 

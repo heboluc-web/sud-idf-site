@@ -308,6 +308,19 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
     <div className="grid md:grid-cols-3 gap-6">
 
       <a
+        href="/chauffeur-prive"
+        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
+      >
+        <h3 className="text-xl text-amber-400 mb-3">
+          Chauffeur privé
+        </h3>
+
+        <p className="text-gray-400">
+          Service premium en Île-de-France pour particuliers et professionnels.
+        </p>
+      </a>
+
+      <a
         href="/chauffeur-prive-paris"
         className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
       >
@@ -373,6 +386,19 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
       </a>
 
       <a
+        href="/mariage"
+        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
+      >
+        <h3 className="text-xl text-amber-400 mb-3">
+          Chauffeur mariage
+        </h3>
+
+        <p className="text-gray-400">
+          Transport premium pour mariages et événements privés.
+        </p>
+      </a>
+
+      <a
         href="/vtc-essonne"
         className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
       >
@@ -415,7 +441,10 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
     '/classev8.jpg',
     '/classev9.jpg',
     '/classev10.jpg',
-    '/classev11.jpg'
+    '/classev11.jpg',
+    '/classev12.jpg',
+    '/classev13.jpg',
+    '/classev13.jpg'
   ].map((img, index) => (
     <div
       key={index}
