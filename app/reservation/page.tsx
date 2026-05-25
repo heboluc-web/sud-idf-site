@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
+import emailjs from "@emailjs/browser";
 
 export default function Reservation() {
 
@@ -20,6 +21,31 @@ export default function Reservation() {
   });
 
   const [formError, setFormError] = useState(false);
+
+  const formRef = useRef<HTMLFormElement>(null);
+
+const sendEmail = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  if (!formRef.current) return;
+
+  try {
+    await emailjs.sendForm(
+      "service_7nknmjb",
+      "template_dgn29ew",
+      formRef.current,
+      "MDk_t8gO2PrEN-ROW"
+    );
+
+    alert("Votre demande a bien été envoyée.");
+
+    formRef.current.reset();
+
+  } catch (error) {
+    console.log(error);
+    alert("Erreur lors de l’envoi.");
+  }
+};
 
   const handleChange = (e: any) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -45,16 +71,11 @@ export default function Reservation() {
         </p>
 
         <form
-          action="https://formsubmit.co/contact@sudidfexecutivetransport.fr"
-          method="POST"
-          className="space-y-6"
-        >
-          <input type="hidden" name="_captcha" value="false" />
-          <input type="hidden" name="_subject" value="Nouvelle réservation VTC" />
-          <input type="hidden" name="_template" value="table" />
-          <input type="hidden" name="_next" value="https://www.sudidfexecutivetransport.fr/merci" />
-          <input type="hidden" name="_autoresponse" value="Merci pour votre demande. Nous vous répondrons rapidement." />
-
+  ref={formRef}
+  onSubmit={sendEmail}
+  className="space-y-6"
+>
+          
           <input name="nom" value={form.nom} onChange={handleChange} required placeholder="Nom / Prénom" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
           <input name="email" value={form.email} onChange={handleChange} required type="email" placeholder="Email" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
           <input name="telephone" value={form.telephone} onChange={handleChange} required placeholder="Téléphone" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
