@@ -201,7 +201,7 @@ if (
 
   prixHT =
     vehiculeTarif.orly +
-    (distanceKm * 0.8);
+    (distanceKm * vehiculeTarif.prixKm);
 
   detailsPrix =
     `Transfert Orly : ${prixHT.toFixed(0)} € HT`;
@@ -223,7 +223,7 @@ else if (
 
   prixHT =
     vehiculeTarif.cdg +
-    (distanceKm * 0.9);
+    (distanceKm * vehiculeTarif.prixKm);
 
   detailsPrix =
     `Transfert CDG : ${prixHT.toFixed(0)} € HT`;
