@@ -149,7 +149,7 @@ export default function Reservation() {
 
     // ===== AÉROPORTS =====
     cdg77: 160,
-    cdgEssonne: 130,
+    cdgEssonne: 150,
 
     orly77: 130,
     orlyEssonne: 120,
