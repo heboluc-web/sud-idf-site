@@ -144,37 +144,33 @@ export default function Reservation() {
 
           // ================= TARIFS =================
 
-          const tarifs = {
+         const tarifs = {
+  "Mercedes Classe V": {
+    prixKm: 1.8,
+    minimum: 65,
 
-            "Mercedes Classe V": {
+    cdg77: 165,
+    cdgEssonne: 140,
 
-              prixKm: 1.6,
-              minimum: 65,
+    orly77: 145,
+    orlyEssonne: 120,
 
-              orlyEssonne: 70,
-              orly77: 90,
+    miseADispo: 85,
+  },
 
-              cdgEssonne: 95,
-              cdg77: 115,
+  "Range Rover": {
+    prixKm: 2.8,
+    minimum: 95,
 
-              miseDisposition: 90,
-            },
+    cdg77: 230,
+    cdgEssonne: 190,
 
-            "Range Rover": {
+    orly77: 210,
+    orlyEssonne: 170,
 
-              prixKm: 2.4,
-              minimum: 90,
-
-              orlyEssonne: 110,
-              orly77: 140,
-
-              cdgEssonne: 150,
-              cdg77: 180,
-
-              miseDisposition: 150,
-            },
-
-          };
+    miseADispo: 120,
+  },
+};
 
           const vehiculeTarif =
             tarifs[
@@ -252,7 +248,7 @@ export default function Reservation() {
             prixHT =
               (distanceKm *
                 vehiculeTarif.prixKm) +
-              vehiculeTarif.miseDisposition;
+              vehiculeTarif.miseADispo;
 
           }
 
