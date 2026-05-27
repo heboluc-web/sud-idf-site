@@ -503,7 +503,6 @@ else {
   📲 Envoyer via WhatsApp
 </a>
 
-              Envoyer ma demande
             </button>
 
           </form>
