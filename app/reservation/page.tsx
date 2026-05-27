@@ -219,19 +219,53 @@ Demande premium personnalisée
           const prixTTC = prixHT * 1.1;
           const montantTVA = prixHT * 0.1;
 
-          // ================= DETAILS PRIX =================
+                   // ================= DETAILS PRIX =================
 
           let detailsPrix = "";
+
+          // ===== ORLY =====
 
           if (
             form.arrivee.includes("Orly") ||
             form.depart.includes("Orly")
           ) {
 
+            // Zone 1
+            if (distanceKm <= 40) {
+              prixHT = vehiculeTarif.orly;
+
+            // Zone 2
+            } else if (distanceKm <= 60) {
+              prixHT = vehiculeTarif.orly + 20;
+
+            // Zone 3
+            } else {
+
+              setForm((prev) => ({
+                ...prev,
+                distance: distanceText,
+                duree: dureeText,
+                prix: "Sur devis",
+                detailsPrix: `
+Trajet longue distance vers Orly
+
+✔ Devis personnalisé
+✔ Tarif premium adapté
+✔ Réponse rapide
+`,
+              }));
+
+              return;
+            }
+
             detailsPrix =
               `Forfait Orly : ${prixHT.toFixed(0)} € HT`;
 
-          } else if (
+          }
+
+          // ===== CDG =====
+
+          else if (
 
             form.arrivee.includes("Charles de Gaulle") ||
             form.arrivee.includes("CDG") ||
@@ -242,13 +276,46 @@ Demande premium personnalisée
 
           ) {
 
+            // Zone 1
+            if (distanceKm <= 65) {
+              prixHT = vehiculeTarif.cdg;
+
+            // Zone 2
+            } else if (distanceKm <= 80) {
+              prixHT = vehiculeTarif.cdg + 20;
+
+            // Zone 3
+            } else {
+
+              setForm((prev) => ({
+                ...prev,
+                distance: distanceText,
+                duree: dureeText,
+                prix: "Sur devis",
+                detailsPrix: `
+Trajet longue distance vers CDG
+
+✔ Devis personnalisé
+✔ Tarif premium adapté
+✔ Réponse rapide
+`,
+              }));
+
+              return;
+            }
+
             detailsPrix =
               `Forfait CDG : ${prixHT.toFixed(0)} € HT`;
 
-          } else {
+          }
+
+          // ===== STANDARD =====
+
+          else {
 
             detailsPrix =
               `Course minimum / trajet classique : ${prixHT.toFixed(0)} € HT`;
+
           }
 
           setForm((prev) => ({
