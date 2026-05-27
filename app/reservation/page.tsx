@@ -149,12 +149,14 @@ export default function Reservation() {
     prixKm: 1.8,
     minimum: 65,
 
+    // ===== AÉROPORTS =====
     cdg77: 165,
     cdgEssonne: 140,
 
     orly77: 145,
     orlyEssonne: 120,
 
+    // ===== MISE À DISPO =====
     miseADispo: 85,
   },
 
@@ -162,12 +164,14 @@ export default function Reservation() {
     prixKm: 2.8,
     minimum: 95,
 
+    // ===== AÉROPORTS =====
     cdg77: 230,
     cdgEssonne: 190,
 
     orly77: 210,
     orlyEssonne: 170,
 
+    // ===== MISE À DISPO =====
     miseADispo: 120,
   },
 };
@@ -213,44 +217,31 @@ export default function Reservation() {
           // ================= CDG =================
 
           if (aeroportCDG) {
-
-            prixHT = seineEtMarne
-              ? vehiculeTarif.cdg77
-              : vehiculeTarif.cdgEssonne;
-
-            prixHT +=
-              distanceKm *
-              vehiculeTarif.prixKm;
-
-          }
+  prixHT = seineEtMarne
+    ? vehiculeTarif.cdg77
+    : vehiculeTarif.cdgEssonne;
+}
 
           // ================= ORLY =================
 
           else if (aeroportOrly) {
-
-            prixHT = seineEtMarne
-              ? vehiculeTarif.orly77
-              : vehiculeTarif.orlyEssonne;
-
-            prixHT +=
-              distanceKm *
-              vehiculeTarif.prixKm;
-
-          }
+  prixHT = seineEtMarne
+    ? vehiculeTarif.orly77
+    : vehiculeTarif.orlyEssonne;
+}
 
           // ================= MISE A DISPO =================
 
-          if (
-            form.service ===
-            "Mise à disposition"
-          ) {
+          else if (form.service === "Mise à disposition") {
+  prixHT = vehiculeTarif.miseADispo;
+}
 
-            prixHT =
-              (distanceKm *
-                vehiculeTarif.prixKm) +
-              vehiculeTarif.miseADispo;
-
-          }
+else {
+  prixHT = Math.max(
+    distanceKm * vehiculeTarif.prixKm,
+    vehiculeTarif.minimum
+  );
+}
 
           // ================= NUIT =================
 
