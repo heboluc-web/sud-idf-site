@@ -33,67 +33,92 @@ export default function Reservation() {
   const departRef = useRef<HTMLInputElement>(null);
   const arriveeRef = useRef<HTMLInputElement>(null);
 
-  const [formError, setFormError] = useState(false);
-
   useEffect(() => {
+
     if (!window.google) return;
 
-    const departAutocomplete = new window.google.maps.places.Autocomplete(
-      departRef.current as HTMLInputElement,
-      {
-        componentRestrictions: { country: "fr" },
-      }
-    );
+    const departAutocomplete =
+      new window.google.maps.places.Autocomplete(
+        departRef.current as HTMLInputElement,
+        {
+          componentRestrictions: { country: "fr" },
+        }
+      );
 
-    const arriveeAutocomplete = new window.google.maps.places.Autocomplete(
-      arriveeRef.current as HTMLInputElement,
-      {
-        componentRestrictions: { country: "fr" },
-      }
-    );
+    const arriveeAutocomplete =
+      new window.google.maps.places.Autocomplete(
+        arriveeRef.current as HTMLInputElement,
+        {
+          componentRestrictions: { country: "fr" },
+        }
+      );
 
     departAutocomplete.addListener("place_changed", () => {
+
       const place = departAutocomplete.getPlace();
 
       setForm((prev) => ({
         ...prev,
         depart: place.formatted_address || place.name || "",
       }));
+
     });
 
     arriveeAutocomplete.addListener("place_changed", () => {
+
       const place = arriveeAutocomplete.getPlace();
 
       setForm((prev) => ({
         ...prev,
         arrivee: place.formatted_address || place.name || "",
       }));
+
     });
+
   }, []);
 
   useEffect(() => {
+
     if (form.depart && form.arrivee) {
       calculerTrajet();
     }
+
   }, [form.depart, form.arrivee]);
 
+  useEffect(() => {
+
+    if (form.depart && form.arrivee) {
+      calculerTrajet();
+    }
+
+  }, [form.vehicule, form.service, form.heure]);
+
   const handleChange = (e: any) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
+
   };
 
   const calculerTrajet = () => {
 
     if (!window.google || !form.depart || !form.arrivee) return;
 
-    const service = new window.google.maps.DistanceMatrixService();
+    const service =
+      new window.google.maps.DistanceMatrixService();
 
     service.getDistanceMatrix(
       {
         origins: [form.depart],
         destinations: [form.arrivee],
-        travelMode: window.google.maps.TravelMode.DRIVING,
-        unitSystem: window.google.maps.UnitSystem.METRIC,
+        travelMode:
+          window.google.maps.TravelMode.DRIVING,
+        unitSystem:
+          window.google.maps.UnitSystem.METRIC,
       },
+
       (response: any, status: any) => {
 
         if (
@@ -102,170 +127,181 @@ export default function Reservation() {
           response.rows[0].elements[0].status === "OK"
         ) {
 
-          const element = response.rows[0].elements[0];
+          const element =
+            response.rows[0].elements[0];
 
-          const distanceText = element.distance?.text || "";
-          const dureeText = element.duration?.text || "";
+          const distanceText =
+            element.distance?.text || "";
+
+          const dureeText =
+            element.duration?.text || "";
 
           const distanceKm = parseFloat(
-            distanceText.replace(",", ".").replace(" km", "")
+            distanceText
+              .replace(",", ".")
+              .replace(" km", "")
           );
 
           // ================= TARIFS =================
 
-         const tarifs = {
-  "Mercedes Classe V": {
-    prixKm: 1.8,
-    minimum: 75,
+          const tarifs = {
 
-    orlyEssonne: 120,
-    cdgEssonne: 150,
+            "Mercedes Classe V": {
 
-    orly77: 130,
-    cdg77: 160,
-  },
+              prixKm: 1.6,
+              minimum: 65,
 
-  "Range Rover": {
-    prixKm: 2.4,
-    minimum: 95,
+              orlyEssonne: 70,
+              orly77: 90,
 
-    orlyEssonne: 160,
-    cdgEssonne: 190,
+              cdgEssonne: 95,
+              cdg77: 115,
 
-    orly77: 180,
-    cdg77: 210,
-  },
-};
+              miseDisposition: 90,
+            },
+
+            "Range Rover": {
+
+              prixKm: 2.4,
+              minimum: 90,
+
+              orlyEssonne: 110,
+              orly77: 140,
+
+              cdgEssonne: 150,
+              cdg77: 180,
+
+              miseDisposition: 150,
+            },
+
+          };
 
           const vehiculeTarif =
-            tarifs[form.vehicule as keyof typeof tarifs];
+            tarifs[
+              form.vehicule as keyof typeof tarifs
+            ];
 
           if (!vehiculeTarif) return;
 
-          // ================= CALCUL BASE =================
+          // ================= PRIX BASE =================
 
-          let prixHT = distanceKm * vehiculeTarif.prixKm;
+          let prixHT =
+            distanceKm * vehiculeTarif.prixKm;
 
-prixHT = Math.max(prixHT, vehiculeTarif.minimum);
+          prixHT = Math.max(
+            prixHT,
+            vehiculeTarif.minimum
+          );
 
-// ================= AEROPORTS =================
+          // ================= DETECTION =================
 
-const depart = form.depart.toLowerCase();
-const arrivee = form.arrivee.toLowerCase();
+          const texteTrajet =
+            `${form.depart} ${form.arrivee}`.toLowerCase();
 
-const aeroportCDG =
-  arrivee.includes("roissy") ||
-  arrivee.includes("cdg") ||
-  arrivee.includes("charles de gaulle") ||
-  depart.includes("roissy") ||
-  depart.includes("cdg") ||
-  depart.includes("charles de gaulle");
+          const seineEtMarne =
+            texteTrajet.includes("77") ||
+            texteTrajet.includes("seine-et-marne") ||
+            texteTrajet.includes("melun") ||
+            texteTrajet.includes("fontainebleau") ||
+            texteTrajet.includes("nemours") ||
+            texteTrajet.includes("meaux");
 
-const aeroportOrly =
-  arrivee.includes("orly") ||
-  depart.includes("orly");
+          const aeroportCDG =
+            texteTrajet.includes("roissy") ||
+            texteTrajet.includes("charles de gaulle") ||
+            texteTrajet.includes("cdg");
 
-// ===== SEINE ET MARNE =====
+          const aeroportOrly =
+            texteTrajet.includes("orly");
 
-const seineEtMarne =
-  depart.includes("77") ||
-  arrivee.includes("77") ||
-  depart.includes("melun") ||
-  arrivee.includes("melun") ||
-  depart.includes("nemours") ||
-  arrivee.includes("nemours");
+          // ================= CDG =================
 
-// ===== FORFAITS =====
+          if (aeroportCDG) {
 
-if (aeroportCDG) {
-  prixHT = seineEtMarne
-    ? vehiculeTarif.cdg77
-    : vehiculeTarif.cdgEssonne;
-}
+            prixHT = seineEtMarne
+              ? vehiculeTarif.cdg77
+              : vehiculeTarif.cdgEssonne;
 
-else if (aeroportOrly) {
-  prixHT = seineEtMarne
-    ? vehiculeTarif.orly77
-    : vehiculeTarif.orlyEssonne;
-}
+            prixHT +=
+              distanceKm *
+              vehiculeTarif.prixKm;
 
-
-          // ================= SERVICES PREMIUM =================
-
-          if (form.service === "Mise à disposition") {
-            prixHT += 120;
           }
 
-          // services uniquement sur devis
-          const servicesSurDevis = [
-            "Mariage",
-            "VIP",
-            "Séminaire / Journée entreprise",
-            "Longue distance",
-            "Événement",
-          ];
+          // ================= ORLY =================
 
-          if (servicesSurDevis.includes(form.service)) {
+          else if (aeroportOrly) {
 
-            setForm((prev) => ({
-              ...prev,
-              distance: distanceText,
-              duree: dureeText,
-              prix: "Sur devis",
-              detailsPrix: `
-Demande premium personnalisée
+            prixHT = seineEtMarne
+              ? vehiculeTarif.orly77
+              : vehiculeTarif.orlyEssonne;
 
-✔ Étude sur mesure
-✔ Tarif personnalisé
-✔ Service haut de gamme
-✔ Réponse rapide
-`,
-            }));
+            prixHT +=
+              distanceKm *
+              vehiculeTarif.prixKm;
 
-            return;
+          }
+
+          // ================= MISE A DISPO =================
+
+          if (
+            form.service ===
+            "Mise à disposition"
+          ) {
+
+            prixHT =
+              (distanceKm *
+                vehiculeTarif.prixKm) +
+              vehiculeTarif.miseDisposition;
+
           }
 
           // ================= NUIT =================
 
           const heureCourse =
-            parseInt(form.heure.split(":")[0] || "12");
+            parseInt(
+              form.heure.split(":")[0] || "12"
+            );
 
-          if (heureCourse >= 22 || heureCourse <= 6) {
+          if (
+            heureCourse >= 22 ||
+            heureCourse <= 6
+          ) {
+
             prixHT += 25;
+
           }
-
-         // ================= DETAILS PRIX =================
-
-let detailsPrix = "";
 
           // ================= TVA =================
 
           const prixTTC = prixHT * 1.1;
-          const montantTVA = prixHT * 0.1;
+
+          // ================= UPDATE =================
 
           setForm((prev) => ({
             ...prev,
             distance: distanceText,
             duree: dureeText,
             prix: `${Math.round(prixTTC)} € TTC`,
-
-           detailsPrix: "",
+            detailsPrix: "",
           }));
+
         }
+
       }
     );
   };
 
-  useEffect(() => {
-    if (form.depart && form.arrivee) {
-      calculerTrajet();
-    }
-  }, [form.vehicule, form.service, form.heure]);
-
   const getMaxPassagers = () => {
-    if (form.vehicule === "Mercedes Classe V") return 7;
-    if (form.vehicule === "Range Rover") return 4;
+
+    if (form.vehicule === "Mercedes Classe V")
+      return 7;
+
+    if (form.vehicule === "Range Rover")
+      return 4;
+
     return 10;
+
   };
 
   return (
@@ -284,7 +320,7 @@ let detailsPrix = "";
           </h1>
 
           <p className="text-center text-gray-400 mb-12">
-            Remplissez le formulaire, nous vous répondrons rapidement
+            Remplissez le formulaire
           </p>
 
           <form
@@ -294,18 +330,6 @@ let detailsPrix = "";
           >
 
             <input type="hidden" name="_captcha" value="false" />
-            <input type="hidden" name="_subject" value="Nouvelle réservation VTC" />
-            <input type="hidden" name="_template" value="table" />
-            <input type="hidden" name="_next" value="https://www.sudidfexecutivetransport.fr/merci" />
-
-            <textarea
-              hidden
-              readOnly
-              name="trajet_infos"
-              value={`Distance estimée : ${form.distance}
-Durée estimée : ${form.duree}
-Tarif TTC : ${form.prix}`}
-            ></textarea>
 
             <input
               name="nom"
@@ -351,11 +375,10 @@ Tarif TTC : ${form.prix}`}
               name="passagers"
               value={form.passagers}
               onChange={handleChange}
-              required
               type="number"
               min="1"
               max={getMaxPassagers()}
-              placeholder={`Nombre de passagers (max ${getMaxPassagers()})`}
+              placeholder={`Passagers max ${getMaxPassagers()}`}
               className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
             />
 
@@ -363,10 +386,9 @@ Tarif TTC : ${form.prix}`}
               name="bagages"
               value={form.bagages}
               onChange={handleChange}
-              required
               type="number"
               min="0"
-              placeholder="Nombre de bagages"
+              placeholder="Bagages"
               className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
             />
 
@@ -377,15 +399,10 @@ Tarif TTC : ${form.prix}`}
               required
               className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
             >
-              <option value="">Type de prestation</option>
+              <option value="">Service</option>
               <option>Transport standard</option>
               <option>Transfert aéroport</option>
               <option>Mise à disposition</option>
-              <option>Transport gare</option>
-              <option>Événement</option>
-              <option>Mariage</option>
-              <option>VIP</option>
-              <option>Séminaire / Journée entreprise</option>
             </select>
 
             <input
@@ -394,7 +411,7 @@ Tarif TTC : ${form.prix}`}
               value={form.depart}
               onChange={handleChange}
               required
-              placeholder="Adresse de départ"
+              placeholder="Départ"
               className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
             />
 
@@ -404,31 +421,34 @@ Tarif TTC : ${form.prix}`}
               value={form.arrivee}
               onChange={handleChange}
               required
-              placeholder="Adresse d’arrivée"
+              placeholder="Arrivée"
               className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
             />
 
             {form.distance && (
-              <div className="bg-black/40 border border-yellow-500 rounded-xl p-4 text-white space-y-3">
+
+              <div className="bg-black border border-yellow-500 rounded-xl p-5 space-y-4">
 
                 <p>
-                  📍 Distance estimée : <strong>{form.distance}</strong>
+                  📍 Distance estimée :
+                  <strong> {form.distance}</strong>
                 </p>
 
                 <p>
-                  ⏱️ Temps estimé : <strong>{form.duree}</strong>
+                  ⏱️ Temps estimé :
+                  <strong> {form.duree}</strong>
                 </p>
 
-                <div className="border-t border-yellow-500/30 pt-3">
+                <div className="border-t border-yellow-500/30 pt-4">
 
-                  <p className="text-2xl text-yellow-400 font-bold">
+                  <p className="text-3xl text-yellow-400 font-bold">
                     💰 {form.prix}
                   </p>
 
-                  
                 </div>
 
               </div>
+
             )}
 
             <div className="flex gap-4">
@@ -437,8 +457,8 @@ Tarif TTC : ${form.prix}`}
                 name="date"
                 value={form.date}
                 onChange={handleChange}
-                required
                 type="date"
+                required
                 className="w-1/2 p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
               />
 
@@ -446,8 +466,8 @@ Tarif TTC : ${form.prix}`}
                 name="heure"
                 value={form.heure}
                 onChange={handleChange}
-                required
                 type="time"
+                required
                 className="w-1/2 p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
               />
 
@@ -463,7 +483,7 @@ Tarif TTC : ${form.prix}`}
 
             <button
               type="submit"
-              className="w-full py-4 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-semibold rounded-xl shadow-lg hover:scale-105 transition"
+              className="w-full py-4 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-semibold rounded-xl"
             >
               Envoyer ma demande
             </button>
