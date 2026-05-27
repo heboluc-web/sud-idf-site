@@ -150,14 +150,14 @@ export default function Reservation() {
     minimum: 65,
 
     // ===== AÉROPORTS =====
-    cdg77: 165,
-    cdgEssonne: 140,
+    cdg77: 160,
+    cdgEssonne: 150,
 
-    orly77: 145,
+    orly77: 130,
     orlyEssonne: 120,
 
     // ===== MISE À DISPO =====
-    miseADispo: 85,
+    miseADispo: 95,
   },
 
   "Range Rover": {
@@ -165,10 +165,10 @@ export default function Reservation() {
     minimum: 95,
 
     // ===== AÉROPORTS =====
-    cdg77: 230,
+    cdg77: 200,
     cdgEssonne: 190,
 
-    orly77: 210,
+    orly77: 180,
     orlyEssonne: 170,
 
     // ===== MISE À DISPO =====
