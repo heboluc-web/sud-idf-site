@@ -191,12 +191,36 @@ export default function Reservation() {
             `${form.depart} ${form.arrivee}`.toLowerCase();
 
           const seineEtMarne =
-            texteTrajet.includes("77") ||
-            texteTrajet.includes("seine-et-marne") ||
-            texteTrajet.includes("melun") ||
-            texteTrajet.includes("fontainebleau") ||
-            texteTrajet.includes("nemours") ||
-            texteTrajet.includes("meaux");
+  texteTrajet.includes("77000") ||
+  texteTrajet.includes("771") ||
+  texteTrajet.includes("772") ||
+  texteTrajet.includes("773") ||
+  texteTrajet.includes("774") ||
+  texteTrajet.includes("775") ||
+  texteTrajet.includes("776") ||
+  texteTrajet.includes("777") ||
+  texteTrajet.includes("778") ||
+  texteTrajet.includes("779") ||
+  texteTrajet.includes("seine-et-marne") ||
+  texteTrajet.includes("melun") ||
+  texteTrajet.includes("fontainebleau") ||
+  texteTrajet.includes("nemours") ||
+  texteTrajet.includes("meaux");
+
+const essonne =
+  texteTrajet.includes("91000") ||
+  texteTrajet.includes("911") ||
+  texteTrajet.includes("912") ||
+  texteTrajet.includes("913") ||
+  texteTrajet.includes("914") ||
+  texteTrajet.includes("915") ||
+  texteTrajet.includes("916") ||
+  texteTrajet.includes("917") ||
+  texteTrajet.includes("918") ||
+  texteTrajet.includes("919") ||
+  texteTrajet.includes("essonne") ||
+  texteTrajet.includes("corbeil") ||
+  texteTrajet.includes("evry");
 
           const aeroportCDG =
             texteTrajet.includes("roissy") ||
@@ -209,17 +233,17 @@ export default function Reservation() {
           // ================= CDG =================
 
           if (aeroportCDG) {
-  prixHT = seineEtMarne
-    ? vehiculeTarif.cdg77
-    : vehiculeTarif.cdgEssonne;
+ prixHT = seineEtMarne
+  ? vehiculeTarif.cdg77
+  : vehiculeTarif.cdgEssonne;
 }
 
           // ================= ORLY =================
 
           else if (aeroportOrly) {
   prixHT = seineEtMarne
-    ? vehiculeTarif.orly77
-    : vehiculeTarif.orlyEssonne;
+  ? vehiculeTarif.orly77
+  : vehiculeTarif.orlyEssonne;
 }
 
           // ================= MISE A DISPO =================
