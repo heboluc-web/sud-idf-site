@@ -496,6 +496,13 @@ else {
               className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
             />
   <button
+  type="submit"
+  className="w-full flex items-center justify-center py-4 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-semibold rounded-2xl hover:scale-[1.02] transition-all duration-300"
+>
+  ✨Envoyer ma demande
+</button>
+
+<button
   type="button"
   onClick={() => {
     const requiredFields = [
@@ -548,16 +555,24 @@ ${form.message || "Aucun"}
 
     window.open(url, "_blank");
   }}
-  className="w-full flex items-center justify-center gap-3 border border-yellow-500/30 bg-black hover:bg-yellow-500/10 text-yellow-400 py-5 rounded-2xl transition-all duration-300"
+  className="w-full flex items-center justify-center gap-3 border border-yellow-500/30 bg-black hover:bg-yellow-500/10 text-yellow-400 py-4 rounded-xl transition-all duration-300 mt-4"
 >
   📲 Envoyer via WhatsApp
 </button>
-          </form>
 
-        </div>
+<a
+  href="/appel"
+  className="w-full flex items-center justify-center gap-3 border border-yellow-500/30 bg-black hover:bg-yellow-500/10 text-yellow-400 py-4 rounded-xl transition-all duration-300 mt-4"
+>
+  📞 Appeler maintenant
+</a>
 
-      </main>
-    </>
-  );
+</form>
+
+</div>
+
+</main>
+</>
+);
 }
 
