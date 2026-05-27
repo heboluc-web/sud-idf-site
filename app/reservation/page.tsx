@@ -502,20 +502,40 @@ else {
   ✨Envoyer ma demande
 </button>
 
-<a
-  href="https://wa.me/33650038514"
-  target="_blank"
-  rel="noopener noreferrer"
+<button
+  type="button"
+  onClick={() => {
+    const requiredFields = [
+      form.nom,
+      form.telephone,
+      form.vehicule,
+      form.passagers,
+      form.bagages,
+      form.service,
+      form.depart,
+      form.arrivee,
+      form.date,
+      form.heure,
+    ];
+
+    const isValid = requiredFields.every(
+      (field) => field && field.toString().trim() !== ""
+    );
+
+    if (!isValid) {
+      alert("Merci de remplir tous les champs obligatoires.");
+      return;
+    }
+
+    window.open(
+      "https://wa.me/33650038514",
+      "_blank"
+    );
+  }}
   className="w-full flex items-center justify-center gap-3 border border-yellow-500/30 bg-black hover:bg-yellow-500/10 text-yellow-400 py-4 rounded-xl transition-all duration-300 mt-4"
 >
   📲 Envoyer via WhatsApp
-</a>
-<a
-  href="/appel"
-  className="w-full flex items-center justify-center gap-3 border border-yellow-500/30 bg-black hover:bg-yellow-500/10 text-yellow-400 py-4 rounded-xl transition-all duration-300 mt-4"
->
-  📞 Appeler maintenant
-</a>
+</button>
           </form>
 
         </div>
