@@ -116,12 +116,16 @@ export default function Reservation() {
           const tarifs = {
   "Mercedes Classe V": {
     prixKm: 1.8,
-    minimum: 55,
+    minimum: 75,
+    orly: 35,
+    cdg: 55,
   },
 
   "Range Rover": {
     prixKm: 2.4,
-    minimum: 75,
+    minimum: 95,
+    orly: 50,
+    cdg: 70,
   },
 };
 
