@@ -181,6 +181,8 @@ const servicesSurDevis = [
   "Mariage",
   "VIP",
   "Séminaire / Journée entreprise",
+  "Longue distance",
+  "Événement",
 ];
 
 // si service sur devis
