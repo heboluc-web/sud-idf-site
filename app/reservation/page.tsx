@@ -192,83 +192,43 @@ Demande premium personnalisée
 
           let detailsPrix = "";
 
-          // ===== ORLY =====
+         // ===== ORLY =====
 
-          if (
-            form.arrivee.includes("Orly") ||
-            form.depart.includes("Orly")
-          ) {
+if (
+  form.arrivee.includes("Orly") ||
+  form.depart.includes("Orly")
+) {
 
-            // Zone 1
-            if (distanceKm <= 40) {
+  prixHT =
+    vehiculeTarif.orly +
+    (distanceKm * 0.8);
 
-              prixHT = vehiculeTarif.orly;
+  detailsPrix =
+    `Transfert Orly : ${prixHT.toFixed(0)} € HT`;
 
-            }
+}
 
-            // Zone 2
-            else if (distanceKm <= 60) {
+// ===== CDG =====
 
-              prixHT = vehiculeTarif.orly + 20;
+else if (
 
-            }
+  form.arrivee.includes("Charles de Gaulle") ||
+  form.arrivee.includes("CDG") ||
+  form.arrivee.includes("Roissy") ||
+  form.depart.includes("Charles de Gaulle") ||
+  form.depart.includes("CDG") ||
+  form.depart.includes("Roissy")
 
-            // Zone 3
-            else {
+) {
 
-              prixHT =
-                vehiculeTarif.orly +
-                20 +
-                ((distanceKm - 60) * vehiculeTarif.prixKm * 1.5);
+  prixHT =
+    vehiculeTarif.cdg +
+    (distanceKm * 0.9);
 
-            }
+  detailsPrix =
+    `Transfert CDG : ${prixHT.toFixed(0)} € HT`;
 
-            detailsPrix =
-              `Forfait Orly : ${prixHT.toFixed(0)} € HT`;
-
-          }
-
-          // ===== CDG =====
-
-          else if (
-
-            form.arrivee.includes("Charles de Gaulle") ||
-            form.arrivee.includes("CDG") ||
-            form.arrivee.includes("Roissy") ||
-            form.depart.includes("Charles de Gaulle") ||
-            form.depart.includes("CDG") ||
-            form.depart.includes("Roissy")
-
-          ) {
-
-            // Zone 1
-            if (distanceKm <= 65) {
-
-              prixHT = vehiculeTarif.cdg;
-
-            }
-
-            // Zone 2
-            else if (distanceKm <= 80) {
-
-              prixHT = vehiculeTarif.cdg + 20;
-
-            }
-
-            // Zone 3
-            else {
-
-              prixHT =
-                vehiculeTarif.cdg +
-                20 +
-                ((distanceKm - 80) * vehiculeTarif.prixKm * 1.8);
-
-            }
-
-            detailsPrix =
-              `Forfait CDG : ${prixHT.toFixed(0)} € HT`;
-
-          }
+}
 
           // ===== STANDARD =====
 
