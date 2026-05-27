@@ -497,8 +497,6 @@ else {
   ✨Envoyer ma demande
 </a>
 
-  Envoyer ma demande
-
 <a
   href="https://wa.me/33650038514"
   target="_blank"
