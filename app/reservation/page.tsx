@@ -201,12 +201,8 @@ Tarif HT : ${prixHT.toFixed(0)} €
             distance: distanceText,
             duree: dureeText,
             prix: `${Math.round(prixTTC)} € TTC`,
-            detailsPrix: `
-${detailsPrix}
 
-TVA 10% : ${montantTVA.toFixed(0)} €
-Total TTC : ${Math.round(prixTTC)} €
-`,
+           detailsPrix: "",
           }));
         }
       }
@@ -382,14 +378,7 @@ Tarif TTC : ${form.prix}`}
                     💰 {form.prix}
                   </p>
 
-                  <div className="mt-3 border-t border-yellow-500/20 pt-3">
-
-                    <pre className="text-sm text-gray-300 whitespace-pre-line leading-7">
-                      {form.detailsPrix}
-                    </pre>
-
-                  </div>
-
+                  
                 </div>
 
               </div>
