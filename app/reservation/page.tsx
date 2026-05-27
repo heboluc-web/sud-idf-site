@@ -1,7 +1,13 @@
 "use client";
 
-import { useState, useRef } from "react";
-import emailjs from "@emailjs/browser";
+import Script from "next/script";
+import { useEffect, useRef, useState } from "react";
+
+declare global {
+  interface Window {
+    google: any;
+  }
+}
 
 export default function Reservation() {
 
@@ -17,41 +23,254 @@ export default function Reservation() {
     arrivee: "",
     date: "",
     heure: "",
-    message: ""
+    message: "",
+    distance: "",
+    duree: "",
+    prix: "",
+    detailsPrix: "",
   });
+
+  const departRef = useRef<HTMLInputElement>(null);
+  const arriveeRef = useRef<HTMLInputElement>(null);
 
   const [formError, setFormError] = useState(false);
 
-  const formRef = useRef<HTMLFormElement>(null);
+  useEffect(() => {
+    if (!window.google) return;
 
-const sendEmail = async (e: React.FormEvent) => {
-  e.preventDefault();
-
-  if (!formRef.current) return;
-
-  try {
-    await emailjs.sendForm(
-      "service_7nknmjb",
-      "template_dgn29ew",
-      formRef.current,
-      "MDk_t8gO2PrEN-ROW"
+    const departAutocomplete = new window.google.maps.places.Autocomplete(
+      departRef.current as HTMLInputElement,
+      {
+        componentRestrictions: { country: "fr" },
+      }
     );
 
-    alert("Votre demande a bien été envoyée.");
+    const arriveeAutocomplete = new window.google.maps.places.Autocomplete(
+      arriveeRef.current as HTMLInputElement,
+      {
+        componentRestrictions: { country: "fr" },
+      }
+    );
 
-    formRef.current.reset();
+    departAutocomplete.addListener("place_changed", () => {
+      const place = departAutocomplete.getPlace();
 
-  } catch (error) {
-    console.log(error);
-    alert("Erreur lors de l’envoi.");
-  }
-};
+      setForm((prev) => ({
+        ...prev,
+        depart: place.formatted_address || place.name || "",
+      }));
+    });
+
+    arriveeAutocomplete.addListener("place_changed", () => {
+      const place = arriveeAutocomplete.getPlace();
+
+      setForm((prev) => ({
+        ...prev,
+        arrivee: place.formatted_address || place.name || "",
+      }));
+    });
+  }, []);
+
+  useEffect(() => {
+    if (form.depart && form.arrivee) {
+      calculerTrajet();
+    }
+  }, [form.depart, form.arrivee]);
 
   const handleChange = (e: any) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  // 🔒 limite passagers selon véhicule
+  const calculerTrajet = () => {
+
+    if (!window.google || !form.depart || !form.arrivee) return;
+
+    const service = new window.google.maps.DistanceMatrixService();
+
+    service.getDistanceMatrix(
+      {
+        origins: [form.depart],
+        destinations: [form.arrivee],
+        travelMode: window.google.maps.TravelMode.DRIVING,
+        unitSystem: window.google.maps.UnitSystem.METRIC,
+      },
+      (response: any, status: any) => {
+
+        if (
+          status === "OK" &&
+          response &&
+          response.rows[0].elements[0].status === "OK"
+        ) {
+
+          const element = response.rows[0].elements[0];
+
+          const distanceText = element.distance?.text || "";
+          const dureeText = element.duration?.text || "";
+
+          const distanceKm = parseFloat(
+            distanceText.replace(",", ".").replace(" km", "")
+          );
+
+          // ================= TARIFS =================
+
+          const tarifs = {
+            "Mercedes Classe V": {
+              prixKm: 1.8,
+              minimum: 55,
+              orly: 120,
+              cdg: 150,
+            },
+
+            "Range Rover": {
+              prixKm: 2.4,
+              minimum: 75,
+              orly: 160,
+              cdg: 190,
+            },
+          };
+
+          const vehiculeTarif =
+            tarifs[form.vehicule as keyof typeof tarifs];
+
+          if (!vehiculeTarif) return;
+
+          // ================= CALCUL BASE =================
+
+          let prixHT =
+            distanceKm * vehiculeTarif.prixKm;
+
+          prixHT = Math.max(
+            prixHT,
+            vehiculeTarif.minimum
+          );
+
+          // ================= FORFAITS AÉROPORT =================
+
+          if (
+            form.arrivee.includes("Orly") ||
+            form.depart.includes("Orly")
+          ) {
+            prixHT = vehiculeTarif.orly;
+          }
+
+          if (
+            form.arrivee.includes("Charles de Gaulle") ||
+            form.arrivee.includes("CDG") ||
+            form.arrivee.includes("Roissy") ||
+            form.depart.includes("Charles de Gaulle") ||
+            form.depart.includes("CDG") ||
+            form.depart.includes("Roissy")
+          ) {
+            prixHT = vehiculeTarif.cdg;
+          }
+
+          // ================= SERVICES PREMIUM =================
+
+// mise à disposition
+if (form.service === "Mise à disposition") {
+  prixHT += 120;
+}
+
+// événement simple
+if (form.service === "Événement") {
+  prixHT += 150;
+}
+
+// services uniquement sur devis
+const servicesSurDevis = [
+  "Mariage",
+  "VIP",
+  "Séminaire / Journée entreprise",
+];
+
+// si service sur devis
+if (servicesSurDevis.includes(form.service)) {
+
+  setForm((prev) => ({
+    ...prev,
+    distance: distanceText,
+    duree: dureeText,
+    prix: "Sur devis",
+    detailsPrix: `
+Demande premium personnalisée
+
+✔ Étude sur mesure
+✔ Tarif personnalisé
+✔ Service haut de gamme
+✔ Réponse rapide
+`,
+  }));
+
+  return;
+}
+          // ================= NUIT =================
+
+          const heureCourse =
+            parseInt(form.heure.split(":")[0] || "12");
+
+          if (heureCourse >= 22 || heureCourse <= 6) {
+            prixHT += 25;
+          }
+
+          // ================= TVA =================
+
+          const prixTTC = prixHT * 1.1;
+          const montantTVA = prixHT * 0.1;
+
+          // ================= DETAILS PRIX =================
+
+          let detailsPrix = "";
+
+          if (
+            form.arrivee.includes("Orly") ||
+            form.depart.includes("Orly")
+          ) {
+
+            detailsPrix =
+              `Forfait Orly : ${prixHT.toFixed(0)} € HT`;
+
+          } else if (
+
+            form.arrivee.includes("Charles de Gaulle") ||
+            form.arrivee.includes("CDG") ||
+            form.arrivee.includes("Roissy") ||
+            form.depart.includes("Charles de Gaulle") ||
+            form.depart.includes("CDG") ||
+            form.depart.includes("Roissy")
+
+          ) {
+
+            detailsPrix =
+              `Forfait CDG : ${prixHT.toFixed(0)} € HT`;
+
+          } else {
+
+            detailsPrix =
+              `Course minimum / trajet classique : ${prixHT.toFixed(0)} € HT`;
+          }
+
+          setForm((prev) => ({
+            ...prev,
+            distance: distanceText,
+            duree: dureeText,
+            prix: `${Math.round(prixTTC)} € TTC`,
+            detailsPrix: `
+${detailsPrix}
+TVA 10% : ${montantTVA.toFixed(0)} €
+Total TTC : ${Math.round(prixTTC)} €
+`,
+          }));
+        }
+      }
+    );
+  };
+
+  useEffect(() => {
+    if (form.depart && form.arrivee) {
+      calculerTrajet();
+    }
+  }, [form.vehicule, form.service, form.heure]);
+
   const getMaxPassagers = () => {
     if (form.vehicule === "Mercedes Classe V") return 7;
     if (form.vehicule === "Range Rover") return 4;
@@ -59,118 +278,244 @@ const sendEmail = async (e: React.FormEvent) => {
   };
 
   return (
-    <main className="min-h-screen bg-black text-white px-6 py-20">
-      <div className="max-w-3xl mx-auto bg-black/70 backdrop-blur-md p-8 rounded-2xl border border-amber-500/20 shadow-2xl shadow-amber-500/10">
+    <>
+      <Script
+        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
+        strategy="beforeInteractive"
+      />
 
-        <h1 className="text-4xl text-center mb-6">
-          Réserver votre chauffeur
-        </h1>
+      <main className="min-h-screen bg-black text-white px-6 py-20">
 
-        <p className="text-center text-gray-400 mb-12">
-          Remplissez le formulaire, nous vous répondrons rapidement
-        </p>
+        <div className="max-w-3xl mx-auto bg-black/70 backdrop-blur-md p-8 rounded-2xl border border-amber-500/20 shadow-2xl shadow-amber-500/10">
 
-        <form
-  ref={formRef}
-  onSubmit={sendEmail}
-  className="space-y-6"
->
-          
-          <input name="nom" value={form.nom} onChange={handleChange} required placeholder="Nom / Prénom" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
-          <input name="email" value={form.email} onChange={handleChange} required type="email" placeholder="Email" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
-          <input name="telephone" value={form.telephone} onChange={handleChange} required placeholder="Téléphone" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
+          <h1 className="text-4xl text-center mb-6">
+            Réserver votre chauffeur
+          </h1>
 
-          {/* 🚗 NOUVEAU : TYPE DE VEHICULE */}
-          <select
-            name="vehicule"
-            value={form.vehicule}
-            onChange={handleChange}
-            required
-            className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
+          <p className="text-center text-gray-400 mb-12">
+            Remplissez le formulaire, nous vous répondrons rapidement
+          </p>
+
+          <form
+            action="https://formsubmit.co/contact@sudidfexecutivetransport.fr"
+            method="POST"
+            className="space-y-6"
           >
-            <option value="">Type de véhicule</option>
-            <option>Mercedes Classe V</option>
-            <option>Range Rover</option>
-          </select>
 
-          <input
-            name="passagers"
-            value={form.passagers}
-            onChange={handleChange}
-            required
-            type="number"
-            min="1"
-            max={getMaxPassagers()}
-            placeholder={`Nombre de passagers (max ${getMaxPassagers()})`}
-            className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
-          />
+            <input type="hidden" name="_captcha" value="false" />
+            <input type="hidden" name="_subject" value="Nouvelle réservation VTC" />
+            <input type="hidden" name="_template" value="table" />
+            <input type="hidden" name="_next" value="https://www.sudidfexecutivetransport.fr/merci" />
 
-          <input name="bagages" value={form.bagages} onChange={handleChange} required type="number" min="0" placeholder="Nombre de bagages" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
+            <textarea
+              hidden
+              readOnly
+              name="trajet_infos"
+              value={`Distance estimée : ${form.distance}
+Durée estimée : ${form.duree}
+Tarif TTC : ${form.prix}`}
+            ></textarea>
 
-          <select name="service" value={form.service} onChange={handleChange} required className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20">
-            <option value="">Type de prestation</option>
-            <option>Transfert aéroport</option>
-            <option>Transport gare</option>
-            <option>Mise à disposition</option>
-            <option>Événement</option>
-          </select>
+            <input
+              name="nom"
+              value={form.nom}
+              onChange={handleChange}
+              required
+              placeholder="Nom / Prénom"
+              className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
+            />
 
-          <input name="depart" value={form.depart} onChange={handleChange} required placeholder="Adresse de départ" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
-          <input name="arrivee" value={form.arrivee} onChange={handleChange} required placeholder="Adresse d’arrivée" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
+            <input
+              name="email"
+              value={form.email}
+              onChange={handleChange}
+              required
+              type="email"
+              placeholder="Email"
+              className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
+            />
 
-          <div className="flex gap-4">
-            <input name="date" value={form.date} onChange={handleChange} required type="date" className="w-1/2 p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
-            <input name="heure" value={form.heure} onChange={handleChange} required type="time" className="w-1/2 p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
-          </div>
+            <input
+              name="telephone"
+              value={form.telephone}
+              onChange={handleChange}
+              required
+              placeholder="Téléphone"
+              className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
+            />
 
-          <textarea name="message" value={form.message} onChange={handleChange} placeholder="Informations complémentaires" className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20" />
+            <select
+              name="vehicule"
+              value={form.vehicule}
+              onChange={handleChange}
+              required
+              className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
+            >
+              <option value="">Type de véhicule</option>
+              <option>Mercedes Classe V</option>
+              <option>Range Rover</option>
+            </select>
+
+            <input
+              name="passagers"
+              value={form.passagers}
+              onChange={handleChange}
+              required
+              type="number"
+              min="1"
+              max={getMaxPassagers()}
+              placeholder={`Nombre de passagers (max ${getMaxPassagers()})`}
+              className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
+            />
+
+            <input
+              name="bagages"
+              value={form.bagages}
+              onChange={handleChange}
+              required
+              type="number"
+              min="0"
+              placeholder="Nombre de bagages"
+              className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
+            />
+
+            <select
+              name="service"
+              value={form.service}
+              onChange={handleChange}
+              required
+              className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
+            >
+              <option value="">Type de prestation</option>
+              <option>Transport standard</option>
+              <option>Transfert aéroport</option>
+              <option>Mise à disposition</option>
+              <option>Transport gare</option>
+              <option>Événement</option>
+              <option>Mariage</option>
+              <option>VIP</option>
+              <option>Séminaire / Journée entreprise</option>
+            </select>
+
+            <input
+              ref={departRef}
+              name="depart"
+              value={form.depart}
+              onChange={handleChange}
+              required
+              placeholder="Adresse de départ"
+              className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
+            />
+
+            <input
+              ref={arriveeRef}
+              name="arrivee"
+              value={form.arrivee}
+              onChange={handleChange}
+              required
+              placeholder="Adresse d’arrivée"
+              className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
+            />
+
+            {form.distance && (
+              <div className="bg-black/40 border border-yellow-500 rounded-xl p-4 text-white space-y-3">
+
+                <p>
+                  📍 Distance estimée : <strong>{form.distance}</strong>
+                </p>
+
+                <p>
+                  ⏱️ Temps estimé : <strong>{form.duree}</strong>
+                </p>
+
+                <div className="border-t border-yellow-500/30 pt-3">
+
+                  <p className="text-2xl text-yellow-400 font-bold">
+                    💰 {form.prix}
+                  </p>
+
+                  <div className="mt-3 border-t border-yellow-500/20 pt-3">
+
+                    <pre className="text-sm text-gray-300 whitespace-pre-line leading-7">
+                      {form.detailsPrix}
+                    </pre>
+
+                  </div>
+
+                </div>
+
+              </div>
+            )}
+
+            <div className="flex gap-4">
+
+              <input
+                name="date"
+                value={form.date}
+                onChange={handleChange}
+                required
+                type="date"
+                className="w-1/2 p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
+              />
+
+              <input
+                name="heure"
+                value={form.heure}
+                onChange={handleChange}
+                required
+                type="time"
+                className="w-1/2 p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
+              />
+
+            </div>
+
+            <textarea
+              name="message"
+              value={form.message}
+              onChange={handleChange}
+              placeholder="Informations complémentaires"
+              className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
+            />
+
+            <button
+              type="submit"
+              className="w-full py-4 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-semibold rounded-xl shadow-lg hover:scale-105 transition"
+            >
+              Envoyer ma demande
+            </button>
+
+          </form>
+
+          {formError && (
+            <div className="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-center">
+              ⚠️ Merci de remplir tous les champs obligatoires
+            </div>
+          )}
 
           <button
-            type="submit"
-            className="w-full py-4 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-semibold rounded-xl shadow-lg hover:scale-105 transition"
-          >
-            Envoyer ma demande
-          </button>
-        </form>
+            type="button"
+            onClick={() => {
 
-        {/* MESSAGE ERREUR */}
-        {formError && (
-          <div className="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-center">
-            ⚠️ Merci de remplir tous les champs obligatoires
-          </div>
-        )}
+              if (
+                !form.nom ||
+                !form.email ||
+                !form.telephone ||
+                !form.vehicule ||
+                !form.passagers ||
+                !form.bagages ||
+                !form.service ||
+                !form.depart ||
+                !form.arrivee ||
+                !form.date ||
+                !form.heure
+              ) {
+                setFormError(true);
+                return;
+              }
 
-        {/* WHATSAPP */}
-        <button
-          type="button"
-          onClick={() => {
+              setFormError(false);
 
-            if (
-              !form.nom ||
-              !form.email ||
-              !form.telephone ||
-              !form.vehicule ||
-              !form.passagers ||
-              !form.bagages ||
-              !form.service ||
-              !form.depart ||
-              !form.arrivee ||
-              !form.date ||
-              !form.heure
-            ) {
-              setFormError(true);
-              return;
-            }
-
-            // 🔒 sécurité passagers
-            if (parseInt(form.passagers) > getMaxPassagers()) {
-              setFormError(true);
-              return;
-            }
-
-            setFormError(false);
-
-            const message = `Bonjour, je souhaite réserver :
+              const message = `Bonjour, je souhaite réserver :
 
 Nom: ${form.nom}
 Téléphone: ${form.telephone}
@@ -185,32 +530,40 @@ Service: ${form.service}
 Départ: ${form.depart}
 Arrivée: ${form.arrivee}
 
+Distance: ${form.distance}
+Durée estimée: ${form.duree}
+
+Tarif TTC estimé: ${form.prix}
+
 Date: ${form.date}
 Heure: ${form.heure}
 
 Message: ${form.message}`;
 
-            window.open(
-              `https://wa.me/33668863673?text=${encodeURIComponent(message)}`,
-              "_blank"
-            );
-          }}
-          className="w-full mt-4 py-3 border border-amber-500 text-amber-400 rounded-lg hover:bg-amber-500 hover:text-black transition"
-        >
-          📲 Envoyer via WhatsApp
-        </button>
-
-        {/* APPEL */}
-        <div className="flex justify-center mt-6">
-          <a
-            href="/appel"
-            className="border border-amber-500 text-amber-400 px-8 py-3 rounded-xl text-lg hover:bg-amber-500 hover:text-black transition shadow-md"
+              window.open(
+                `https://wa.me/33668863673?text=${encodeURIComponent(message)}`,
+                "_blank"
+              );
+            }}
+            className="w-full mt-4 py-3 border border-amber-500 text-amber-400 rounded-lg hover:bg-amber-500 hover:text-black transition"
           >
-            📞 Appeler
-          </a>
+            📲 Envoyer via WhatsApp
+          </button>
+
+          <div className="flex justify-center mt-6">
+
+            <a
+              href="/appel"
+              className="border border-amber-500 text-amber-400 px-8 py-3 rounded-xl text-lg hover:bg-amber-500 hover:text-black transition shadow-md"
+            >
+              📞 Appeler
+            </a>
+
+          </div>
+
         </div>
 
-      </div>
-    </main>
+      </main>
+    </>
   );
 }
