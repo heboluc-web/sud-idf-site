@@ -114,20 +114,16 @@ export default function Reservation() {
           // ================= TARIFS =================
 
           const tarifs = {
-            "Mercedes Classe V": {
-              prixKm: 1.8,
-              minimum: 55,
-              orly: 60,
-              cdg: 80,
-            },
+  "Mercedes Classe V": {
+    prixKm: 1.8,
+    minimum: 55,
+  },
 
-            "Range Rover": {
-              prixKm: 2.4,
-              minimum: 75,
-              orly: 90,
-              cdg: 110,
-            },
-          };
+  "Range Rover": {
+    prixKm: 2.4,
+    minimum: 75,
+  },
+};
 
           const vehiculeTarif =
             tarifs[form.vehicule as keyof typeof tarifs];
@@ -188,56 +184,12 @@ Demande premium personnalisée
             prixHT += 25;
           }
 
-          // ================= DETAILS PRIX =================
+         // ================= DETAILS PRIX =================
 
-          let detailsPrix = "";
-
-         // ===== ORLY =====
-
-if (
-  form.arrivee.includes("Orly") ||
-  form.depart.includes("Orly")
-) {
-
-  prixHT =
-    vehiculeTarif.orly +
-    (distanceKm * vehiculeTarif.prixKm);
-
-  detailsPrix =
-    `Transfert Orly : ${prixHT.toFixed(0)} € HT`;
-
-}
-
-// ===== CDG =====
-
-else if (
-
-  form.arrivee.includes("Charles de Gaulle") ||
-  form.arrivee.includes("CDG") ||
-  form.arrivee.includes("Roissy") ||
-  form.depart.includes("Charles de Gaulle") ||
-  form.depart.includes("CDG") ||
-  form.depart.includes("Roissy")
-
-) {
-
-  prixHT =
-    vehiculeTarif.cdg +
-    (distanceKm * vehiculeTarif.prixKm);
-
-  detailsPrix =
-    `Transfert CDG : ${prixHT.toFixed(0)} € HT`;
-
-}
-
-          // ===== STANDARD =====
-
-          else {
-
-            detailsPrix =
-              `Course minimum / trajet classique : ${prixHT.toFixed(0)} € HT`;
-
-          }
+let detailsPrix = `
+Trajet : ${distanceKm.toFixed(1)} km × ${vehiculeTarif.prixKm} €/km
+Tarif HT : ${prixHT.toFixed(0)} €
+`;
 
           // ================= TVA =================
 
