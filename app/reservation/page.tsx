@@ -496,13 +496,6 @@ else {
               className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
             />
   <button
-  type="submit"
-  className="w-full flex items-center justify-center py-4 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-semibold rounded-2xl hover:scale-[1.02] transition-all duration-300"
->
-  ✨Envoyer ma demande
-</button>
-
-<button
   type="button"
   onClick={() => {
     const requiredFields = [
@@ -527,12 +520,35 @@ else {
       return;
     }
 
-    window.open(
-      "https://wa.me/33650038514",
-      "_blank"
-    );
+    const message = `
+🚘 Nouvelle réservation SUD IDF
+
+👤 Nom : ${form.nom}
+📞 Téléphone : ${form.telephone}
+
+🚗 Véhicule : ${form.vehicule}
+👥 Passagers : ${form.passagers}
+🧳 Bagages : ${form.bagages}
+
+📍 Départ : ${form.depart}
+📍 Arrivée : ${form.arrivee}
+
+🛎️ Service : ${form.service}
+
+📅 Date : ${form.date}
+⏰ Heure : ${form.heure}
+
+💰 Tarif : ${form.prix}
+
+📝 Message :
+${form.message || "Aucun"}
+    `;
+
+    const url = `https://wa.me/33650038514?text=${encodeURIComponent(message)}`;
+
+    window.open(url, "_blank");
   }}
-  className="w-full flex items-center justify-center gap-3 border border-yellow-500/30 bg-black hover:bg-yellow-500/10 text-yellow-400 py-4 rounded-xl transition-all duration-300 mt-4"
+  className="w-full flex items-center justify-center gap-3 border border-yellow-500/30 bg-black hover:bg-yellow-500/10 text-yellow-400 py-5 rounded-2xl transition-all duration-300"
 >
   📲 Envoyer via WhatsApp
 </button>
