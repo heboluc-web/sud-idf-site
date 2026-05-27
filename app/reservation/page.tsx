@@ -490,20 +490,19 @@ else {
             />
 
             <button
-              type="submit"
-              className="w-full py-4 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-semibold rounded-xl"
-            >
-
-              <a
+  type="submit"
+  className="w-full py-4 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-semibold rounded-xl"
+>
+  Envoyer ma demande
+</button>
+<a
   href="https://wa.me/33650038514"
   target="_blank"
   rel="noopener noreferrer"
-  className="w-full flex items-center justify-center gap-3 border border-yellow-500/30 bg-black hover:bg-yellow-500/10 text-yellow-400 py-4 rounded-xl transition-all duration-300"
+  className="w-full flex items-center justify-center gap-3 border border-yellow-500/30 bg-black hover:bg-yellow-500/10 text-yellow-400 py-4 rounded-xl transition-all duration-300 mt-4"
 >
   📲 Envoyer via WhatsApp
 </a>
-
-            </button>
 
           </form>
 
