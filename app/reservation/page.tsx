@@ -79,19 +79,17 @@ export default function Reservation() {
 
   useEffect(() => {
 
-    if (form.depart && form.arrivee) {
-      calculerTrajet();
-    }
+  if (form.depart && form.arrivee) {
+    calculerTrajet();
+  }
 
-  }, [form.depart, form.arrivee]);
-
-  useEffect(() => {
-
-    if (form.depart && form.arrivee) {
-      calculerTrajet();
-    }
-
-  }, [form.vehicule, form.service, form.heure]);
+}, [
+  form.depart,
+  form.arrivee,
+  form.vehicule,
+  form.service,
+  form.heure
+]);
 
   const handleChange = (e: any) => {
 
@@ -185,13 +183,7 @@ export default function Reservation() {
 
           // ================= PRIX BASE =================
 
-          let prixHT =
-            distanceKm * vehiculeTarif.prixKm;
-
-          prixHT = Math.max(
-            prixHT,
-            vehiculeTarif.minimum
-          );
+          let prixHT = 0;
 
           // ================= DETECTION =================
 
