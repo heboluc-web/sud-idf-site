@@ -146,12 +146,12 @@ export default function Reservation() {
 
          const tarifs = {
   "Mercedes Classe V": {
-    prixKm: 1.8,
+    prixKm: 2,
     minimum: 65,
 
     // ===== AÉROPORTS =====
     cdg77: 160,
-    cdgEssonne: 150,
+    cdgEssonne: 130,
 
     orly77: 130,
     orlyEssonne: 120,
@@ -386,10 +386,13 @@ else {
               required
               className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
             >
-              <option value="">Service</option>
               <option>Transport standard</option>
-              <option>Transfert aéroport</option>
-              <option>Mise à disposition</option>
+<option>Transfert aéroport</option>
+<option>Mise à disposition</option>
+<option>Mariage</option>
+<option>VIP</option>
+<option>Longue distance</option>
+<option>Séminaire</option>
             </select>
 
             <input
