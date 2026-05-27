@@ -327,10 +327,15 @@ else {
           </p>
 
           <form
-            action="https://formsubmit.co/contact@sudidfexecutivetransport.fr"
-            method="POST"
-            className="space-y-6"
-          >
+  action="https://formsubmit.co/contact@sudidfexecutivetransport.fr"
+  method="POST"
+  className="space-y-6"
+  onSubmit={() => {
+    setTimeout(() => {
+      window.location.href = "/merci";
+    }, 500);
+  }}
+>
 
             <input type="hidden" name="_captcha" value="false" />
 
@@ -488,14 +493,12 @@ else {
               placeholder="Informations complémentaires"
               className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
             />
-
-            
-  <a
-  href="/merci"
+  <<button
+  type="submit"
   className="w-full flex items-center justify-center py-4 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-semibold rounded-2xl hover:scale-[1.02] transition-all duration-300"
 >
   ✨Envoyer ma demande
-</a>
+</button>
 
 <a
   href="https://wa.me/33650038514"
