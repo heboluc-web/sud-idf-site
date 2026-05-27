@@ -396,6 +396,7 @@ else {
               onChange={handleChange}
               type="number"
               min="0"
+              required
               placeholder="Bagages"
               className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
             />
