@@ -113,19 +113,27 @@ export default function Reservation() {
 
           // ================= TARIFS =================
 
-          const tarifs = {
+         const tarifs = {
   "Mercedes Classe V": {
     prixKm: 1.8,
     minimum: 75,
-    orly: 35,
-    cdg: 55,
+
+    orlyEssonne: 120,
+    cdgEssonne: 150,
+
+    orly77: 130,
+    cdg77: 160,
   },
 
   "Range Rover": {
     prixKm: 2.4,
     minimum: 95,
-    orly: 50,
-    cdg: 70,
+
+    orlyEssonne: 160,
+    cdgEssonne: 190,
+
+    orly77: 180,
+    cdg77: 210,
   },
 };
 
@@ -136,13 +144,51 @@ export default function Reservation() {
 
           // ================= CALCUL BASE =================
 
-          let prixHT =
-            distanceKm * vehiculeTarif.prixKm;
+          let prixHT = distanceKm * vehiculeTarif.prixKm;
 
-          prixHT = Math.max(
-            prixHT,
-            vehiculeTarif.minimum
-          );
+prixHT = Math.max(prixHT, vehiculeTarif.minimum);
+
+// ================= AEROPORTS =================
+
+const depart = form.depart.toLowerCase();
+const arrivee = form.arrivee.toLowerCase();
+
+const aeroportCDG =
+  arrivee.includes("roissy") ||
+  arrivee.includes("cdg") ||
+  arrivee.includes("charles de gaulle") ||
+  depart.includes("roissy") ||
+  depart.includes("cdg") ||
+  depart.includes("charles de gaulle");
+
+const aeroportOrly =
+  arrivee.includes("orly") ||
+  depart.includes("orly");
+
+// ===== SEINE ET MARNE =====
+
+const seineEtMarne =
+  depart.includes("77") ||
+  arrivee.includes("77") ||
+  depart.includes("melun") ||
+  arrivee.includes("melun") ||
+  depart.includes("nemours") ||
+  arrivee.includes("nemours");
+
+// ===== FORFAITS =====
+
+if (aeroportCDG) {
+  prixHT = seineEtMarne
+    ? vehiculeTarif.cdg77
+    : vehiculeTarif.cdgEssonne;
+}
+
+else if (aeroportOrly) {
+  prixHT = seineEtMarne
+    ? vehiculeTarif.orly77
+    : vehiculeTarif.orlyEssonne;
+}
+
 
           // ================= SERVICES PREMIUM =================
 
