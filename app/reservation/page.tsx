@@ -144,56 +144,29 @@ export default function Reservation() {
             vehiculeTarif.minimum
           );
 
-          // ================= FORFAITS AÉROPORT =================
-
-          if (
-            form.arrivee.includes("Orly") ||
-            form.depart.includes("Orly")
-          ) {
-            prixHT = vehiculeTarif.orly;
-          }
-
-          if (
-            form.arrivee.includes("Charles de Gaulle") ||
-            form.arrivee.includes("CDG") ||
-            form.arrivee.includes("Roissy") ||
-            form.depart.includes("Charles de Gaulle") ||
-            form.depart.includes("CDG") ||
-            form.depart.includes("Roissy")
-          ) {
-            prixHT = vehiculeTarif.cdg;
-          }
-
           // ================= SERVICES PREMIUM =================
 
-// mise à disposition
-if (form.service === "Mise à disposition") {
-  prixHT += 120;
-}
+          if (form.service === "Mise à disposition") {
+            prixHT += 120;
+          }
 
-// événement simple
-if (form.service === "Événement") {
-  prixHT += 150;
-}
+          // services uniquement sur devis
+          const servicesSurDevis = [
+            "Mariage",
+            "VIP",
+            "Séminaire / Journée entreprise",
+            "Longue distance",
+            "Événement",
+          ];
 
-// services uniquement sur devis
-const servicesSurDevis = [
-  "Mariage",
-  "VIP",
-  "Séminaire / Journée entreprise",
-  "Longue distance",
-  "Événement",
-];
+          if (servicesSurDevis.includes(form.service)) {
 
-// si service sur devis
-if (servicesSurDevis.includes(form.service)) {
-
-  setForm((prev) => ({
-    ...prev,
-    distance: distanceText,
-    duree: dureeText,
-    prix: "Sur devis",
-    detailsPrix: `
+            setForm((prev) => ({
+              ...prev,
+              distance: distanceText,
+              duree: dureeText,
+              prix: "Sur devis",
+              detailsPrix: `
 Demande premium personnalisée
 
 ✔ Étude sur mesure
@@ -201,10 +174,11 @@ Demande premium personnalisée
 ✔ Service haut de gamme
 ✔ Réponse rapide
 `,
-  }));
+            }));
 
-  return;
-}
+            return;
+          }
+
           // ================= NUIT =================
 
           const heureCourse =
@@ -214,12 +188,7 @@ Demande premium personnalisée
             prixHT += 25;
           }
 
-          // ================= TVA =================
-
-          const prixTTC = prixHT * 1.1;
-          const montantTVA = prixHT * 0.1;
-
-                   // ================= DETAILS PRIX =================
+          // ================= DETAILS PRIX =================
 
           let detailsPrix = "";
 
@@ -232,30 +201,26 @@ Demande premium personnalisée
 
             // Zone 1
             if (distanceKm <= 40) {
+
               prixHT = vehiculeTarif.orly;
 
+            }
+
             // Zone 2
-            } else if (distanceKm <= 60) {
+            else if (distanceKm <= 60) {
+
               prixHT = vehiculeTarif.orly + 20;
 
+            }
+
             // Zone 3
-            } else {
+            else {
 
-              setForm((prev) => ({
-                ...prev,
-                distance: distanceText,
-                duree: dureeText,
-                prix: "Sur devis",
-                detailsPrix: `
-Trajet longue distance vers Orly
+              prixHT =
+                vehiculeTarif.orly +
+                20 +
+                ((distanceKm - 60) * vehiculeTarif.prixKm * 1.5);
 
-✔ Devis personnalisé
-✔ Tarif premium adapté
-✔ Réponse rapide
-`,
-              }));
-
-              return;
             }
 
             detailsPrix =
@@ -278,30 +243,26 @@ Trajet longue distance vers Orly
 
             // Zone 1
             if (distanceKm <= 65) {
+
               prixHT = vehiculeTarif.cdg;
 
+            }
+
             // Zone 2
-            } else if (distanceKm <= 80) {
+            else if (distanceKm <= 80) {
+
               prixHT = vehiculeTarif.cdg + 20;
 
+            }
+
             // Zone 3
-            } else {
+            else {
 
-              setForm((prev) => ({
-                ...prev,
-                distance: distanceText,
-                duree: dureeText,
-                prix: "Sur devis",
-                detailsPrix: `
-Trajet longue distance vers CDG
+              prixHT =
+                vehiculeTarif.cdg +
+                20 +
+                ((distanceKm - 80) * vehiculeTarif.prixKm * 1.8);
 
-✔ Devis personnalisé
-✔ Tarif premium adapté
-✔ Réponse rapide
-`,
-              }));
-
-              return;
             }
 
             detailsPrix =
@@ -318,6 +279,11 @@ Trajet longue distance vers CDG
 
           }
 
+          // ================= TVA =================
+
+          const prixTTC = prixHT * 1.1;
+          const montantTVA = prixHT * 0.1;
+
           setForm((prev) => ({
             ...prev,
             distance: distanceText,
@@ -325,6 +291,7 @@ Trajet longue distance vers CDG
             prix: `${Math.round(prixTTC)} € TTC`,
             detailsPrix: `
 ${detailsPrix}
+
 TVA 10% : ${montantTVA.toFixed(0)} €
 Total TTC : ${Math.round(prixTTC)} €
 `,
@@ -554,81 +521,6 @@ Tarif TTC : ${form.prix}`}
             </button>
 
           </form>
-
-          {formError && (
-            <div className="mt-4 p-3 bg-red-500/10 border border-red-500/30 rounded-lg text-center">
-              ⚠️ Merci de remplir tous les champs obligatoires
-            </div>
-          )}
-
-          <button
-            type="button"
-            onClick={() => {
-
-              if (
-                !form.nom ||
-                !form.email ||
-                !form.telephone ||
-                !form.vehicule ||
-                !form.passagers ||
-                !form.bagages ||
-                !form.service ||
-                !form.depart ||
-                !form.arrivee ||
-                !form.date ||
-                !form.heure
-              ) {
-                setFormError(true);
-                return;
-              }
-
-              setFormError(false);
-
-              const message = `Bonjour, je souhaite réserver :
-
-Nom: ${form.nom}
-Téléphone: ${form.telephone}
-Email: ${form.email}
-
-Véhicule: ${form.vehicule}
-Passagers: ${form.passagers}
-Bagages: ${form.bagages}
-
-Service: ${form.service}
-
-Départ: ${form.depart}
-Arrivée: ${form.arrivee}
-
-Distance: ${form.distance}
-Durée estimée: ${form.duree}
-
-Tarif TTC estimé: ${form.prix}
-
-Date: ${form.date}
-Heure: ${form.heure}
-
-Message: ${form.message}`;
-
-              window.open(
-                `https://wa.me/33668863673?text=${encodeURIComponent(message)}`,
-                "_blank"
-              );
-            }}
-            className="w-full mt-4 py-3 border border-amber-500 text-amber-400 rounded-lg hover:bg-amber-500 hover:text-black transition"
-          >
-            📲 Envoyer via WhatsApp
-          </button>
-
-          <div className="flex justify-center mt-6">
-
-            <a
-              href="/appel"
-              className="border border-amber-500 text-amber-400 px-8 py-3 rounded-xl text-lg hover:bg-amber-500 hover:text-black transition shadow-md"
-            >
-              📞 Appeler
-            </a>
-
-          </div>
 
         </div>
 
