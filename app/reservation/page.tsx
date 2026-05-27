@@ -493,7 +493,7 @@ else {
               placeholder="Informations complémentaires"
               className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
             />
-  <<button
+  <button
   type="submit"
   className="w-full flex items-center justify-center py-4 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-semibold rounded-2xl hover:scale-[1.02] transition-all duration-300"
 >
