@@ -186,10 +186,7 @@ Demande premium personnalisée
 
          // ================= DETAILS PRIX =================
 
-let detailsPrix = `
-Trajet : ${distanceKm.toFixed(1)} km × ${vehiculeTarif.prixKm} €/km
-Tarif HT : ${prixHT.toFixed(0)} €
-`;
+let detailsPrix = "";
 
           // ================= TVA =================
 
