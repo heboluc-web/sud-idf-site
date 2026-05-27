@@ -385,6 +385,7 @@ else {
               onChange={handleChange}
               type="number"
               min="1"
+              required
               max={getMaxPassagers()}
               placeholder={`Passagers max ${getMaxPassagers()}`}
               className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
