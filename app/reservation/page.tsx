@@ -440,31 +440,57 @@ else {
               className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
             />
 
-            {form.distance && (
+            {form.distance && (() => {
 
-              <div className="bg-black border border-yellow-500 rounded-xl p-5 space-y-4">
+  const prixHT = Math.round(
+    parseFloat(form.prix.replace("€ TTC", "").trim()) / 1.1
+  );
 
-                <p>
-                  📍 Distance estimée :
-                  <strong> {form.distance}</strong>
-                </p>
+  return (
 
-                <p>
-                  ⏱️ Temps estimé :
-                  <strong> {form.duree}</strong>
-                </p>
+    <div className="bg-black border border-yellow-500 rounded-xl p-5 space-y-4">
 
-                <div className="border-t border-yellow-500/30 pt-4">
+      <p>
+        📍 Distance estimée :
+        <strong> {form.distance}</strong>
+      </p>
 
-                  <p className="text-3xl text-yellow-400 font-bold">
-                    💰 {form.prix}
-                  </p>
+      <p>
+        ⏱️ Temps estimé :
+        <strong> {form.duree}</strong>
+      </p>
 
-                </div>
+      <div className="border-t border-yellow-500/30 pt-4 space-y-3">
 
-              </div>
+        <div className="flex justify-between text-gray-300 text-sm">
+          <span>Prix HT</span>
+          <span>{prixHT} €</span>
+        </div>
 
-            )}
+        <div className="flex justify-between text-gray-300 text-sm">
+          <span>TVA 10%</span>
+          <span>{Math.round(prixHT * 0.1)} €</span>
+        </div>
+
+        <div className="border-t border-yellow-500/20 pt-4 flex justify-between items-center">
+
+          <span className="text-yellow-400 text-lg font-semibold">
+            💰 TOTAL TTC
+          </span>
+
+          <span className="text-yellow-400 text-4xl font-bold">
+            {Math.round(prixHT * 1.1)} €
+          </span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  );
+
+})()}
 
             <div className="flex gap-4">
 
