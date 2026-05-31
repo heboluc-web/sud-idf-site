@@ -203,49 +203,65 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
 {/* BLOC CONFIANCE PREMIUM */}
 
-<section className="py-12 border-y border-amber-500/10 bg-black">
+<section className="py-20 bg-black">
   <div className="max-w-7xl mx-auto px-6">
 
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+    <div className="grid md:grid-cols-4 gap-8">
 
-      <div className="p-6">
-        <div className="text-4xl mb-3">🛡️</div>
-        <h3 className="text-white font-semibold">
+      <div className="group border border-amber-500/20 rounded-3xl p-8 bg-neutral-950 hover:border-amber-400 hover:-translate-y-2 transition-all duration-500 text-center">
+
+        <FaShieldAlt className="text-amber-400 text-5xl mx-auto mb-6 group-hover:scale-110 transition-all duration-500" />
+
+        <h3 className="text-white text-xl font-semibold mb-3">
           Chauffeur professionnel
         </h3>
-        <p className="text-neutral-500 text-sm mt-2">
+
+        <p className="text-neutral-400">
           Discrétion et ponctualité
         </p>
+
       </div>
 
-      <div className="p-6">
-        <div className="text-4xl mb-3">⏰</div>
-        <h3 className="text-white font-semibold">
+      <div className="group border border-amber-500/20 rounded-3xl p-8 bg-neutral-950 hover:border-amber-400 hover:-translate-y-2 transition-all duration-500 text-center">
+
+        <FaClock className="text-amber-400 text-5xl mx-auto mb-6 group-hover:scale-110 transition-all duration-500" />
+
+        <h3 className="text-white text-xl font-semibold mb-3">
           Disponible 24h/24
         </h3>
-        <p className="text-neutral-500 text-sm mt-2">
+
+        <p className="text-neutral-400">
           Réservation à tout moment
         </p>
+
       </div>
 
-      <div className="p-6">
-        <div className="text-4xl mb-3">✈️</div>
-        <h3 className="text-white font-semibold">
+      <div className="group border border-amber-500/20 rounded-3xl p-8 bg-neutral-950 hover:border-amber-400 hover:-translate-y-2 transition-all duration-500 text-center">
+
+        <FaPlane className="text-amber-400 text-5xl mx-auto mb-6 group-hover:scale-110 transition-all duration-500" />
+
+        <h3 className="text-white text-xl font-semibold mb-3">
           Orly & CDG
         </h3>
-        <p className="text-neutral-500 text-sm mt-2">
+
+        <p className="text-neutral-400">
           Transferts aéroports premium
         </p>
+
       </div>
 
-      <div className="p-6">
-        <div className="text-4xl mb-3">⭐</div>
-        <h3 className="text-white font-semibold">
+      <div className="group border border-amber-500/20 rounded-3xl p-8 bg-neutral-950 hover:border-amber-400 hover:-translate-y-2 transition-all duration-500 text-center">
+
+        <FaStar className="text-amber-400 text-5xl mx-auto mb-6 group-hover:scale-110 transition-all duration-500" />
+
+        <h3 className="text-white text-xl font-semibold mb-3">
           Service Premium
         </h3>
-        <p className="text-neutral-500 text-sm mt-2">
+
+        <p className="text-neutral-400">
           Business, VIP et particuliers
         </p>
+
       </div>
 
     </div>
