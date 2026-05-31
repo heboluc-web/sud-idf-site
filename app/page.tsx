@@ -208,7 +208,7 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
     <div className="grid md:grid-cols-4 gap-8">
 
-      <div className="group border border-amber-500/15 rounded-2xl p-6 bg-neutral-950 min-h-[260px] flex flex-col justify-center text-center hover:-translate-y-2 hover:border-amber-400/40 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)] transition-all duration-500">
+      <div className="group border border-amber-500/15 rounded-2xl p-5 bg-neutral-950 flex flex-col justify-center text-center hover:-translate-y-2 hover:border-amber-400/40 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)] transition-all duration-500">
 
   <FaShieldAlt className="text-amber-300 text-4xl mx-auto mb-5 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)] group-hover:scale-110 transition-all duration-500" />
 
@@ -222,7 +222,7 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
 </div>
 
-      <div className="group border border-amber-500/15 rounded-2xl p-6 bg-neutral-950 min-h-[260px] flex flex-col justify-center text-center hover:-translate-y-2 hover:border-amber-400/40 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)] transition-all duration-500">
+      <div className="group border border-amber-500/15 rounded-2xl p-5 bg-neutral-950 flex flex-col justify-center text-center hover:-translate-y-2 hover:border-amber-400/40 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)] transition-all duration-500">
 
   <FaClock className="text-amber-300 text-4xl mx-auto mb-5 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)] group-hover:scale-110 transition-all duration-500" />
 
@@ -236,7 +236,7 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
 </div>
 
-      <div className="group border border-amber-500/15 rounded-2xl p-6 bg-neutral-950 min-h-[260px] flex flex-col justify-center text-center hover:-translate-y-2 hover:border-amber-400/40 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)] transition-all duration-500">
+     <div className="group border border-amber-500/15 rounded-2xl p-5 bg-neutral-950 flex flex-col justify-center text-center hover:-translate-y-2 hover:border-amber-400/40 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)] transition-all duration-500">
 
   <FaPlane className="text-amber-300 text-4xl mx-auto mb-5 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)] group-hover:scale-110 transition-all duration-500" />
 
@@ -250,8 +250,7 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
 </div>
 
-      <div className="group border border-amber-500/15 rounded-2xl p-6 bg-neutral-950 min-h-[260px] flex flex-col justify-center text-center hover:-translate-y-2 hover:border-amber-400/40 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)] transition-all duration-500">
-
+      <div className="group border border-amber-500/15 rounded-2xl p-5 bg-neutral-950 flex flex-col justify-center text-center hover:-translate-y-2 hover:border-amber-400/40 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)] transition-all duration-500">
   <FaStar className="text-amber-300 text-4xl mx-auto mb-5 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)] group-hover:scale-110 transition-all duration-500" />
 
   <h3 className="text-white text-lg font-medium tracking-[0.08em] uppercase mb-3">
