@@ -197,6 +197,60 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
 </section>
 
+{/* BLOC CONFIANCE PREMIUM */}
+
+<section className="py-12 border-y border-amber-500/10 bg-black">
+  <div className="max-w-7xl mx-auto px-6">
+
+    <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+
+      <div className="p-6">
+        <div className="text-4xl mb-3">🛡️</div>
+        <h3 className="text-white font-semibold">
+          Chauffeur professionnel
+        </h3>
+        <p className="text-neutral-500 text-sm mt-2">
+          Discrétion et ponctualité
+        </p>
+      </div>
+
+      <div className="p-6">
+        <div className="text-4xl mb-3">⏰</div>
+        <h3 className="text-white font-semibold">
+          Disponible 24h/24
+        </h3>
+        <p className="text-neutral-500 text-sm mt-2">
+          Réservation à tout moment
+        </p>
+      </div>
+
+      <div className="p-6">
+        <div className="text-4xl mb-3">✈️</div>
+        <h3 className="text-white font-semibold">
+          Orly & CDG
+        </h3>
+        <p className="text-neutral-500 text-sm mt-2">
+          Transferts aéroports premium
+        </p>
+      </div>
+
+      <div className="p-6">
+        <div className="text-4xl mb-3">⭐</div>
+        <h3 className="text-white font-semibold">
+          Service Premium
+        </h3>
+        <p className="text-neutral-500 text-sm mt-2">
+          Business, VIP et particuliers
+        </p>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+{/* SECTION SUIVANTE */}
+
 
          {/* ================= QUI NOUS SOMMES ================= */}
 <section
@@ -1185,7 +1239,7 @@ Message: ${form.message}`
   href="https://wa.me/33668863673"
   target="_blank"
   rel="noopener noreferrer"
-  className="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white px-5 py-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110"
+  className="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white px-5 py-4 rounded-full shadow-2xl transition-all duration-300 hover:scale-110 animate-pulse"
 >
   💬 WhatsApp
 </a>
