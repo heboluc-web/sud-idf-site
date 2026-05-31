@@ -1113,6 +1113,15 @@ Message: ${form.message}`
         YouTube
       </a>
 
+<a
+  href="https://www.linkedin.com/company/sud-idf-executive-transport"
+  target="_blank"
+  rel="noopener noreferrer"
+  className="hover:text-amber-400 transition"
+>
+  LinkedIn
+</a>
+
     </div>
   </div>
 </div>
