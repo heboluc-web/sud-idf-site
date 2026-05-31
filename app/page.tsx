@@ -208,13 +208,13 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
     <div className="grid md:grid-cols-4 gap-8">
 
-      <div className="group border border-amber-500/20 rounded-3xl p-8 bg-neutral-950 hover:border-amber-400 hover:-translate-y-2 transition-all duration-500 text-center">
+      <div className="group border border-amber-500/15 rounded-2xl p-6 bg-neutral-950 hover:border-amber-400 hover:-translate-y-2 transition-all duration-500 text-center">
 
-        <FaShieldAlt className="text-amber-400 text-5xl mx-auto mb-6 group-hover:scale-110 transition-all duration-500" />
+        <FaShieldAlt className="text-amber-400 text-4xl mx-auto mb-5 group-hover:scale-110 transition-all duration-500" />
 
-        <h3 className="text-white text-xl font-semibold mb-3">
-          Chauffeur professionnel
-        </h3>
+        <h3 className="text-white text-lg font-medium tracking-[0.08em] uppercase mb-3">
+  Chauffeur professionnel
+</h3>
 
         <p className="text-neutral-400">
           Discrétion et ponctualité
@@ -222,11 +222,11 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
       </div>
 
-      <div className="group border border-amber-500/20 rounded-3xl p-8 bg-neutral-950 hover:border-amber-400 hover:-translate-y-2 transition-all duration-500 text-center">
+      <div className="group border border-amber-500/15 rounded-2xl p-6 bg-neutral-950 hover:border-amber-400 hover:-translate-y-2 transition-all duration-500 text-center">
 
-        <FaClock className="text-amber-400 text-5xl mx-auto mb-6 group-hover:scale-110 transition-all duration-500" />
+        <FaClock className="text-amber-400 text-4xl mx-auto mb-5 group-hover:scale-110 transition-all duration-500" />
 
-        <h3 className="text-white text-xl font-semibold mb-3">
+        <h3 className="text-white text-lg font-medium tracking-[0.08em] uppercase mb-3">
           Disponible 24h/24
         </h3>
 
@@ -236,11 +236,11 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
       </div>
 
-      <div className="group border border-amber-500/20 rounded-3xl p-8 bg-neutral-950 hover:border-amber-400 hover:-translate-y-2 transition-all duration-500 text-center">
+      <div className="group border border-amber-500/15 rounded-2xl p-6 bg-neutral-950 hover:border-amber-400 hover:-translate-y-2 transition-all duration-500 text-center">
 
-        <FaPlane className="text-amber-400 text-5xl mx-auto mb-6 group-hover:scale-110 transition-all duration-500" />
+        <FaPlane className="text-amber-400 text-4xl mx-auto mb-5 group-hover:scale-110 transition-all duration-500" />
 
-        <h3 className="text-white text-xl font-semibold mb-3">
+        <h3 className="text-white text-lg font-medium tracking-[0.08em] uppercase mb-3">
           Orly & CDG
         </h3>
 
@@ -250,11 +250,11 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
       </div>
 
-      <div className="group border border-amber-500/20 rounded-3xl p-8 bg-neutral-950 hover:border-amber-400 hover:-translate-y-2 transition-all duration-500 text-center">
+      <div className="group border border-amber-500/15 rounded-2xl p-6 bg-neutral-950 hover:border-amber-400 hover:-translate-y-2 transition-all duration-500 text-center">
 
-        <FaStar className="text-amber-400 text-5xl mx-auto mb-6 group-hover:scale-110 transition-all duration-500" />
+        <FaStar className="text-amber-400 text-4xl mx-auto mb-5 group-hover:scale-110 transition-all duration-500" />
 
-        <h3 className="text-white text-xl font-semibold mb-3">
+        <h3 className="text-white text-lg font-medium tracking-[0.08em] uppercase mb-3">
           Service Premium
         </h3>
 
