@@ -2,6 +2,14 @@
 
 import { useEffect, useState } from 'react'
 
+import {
+  FaInstagram,
+  FaFacebookF,
+  FaTiktok,
+  FaYoutube,
+  FaLinkedinIn,
+} from "react-icons/fa";
+
 export default function SudIdfExecutiveTransport() {
   const [form, setForm] = useState({
     name: '',
@@ -1077,57 +1085,59 @@ Message: ${form.message}`
 
     <div className="flex flex-wrap gap-4 pt-4">
 
-      <a
-        href="https://www.instagram.com/sudidfexecutivetransport"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="hover:text-amber-400 transition"
-      >
-        Instagram
-      </a>
+  <a
+    href="https://www.instagram.com/sudidfexecutivetransport"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="w-11 h-11 rounded-full border border-amber-500/30 flex items-center justify-center text-neutral-400 hover:bg-amber-500 hover:text-black transition-all duration-300"
+  >
+    <FaInstagram />
+  </a>
 
-      <a
-        href="https://www.facebook.com/sudidfexecutivetransport"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="hover:text-amber-400 transition"
-      >
-        Facebook
-      </a>
+  <a
+    href="https://www.facebook.com/sudidfexecutivetransport"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="w-11 h-11 rounded-full border border-amber-500/30 flex items-center justify-center text-neutral-400 hover:bg-amber-500 hover:text-black transition-all duration-300"
+  >
+    <FaFacebookF />
+  </a>
 
-      <a
-        href="https://www.tiktok.com/@sudidfexecutivetransport"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="hover:text-amber-400 transition"
-      >
-        TikTok
-      </a>
+  <a
+    href="https://www.tiktok.com/@sudidfexecutivetransport"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="w-11 h-11 rounded-full border border-amber-500/30 flex items-center justify-center text-neutral-400 hover:bg-amber-500 hover:text-black transition-all duration-300"
+  >
+    <FaTiktok />
+  </a>
 
-      <a
-        href="https://www.youtube.com/@SUDIDFEXECUTIVETRANSPORT"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="hover:text-amber-400 transition"
-      >
-        YouTube
-      </a>
+  <a
+    href="https://www.youtube.com/@SUDIDFEXECUTIVETRANSPORT"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="w-11 h-11 rounded-full border border-amber-500/30 flex items-center justify-center text-neutral-400 hover:bg-amber-500 hover:text-black transition-all duration-300"
+  >
+    <FaYoutube />
+  </a>
 
-<a
-  href="https://www.linkedin.com/company/sud-idf-executive-transport"
-  target="_blank"
-  rel="noopener noreferrer"
-  className="hover:text-amber-400 transition"
->
-  LinkedIn
-</a>
+  <a
+    href="https://www.linkedin.com/company/sud-idf-executive-transport"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="w-11 h-11 rounded-full border border-amber-500/30 flex items-center justify-center text-neutral-400 hover:bg-amber-500 hover:text-black transition-all duration-300"
+  >
+    <FaLinkedinIn />
+  </a>
 
-    </div>
-  </div>
+</div>
+
+</div>
 </div>
 </div>
 
 {/* BOTTOM */}
+
 <div className="mt-20 border-t border-amber-500/20 pt-10 text-center">
 
   <div className="mb-6 flex flex-wrap justify-center gap-6 text-xs text-neutral-500">
