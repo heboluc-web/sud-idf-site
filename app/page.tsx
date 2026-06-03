@@ -68,19 +68,23 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
     className="w-28 mx-auto mb-6 animate-fade-in"
   />
 
-  <h1 className="text-4xl md:text-6xl text-amber-400 tracking-widest mb-4">
-    Chauffeur privé VTC
-  </h1>
+  <p className="text-amber-400 uppercase tracking-[0.4em] text-xs md:text-sm mb-4">
+  DISPONIBILITÉ PRIORITAIRE SUR RÉSERVATION
+</p>
 
-  <p className="text-gray-200 text-2xl md:text-3xl mb-6 font-light tracking-wide">
-    Pour tous vos déplacements en toute sécurité
-  </p>
+<h1 className="...">
+  Chauffeur privé VTC
+</h1>
 
-  <p className="text-gray-300 mb-6">
-    VTC haut de gamme en Île-de-France
-  </p>
+<p className="text-lg md:text-xl text-white mb-6">
+  Planifiez vos transferts à l'avance pour garantir disponibilité et ponctualité.
+</p>
 
-  <a
+<p className="...">
+  VTC haut de gamme en Île-de-France
+</p>
+
+<a
     href="/reservation"
     className="inline-block px-6 py-3 bg-amber-500 text-black rounded-xl hover:bg-amber-400 transition"
   >
