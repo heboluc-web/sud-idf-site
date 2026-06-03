@@ -73,11 +73,11 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 </p>
 
 
-<h1 className="...">
+<h1 className="text-6xl md:text-8xl font-light text-amber-400 mb-4">
   Chauffeur privé VTC
 </h1>
 
-<p className="text-lg md:text-xl text-white mb-6">
+<p className="text-lg md:text-2xl text-white mb-6">
   Planifiez vos transferts à l'avance pour garantir disponibilité et ponctualité.
 </p>
 
