@@ -68,9 +68,10 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
     className="w-28 mx-auto mb-6 animate-fade-in"
   />
 
-  <p className="text-amber-400 uppercase tracking-[0.4em] text-xs md:text-sm mb-6">
+  <p className="text-amber-400 uppercase tracking-[0.6em] text-xs md:text-sm mb-6">
   DISPONIBILITÉ PRIORITAIRE SUR RÉSERVATION
 </p>
+
 
 <h1 className="...">
   Chauffeur privé VTC
