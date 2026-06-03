@@ -86,11 +86,11 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 </p>
 
 <a
-    href="/reservation"
-    className="inline-block px-6 py-3 bg-amber-500 text-black rounded-xl hover:bg-amber-400 transition"
-  >
-    Réserver maintenant
-  </a>
+  href="/reservation"
+  className="mt-6 inline-block bg-amber-500 text-black px-8 py-4 rounded-xl hover:bg-amber-400 transition"
+>
+  Réserver maintenant
+</a>
 </div>
 
      {/* ================= NAVBAR ================= */}
