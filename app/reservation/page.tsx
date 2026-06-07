@@ -602,7 +602,19 @@ window.open(url, "_blank");
 </button>
 
 <a
-  href="/appel"
+  href="tel:+33668863673"
+  onClick={() => {
+    if (
+      typeof window !== "undefined" &&
+      typeof (window as any).gtag === "function"
+    ) {
+      (window as any).gtag("event", "phone_click", {
+        event_category: "Lead",
+        event_label: "Telephone",
+        value: 1,
+      });
+    }
+  }}
   className="w-full flex items-center justify-center gap-3 border border-yellow-500/30 bg-black hover:bg-yellow-500/10 text-yellow-400 py-4 rounded-xl transition-all duration-300 mt-4"
 >
   📞 Appeler maintenant
