@@ -592,7 +592,9 @@ ${form.message || "Aucun"}
 
     const url = `https://wa.me/33650038514?text=${encodeURIComponent(message)}`;
 
-    window.open(url, "_blank");
+    console.log("WHATSAPP CLICK DETECTE");
+
+window.open(url, "_blank");
   }}
   className="w-full flex items-center justify-center gap-3 border border-yellow-500/30 bg-black hover:bg-yellow-500/10 text-yellow-400 py-4 rounded-xl transition-all duration-300 mt-4"
 >
