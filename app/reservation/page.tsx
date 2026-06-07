@@ -145,32 +145,32 @@ export default function Reservation() {
          const tarifs = {
   "Mercedes Classe V": {
     prixKm: 2,
-    minimum: 65,
+    minimum: 55,
 
     // ===== AÉROPORTS =====
-    cdg77: 160,
-    cdgEssonne: 150,
+    cdg77: 130,
+    cdgEssonne: 105,
 
-    orly77: 130,
-    orlyEssonne: 120,
+    orly77: 117,
+    orlyEssonne: 108,
 
     // ===== MISE À DISPO =====
-    miseADispo: 95,
+    miseADispo: 55,
   },
 
   "Range Rover": {
     prixKm: 2.8,
-    minimum: 95,
+    minimum: 85,
 
     // ===== AÉROPORTS =====
-    cdg77: 200,
-    cdgEssonne: 190,
+    cdg77: 162,
+    cdgEssonne: 153,
 
-    orly77: 180,
-    orlyEssonne: 170,
+    orly77: 145,
+    orlyEssonne: 138,
 
     // ===== MISE À DISPO =====
-    miseADispo: 120,
+    miseADispo: 85,
   },
 };
 
@@ -525,7 +525,7 @@ else {
   type="submit"
   className="w-full flex items-center justify-center py-4 bg-gradient-to-r from-amber-500 to-yellow-400 text-black font-semibold rounded-2xl hover:scale-[1.02] transition-all duration-300"
 >
-  ✨Envoyer ma demande
+  ✨ Envoyer ma demande
 </button>
 
 <button
@@ -575,7 +575,20 @@ else {
 
 📝 Message :
 ${form.message || "Aucun"}
-    `;
+`;
+
+    // Conversion Google Analytics
+    if (typeof window !== "undefined") {
+      const gtag = (window as any).gtag;
+
+      if (typeof gtag === "function") {
+        gtag("event", "whatsapp_click", {
+          event_category: "Lead",
+          event_label: "WhatsApp",
+          value: 1,
+        });
+      }
+    }
 
     const url = `https://wa.me/33650038514?text=${encodeURIComponent(message)}`;
 
@@ -601,4 +614,3 @@ ${form.message || "Aucun"}
 </>
 );
 }
-
