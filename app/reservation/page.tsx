@@ -280,15 +280,18 @@ export default function Reservation() {
         return;
       }
 
-      // Séminaire : choix de durée, avec le forfait défini de 4 h / 100 km = 350 € TTC.
+      // Séminaire : deux forfaits fixes.
+      // 4 h / 100 km = 350 € TTC ; 8 h / 200 km = 680 € TTC.
       const dureeSeminaire = form.dureeSeminaire || "4";
-      const prixTTC = 350;
+      const estForfait8h = dureeSeminaire === "8";
+      const prixTTC = estForfait8h ? 680 : 350;
+      const kmInclus = estForfait8h ? 200 : 100;
       setForm((prev) => ({
         ...prev,
-        distance: "100 km inclus",
+        distance: `${kmInclus} km inclus`,
         duree: `${dureeSeminaire} h`,
         prix: `${prixTTC} € TTC`,
-        detailsPrix: "Forfait séminaire : 4 h / 100 km inclus",
+        detailsPrix: `Forfait séminaire : ${dureeSeminaire} h / ${kmInclus} km inclus`,
         tarification: "",
       }));
       return;
@@ -701,7 +704,7 @@ ${form.message || "Aucun"}`;
             >
               <option value="2">Durée de mise à disposition : 2 h minimum</option>
               <option value="3">3 heures</option>
-              <option value="4">4 heures / 100 km — 350 € TTC</option>
+              <option value="4">4 heures</option>
               <option value="5">5 heures</option>
               <option value="6">6 heures</option>
               <option value="7">7 heures</option>
@@ -718,6 +721,7 @@ ${form.message || "Aucun"}`;
               className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
             >
               <option value="4">Séminaire : 4 heures / 100 km — 350 € TTC</option>
+              <option value="8">Séminaire : 8 heures / 200 km — 680 € TTC</option>
             </select>
           )}
 
