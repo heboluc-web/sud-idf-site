@@ -11,6 +11,8 @@ import {
   FaShieldAlt,
   FaClock,
   FaPlane,
+  FaTrain,
+  FaShip,
   FaStar,
 } from "react-icons/fa";
 
@@ -211,7 +213,7 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 <section className="py-20 bg-black">
   <div className="max-w-7xl mx-auto px-6">
 
-    <div className="grid md:grid-cols-4 gap-8">
+    <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
 
       <div className="group border border-amber-500/15 rounded-2xl p-5 bg-neutral-950 flex flex-col justify-center text-center hover:-translate-y-2 hover:border-amber-400/40 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)] transition-all duration-500">
 
@@ -241,12 +243,12 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
 </div>
 
-     <div className="group border border-amber-500/15 rounded-2xl p-5 bg-neutral-950 flex flex-col justify-center text-center hover:-translate-y-2 hover:border-amber-400/40 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)] transition-all duration-500">
+      <div className="group border border-amber-500/15 rounded-2xl p-5 bg-neutral-950 flex flex-col justify-center text-center hover:-translate-y-2 hover:border-amber-400/40 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)] transition-all duration-500">
 
   <FaPlane className="text-amber-300 text-4xl mx-auto mb-5 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)] group-hover:scale-110 transition-all duration-500" />
 
   <h3 className="text-white text-lg font-medium tracking-[0.08em] uppercase mb-3">
-    Orly & CDG
+    ORLY / CDG / BVA
   </h3>
 
   <p className="text-neutral-400">
@@ -256,6 +258,35 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 </div>
 
       <div className="group border border-amber-500/15 rounded-2xl p-5 bg-neutral-950 flex flex-col justify-center text-center hover:-translate-y-2 hover:border-amber-400/40 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)] transition-all duration-500">
+
+  <FaTrain className="text-amber-300 text-4xl mx-auto mb-5 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)] group-hover:scale-110 transition-all duration-500" />
+
+  <h3 className="text-white text-lg font-medium tracking-[0.08em] uppercase mb-3">
+    Gares
+  </h3>
+
+  <p className="text-neutral-400">
+    Transferts gares premium
+  </p>
+
+</div>
+
+      <div className="group border border-amber-500/15 rounded-2xl p-5 bg-neutral-950 flex flex-col justify-center text-center hover:-translate-y-2 hover:border-amber-400/40 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)] transition-all duration-500">
+
+  <FaShip className="text-amber-300 text-4xl mx-auto mb-5 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)] group-hover:scale-110 transition-all duration-500" />
+
+  <h3 className="text-white text-lg font-medium tracking-[0.08em] uppercase mb-3">
+    Ports
+  </h3>
+
+  <p className="text-neutral-400">
+    Transferts vers les ports
+  </p>
+
+</div>
+
+      <div className="group border border-amber-500/15 rounded-2xl p-5 bg-neutral-950 flex flex-col justify-center text-center hover:-translate-y-2 hover:border-amber-400/40 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)] transition-all duration-500">
+
   <FaStar className="text-amber-300 text-4xl mx-auto mb-5 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)] group-hover:scale-110 transition-all duration-500" />
 
   <h3 className="text-white text-lg font-medium tracking-[0.08em] uppercase mb-3">
@@ -292,8 +323,8 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
       </h2>
 
       <p className="text-neutral-300 leading-relaxed text-base mb-6 tracking-wide">
-        SUD IDF EXECUTIVE TRANSPORT est une structure spécialisée dans le transport exécutif dédié aux entreprises, hôtelleries, groupes,
-        directions générales, cabinets d’expertise, événementiels, navettes et bien d'autres professionnels.
+        SUD IDF EXECUTIVE TRANSPORT est une structure spécialisée dans le transport exécutif dédié principalement 657aux entreprises, hôtelleries, groupes,
+        directions générales, cabinets d’expertise, événementiels, navettes et bien d'autres professionnels et particuliers.
       </p>
 
       <p className="text-neutral-400 leading-relaxed text-sm mb-6">
@@ -481,6 +512,19 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
         <p className="text-gray-400">
           Transport premium pour mariages et événements privés.
+        </p>
+      </a>
+
+      <a
+        href="/chauffeur-vtc-disneyland-paris"
+        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
+      >
+        <h3 className="text-xl text-amber-400 mb-3">
+          Chauffeur VTC Disneyland Paris
+        </h3>
+
+        <p className="text-gray-400">
+          Transfert privé premium vers Disneyland Paris depuis Paris et l’Île-de-France.
         </p>
       </a>
 
