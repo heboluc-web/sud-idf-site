@@ -528,6 +528,18 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
         </p>
       </a>
 
+            <a
+        href="/chauffeur-vtc-versailles"
+        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
+      >
+        <h3 className="text-xl text-amber-400 mb-3">
+          Chauffeur VTC Versailles
+        </h3>
+
+        <p className="text-gray-400">
+          Transfert privé premium vers Versailles depuis Paris et l’Île-de-France.
+        </p>
+      </a>
       <a
         href="/vtc-essonne"
         className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
