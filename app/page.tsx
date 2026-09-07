@@ -640,7 +640,7 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
   </h2>
 
   <h3 className="text-2xl tracking-[0.6em] uppercase text-white mb-16 font-light">
-    Mercedes Classe V · 8 Places
+    Mercedes Classe V 
   </h3>
 
 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-20 max-w-7xl mx-auto mb-16">
@@ -692,7 +692,7 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
       <div className="absolute bottom-8 left-8 text-left">
         <h4 className="text-sm tracking-[0.4em] uppercase text-white font-light">
-          Executive Van · 8 Places
+          Executive Van 
         </h4>
       </div>
     </div>
@@ -754,7 +754,103 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
     </div>
   ))}
 </div>
+<h3 className="text-2xl tracking-[0.6em] uppercase text-white mb-16 font-light">
+  Berline
+</h3>
 
+<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-20 max-w-7xl mx-auto mb-16">
+  {[
+    "/classe E.jpg",
+    "/classe E1.jpg",
+    "/classe E2.jpg",
+    "/classe E3.jpg",
+    "/classe E4.jpg",
+    "/classe E5.jpg",
+  ].map((img, index) => (
+    <div
+      key={index}
+      className="
+        group relative bg-neutral-900 rounded-3xl overflow-hidden
+        border border-amber-500/20
+        transition-all duration-700 ease-out
+        hover:-translate-y-4
+        hover:border-amber-400
+        hover:shadow-[0_25px_100px_rgba(212,175,55,0.35)]
+      "
+    >
+      <img
+        src={img}
+        alt="Mercedes Classe E"
+        className="
+          w-full aspect-[4/3] object-cover
+          transition-all duration-1000
+          group-hover:scale-110
+          group-hover:brightness-110
+        "
+      />
+
+      <div className="
+        absolute inset-0
+        bg-gradient-to-t from-black/60 via-black/10 to-transparent
+        opacity-60 group-hover:opacity-30
+        transition duration-700
+      " />
+
+      <div className="absolute bottom-8 left-8 text-left">
+        <h4 className="text-sm tracking-[0.4em] uppercase text-white font-light">
+          Mercedes Classe E
+        </h4>
+      </div>
+    </div>
+  ))}
+</div>
+
+<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-20 max-w-7xl mx-auto">
+  {[
+    "/classe S.jpg",
+    "/classe S1.jpg",
+    "/classe S2.jpg",
+    "/classe S3.jpg",
+    "/classe S4.jpg",
+    "/classe S5.jpg",
+  ].map((img, index) => (
+    <div
+      key={index}
+      className="
+        group relative bg-neutral-900 rounded-3xl overflow-hidden
+        border border-amber-500/20
+        transition-all duration-700 ease-out
+        hover:-translate-y-4
+        hover:border-amber-400
+        hover:shadow-[0_25px_100px_rgba(212,175,55,0.35)]
+      "
+    >
+      <img
+        src={img}
+        alt="Mercedes Classe S"
+        className="
+          w-full aspect-[4/3] object-cover
+          transition-all duration-1000
+          group-hover:scale-110
+          group-hover:brightness-110
+        "
+      />
+
+      <div className="
+        absolute inset-0
+        bg-gradient-to-t from-black/60 via-black/10 to-transparent
+        opacity-60 group-hover:opacity-30
+        transition duration-700
+      " />
+
+      <div className="absolute bottom-8 left-8 text-left">
+        <h4 className="text-sm tracking-[0.4em] uppercase text-white font-light">
+          Mercedes Classe S
+        </h4>
+      </div>
+    </div>
+  ))}
+</div>
 </section>  
 
     {/* ================= TRUST ================= */}
