@@ -4,6 +4,10 @@ export const metadata: Metadata = {
   title: "Transport longue distance | Chauffeur VTC Premium",
   description:
     "Transport longue distance avec chauffeur VTC depuis Paris et l’Île-de-France. Trajets privés, professionnels et transferts longue distance en véhicule premium.",
+  alternates: {
+    canonical:
+      "https://www.sudidfexecutivetransport.fr/transport-longue-distance",
+  },
 };
 
 export default function TransportLongueDistance() {
