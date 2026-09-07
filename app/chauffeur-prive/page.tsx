@@ -1,3 +1,16 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title:
+    "Chauffeur privé VTC en Île-de-France | Sud IDF Executive Transport",
+  description:
+    "Chauffeur privé VTC premium en Île-de-France. Transferts aéroports, gares, déplacements business, événements et trajets longue distance.",
+  alternates: {
+    canonical:
+      "https://www.sudidfexecutivetransport.fr/chauffeur-prive",
+  },
+};
+
 export default function ChauffeurPrive() {
   return (
     <main className="min-h-screen bg-black text-white px-6 py-20">
