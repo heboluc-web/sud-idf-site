@@ -4,6 +4,10 @@ export const metadata: Metadata = {
   title: "Chauffeur VTC Parc Astérix | Transfert Privé Premium",
   description:
     "Chauffeur VTC Parc Astérix : transferts privés depuis Paris, les aéroports et l’Île-de-France vers le Parc Astérix. Service premium, ponctualité et confort.",
+  alternates: {
+    canonical:
+      "https://www.sudidfexecutivetransport.fr/chauffeur-vtc-parc-asterix",
+  },
 };
 
 export default function ChauffeurVtcParcAsterix() {
