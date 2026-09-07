@@ -4,6 +4,10 @@ export const metadata: Metadata = {
   title: "Voiture de mariage avec chauffeur | VTC Premium",
   description:
     "Voiture de mariage avec chauffeur à Paris et en Île-de-France. Chauffeur VTC pour les mariés, invités, cérémonies et réceptions, avec un service élégant et personnalisé.",
+  alternates: {
+    canonical:
+      "https://www.sudidfexecutivetransport.fr/voiture-mariage-chauffeur",
+  },
 };
 
 export default function VoitureMariageChauffeur() {
