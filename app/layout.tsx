@@ -23,12 +23,13 @@ export const metadata: Metadata = {
   ),
 
   title: {
-    default: "Sud IDF Executive Transport",
+    default:
+      "Chauffeur privé VTC en Essonne et Île-de-France | Sud IDF Executive Transport",
     template: "%s | Sud IDF Executive Transport",
   },
 
   description:
-    "Chauffeur privé haut de gamme en Essonne et Île-de-France. Transferts Orly, CDG, transport business et mise à disposition 24h/24.",
+    "Chauffeur privé VTC haut de gamme en Essonne et Île-de-France. Transferts Orly, CDG, Paris, déplacements business, événements et mise à disposition.",
 
   keywords: [
     "chauffeur privé Essonne",
@@ -78,10 +79,11 @@ export const metadata: Metadata = {
   },
 
   openGraph: {
-    title: "Sud IDF Executive Transport",
+    title:
+      "Chauffeur privé VTC en Essonne et Île-de-France | Sud IDF Executive Transport",
 
     description:
-      "Service de chauffeur privé premium en Île-de-France. Transferts Orly, CDG, déplacements business et mise à disposition 24h/24.",
+      "Chauffeur privé VTC haut de gamme en Essonne et Île-de-France. Transferts Orly, CDG, Paris, déplacements business, événements et mise à disposition.",
 
     url:
       "https://www.sudidfexecutivetransport.fr",
@@ -98,7 +100,7 @@ export const metadata: Metadata = {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Sud IDF Executive Transport",
+        alt: "Sud IDF Executive Transport - Chauffeur privé VTC",
       },
     ],
   },
@@ -107,10 +109,10 @@ export const metadata: Metadata = {
     card: "summary_large_image",
 
     title:
-      "Sud IDF Executive Transport",
+      "Chauffeur privé VTC en Essonne et Île-de-France | Sud IDF Executive Transport",
 
     description:
-      "Chauffeur privé premium en Essonne et Île-de-France.",
+      "Chauffeur privé VTC haut de gamme en Essonne et Île-de-France. Transferts Orly, CDG, Paris et mise à disposition.",
 
     images: ["/og-image.jpg"],
   },
@@ -200,17 +202,21 @@ export default function RootLayout({
                     addressRegion:
                       "Île-de-France",
 
-                    postalCode: "91100",
+                    postalCode:
+                      "91100",
 
-                    addressCountry: "FR",
+                    addressCountry:
+                      "FR",
                   },
 
                   geo: {
                     "@type": "GeoCoordinates",
 
-                    latitude: "48.6066",
+                    latitude:
+                      "48.6066",
 
-                    longitude: "2.4875",
+                    longitude:
+                      "2.4875",
                   },
 
                   areaServed: [
@@ -274,7 +280,8 @@ export default function RootLayout({
                   ],
 
                   hasOfferCatalog: {
-                    "@type": "OfferCatalog",
+                    "@type":
+                      "OfferCatalog",
 
                     name:
                       "Services de transport",
