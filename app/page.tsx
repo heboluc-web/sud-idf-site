@@ -754,8 +754,8 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
     </div>
   ))}
 </div>
-<h3 className="text-2xl tracking-[0.6em] uppercase text-white mb-16 font-light">
-  Berline
+<h3 className="text-2xl tracking-[0.6em] uppercase text-white mb-16 font-light text-center w-full">
+  NOS BERLINES
 </h3>
 
 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-20 max-w-7xl mx-auto mb-16">
