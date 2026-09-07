@@ -7,6 +7,11 @@ export const metadata = {
   description:
     "Service premium de mise à disposition avec chauffeur privé en Essonne, Paris et Île-de-France. Véhicule haut de gamme avec chauffeur pour entreprises, événements et déplacements longue durée.",
 
+  alternates: {
+    canonical:
+      "https://www.sudidfexecutivetransport.fr/chauffeur-prive-mise-a-disposition",
+  },
+
   keywords: [
     "mise à disposition chauffeur privé",
     "chauffeur privé premium",
