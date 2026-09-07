@@ -754,9 +754,12 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
     </div>
   ))}
 </div>
-<h3 className="text-2xl tracking-[0.6em] uppercase text-white mb-16 font-light text-center w-full">
-  NOS BERLINES
-</h3>
+
+<div className="relative left-[50vw] -translate-x-1/2 mt-16 mb-16 w-screen">
+  <h3 className="text-2xl tracking-[0.6em] uppercase text-white font-light text-center">
+    NOS BERLINES
+  </h3>
+</div>
 
 <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-20 max-w-7xl mx-auto mb-16">
   {[
@@ -851,7 +854,7 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
     </div>
   ))}
 </div>
-</section>  
+</section>
 
     {/* ================= TRUST ================= */}
       <section

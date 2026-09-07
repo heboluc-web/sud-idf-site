@@ -234,11 +234,15 @@ export default function Reservation() {
   const calculerMiseADispo = () => {
     const heures = Math.max(1, parseInt(form.dureeMiseADispo || "2", 10));
     const estRangeRover = form.vehicule === "Range Rover";
+    const estBerline =
+      form.vehicule === "Mercedes Classe E" ||
+      form.vehicule === "Mercedes Classe S";
     const tarifHoraireBase = estRangeRover ? 95 : 80;
 
     // MAD : tarif horaire progressif. Le forfait Séminaire est indépendant.
     const tarifHoraire = Math.max(60, tarifHoraireBase - 5 * (heures - 1));
     const prixTTC = heures * tarifHoraire;
+    const prixFinalTTC = estBerline ? prixTTC * 0.9 : prixTTC;
     const kmInclus = heures * 25;
 
     setForm((prev) => ({
@@ -332,6 +336,9 @@ export default function Reservation() {
         const heureCourse = parseInt(form.heure.split(":")[0] || "12", 10);
         const estNuit = heureCourse >= 19 || heureCourse < 6;
         const estRangeRover = form.vehicule === "Range Rover";
+        const estBerline =
+          form.vehicule === "Mercedes Classe E" ||
+          form.vehicule === "Mercedes Classe S";
 
         const tarifKmJour = estRangeRover ? 2.5 : 2;
         const tarifKmNuit = estRangeRover ? 3 : 2.5;
@@ -428,6 +435,10 @@ export default function Reservation() {
           }
         }
 
+        if (estBerline) {
+          prixTTC *= 0.9;
+        }
+
         const prixArrondi = Math.max(0, Math.round(prixTTC));
 
         setForm((prev) => ({
@@ -463,11 +474,23 @@ export default function Reservation() {
   const getMaxPassagers = () => {
     if (form.vehicule === "Mercedes Classe V") return 6;
     if (form.vehicule === "Range Rover") return 3;
+    if (
+      form.vehicule === "Mercedes Classe E" ||
+      form.vehicule === "Mercedes Classe S"
+    )
+      return 2;
     return 10;
   };
 
   const getMaxBagagesPour = (passagers: number, vehicule: string) => {
     if (vehicule === "Range Rover") return 3;
+
+    if (
+      vehicule === "Mercedes Classe E" ||
+      vehicule === "Mercedes Classe S"
+    ) {
+      return 3;
+    }
 
     if (vehicule === "Mercedes Classe V") {
       return passagers >= 4 ? 6 : 10;
@@ -640,7 +663,9 @@ ${form.message || "Aucun"}`;
           >
             <option value="">Type de véhicule</option>
             <option>Mercedes Classe V</option>
-            <option>Range Rover</option>
+<option>Range Rover</option>
+<option>Mercedes Classe E</option>
+<option>Mercedes Classe S</option>
           </select>
 
           <input
@@ -671,9 +696,12 @@ ${form.message || "Aucun"}`;
             <p className="text-xs text-gray-400 -mt-2">
               {form.vehicule === "Range Rover"
                 ? "Range Rover : maximum 3 valises."
-                : parseInt(form.passagers, 10) <= 3
-                  ? "Classe V (1 à 3 passagers) : jusqu’à 10 valises."
-                  : "Classe V (4 à 6 passagers) : maximum 6 valises."}
+                : form.vehicule === "Mercedes Classe E" ||
+                  form.vehicule === "Mercedes Classe S"
+                  ? "Berline : maximum 3 bagages (2 grandes valises + 1 valise cabine)."
+                  : parseInt(form.passagers, 10) <= 3
+                    ? "Classe V (1 à 3 passagers) : jusqu’à 10 valises."
+                    : "Classe V (4 à 6 passagers) : maximum 6 valises."}
             </p>
           )}
 
