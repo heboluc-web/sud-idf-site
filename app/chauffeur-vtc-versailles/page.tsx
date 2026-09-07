@@ -4,6 +4,10 @@ export const metadata = {
   title: "Chauffeur VTC Versailles | Transfert Privé Premium",
   description:
     "Chauffeur VTC Versailles : transferts privés depuis Paris et l’Île-de-France vers Versailles. Service premium, ponctualité et confort.",
+  alternates: {
+    canonical:
+      "https://www.sudidfexecutivetransport.fr/chauffeur-vtc-versailles",
+  },
 };
 
 export default function ChauffeurVtcVersailles() {
