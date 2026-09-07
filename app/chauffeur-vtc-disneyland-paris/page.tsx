@@ -121,91 +121,91 @@ export default function ChauffeurVtcDisneylandParis() {
       </section>
 
 
-      {/* ================= SERVICES ================= */}
-      <section className="py-32 px-6 bg-black border-t border-amber-500/10">
+    {/* ================= SERVICES ================= */}
+<section className="py-32 px-6 bg-black border-t border-amber-500/10">
 
-        <div className="max-w-7xl mx-auto">
+  <div className="max-w-7xl mx-auto">
 
-          <h2 className="text-3xl md:text-4xl text-amber-400 tracking-[0.35em] uppercase font-light mb-16 text-center">
-            Transferts vers Disneyland Paris
-          </h2>
+    <h2 className="text-3xl md:text-4xl text-amber-400 tracking-[0.35em] uppercase font-light mb-16 text-center">
+      Transferts vers Disneyland Paris
+    </h2>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-            <div className="bg-neutral-950 border border-amber-500/20 rounded-3xl p-8">
-              <h3 className="text-xl text-amber-400 mb-5">
-                Paris → Disneyland Paris
-              </h3>
+      <div className="bg-neutral-950 border border-amber-500/20 rounded-3xl p-8 transition-all duration-300 hover:-translate-y-2 hover:border-amber-400 hover:shadow-[0_12px_35px_rgba(245,158,11,0.15)] cursor-pointer">
+        <h3 className="text-xl text-amber-400 mb-5">
+          Paris → Disneyland Paris
+        </h3>
 
-              <p className="text-neutral-400 leading-7">
-                Départ depuis Paris avec une prise en charge privée et un
-                trajet confortable jusqu’à Disneyland Paris.
-              </p>
-            </div>
-
-
-            <div className="bg-neutral-950 border border-amber-500/20 rounded-3xl p-8">
-              <h3 className="text-xl text-amber-400 mb-5">
-                Aéroports → Disneyland Paris
-              </h3>
-
-              <p className="text-neutral-400 leading-7">
-                Transferts privés depuis Orly, Roissy Charles-de-Gaulle et
-                l’aéroport de Beauvais vers Disneyland Paris.
-              </p>
-            </div>
+        <p className="text-neutral-400 leading-7">
+          Départ depuis Paris avec une prise en charge privée et un
+          trajet confortable jusqu’à Disneyland Paris.
+        </p>
+      </div>
 
 
-            <div className="bg-neutral-950 border border-amber-500/20 rounded-3xl p-8">
-              <h3 className="text-xl text-amber-400 mb-5">
-                Gares → Disneyland Paris
-              </h3>
+      <div className="bg-neutral-950 border border-amber-500/20 rounded-3xl p-8 transition-all duration-300 hover:-translate-y-2 hover:border-amber-400 hover:shadow-[0_12px_35px_rgba(245,158,11,0.15)] cursor-pointer">
+        <h3 className="text-xl text-amber-400 mb-5">
+          Aéroports → Disneyland Paris
+        </h3>
 
-              <p className="text-neutral-400 leading-7">
-                Prise en charge depuis les principales gares de Paris et
-                d’Île-de-France pour rejoindre votre hôtel ou Disneyland Paris.
-              </p>
-            </div>
-
-
-            <div className="bg-neutral-950 border border-amber-500/20 rounded-3xl p-8">
-              <h3 className="text-xl text-amber-400 mb-5">
-                Hôtels Disneyland Paris
-              </h3>
-
-              <p className="text-neutral-400 leading-7">
-                Transport privé vers les hôtels situés autour de Disneyland
-                Paris et du secteur de Val d’Europe.
-              </p>
-            </div>
+        <p className="text-neutral-400 leading-7">
+          Transferts privés depuis Orly, Roissy Charles-de-Gaulle et
+          l’aéroport de Beauvais vers Disneyland Paris.
+        </p>
+      </div>
 
 
-            <div className="bg-neutral-950 border border-amber-500/20 rounded-3xl p-8">
-              <h3 className="text-xl text-amber-400 mb-5">
-                Familles et groupes
-              </h3>
+      <div className="bg-neutral-950 border border-amber-500/20 rounded-3xl p-8 transition-all duration-300 hover:-translate-y-2 hover:border-amber-400 hover:shadow-[0_12px_35px_rgba(245,158,11,0.15)] cursor-pointer">
+        <h3 className="text-xl text-amber-400 mb-5">
+          Gares → Disneyland Paris
+        </h3>
 
-              <p className="text-neutral-400 leading-7">
-                Une solution de transport confortable pour les familles et
-                les groupes, selon le nombre de passagers et de bagages.
-              </p>
-            </div>
+        <p className="text-neutral-400 leading-7">
+          Prise en charge depuis les principales gares de Paris et
+          d’Île-de-France pour rejoindre votre hôtel ou Disneyland Paris.
+        </p>
+      </div>
 
 
-            <div className="bg-neutral-950 border border-amber-500/20 rounded-3xl p-8">
-              <h3 className="text-xl text-amber-400 mb-5">
-                Service VIP
-              </h3>
+      <div className="bg-neutral-950 border border-amber-500/20 rounded-3xl p-8 transition-all duration-300 hover:-translate-y-2 hover:border-amber-400 hover:shadow-[0_12px_35px_rgba(245,158,11,0.15)] cursor-pointer">
+        <h3 className="text-xl text-amber-400 mb-5">
+          Hôtels Disneyland Paris
+        </h3>
 
-              <p className="text-neutral-400 leading-7">
-                Une prestation personnalisée pour les clients recherchant
-                davantage de confort, de discrétion et de flexibilité.
-              </p>
-            </div>
+        <p className="text-neutral-400 leading-7">
+          Transport privé vers les hôtels situés autour de Disneyland
+          Paris et du secteur de Val d’Europe.
+        </p>
+      </div>
 
-          </div>
-        </div>
-      </section>
+
+      <div className="bg-neutral-950 border border-amber-500/20 rounded-3xl p-8 transition-all duration-300 hover:-translate-y-2 hover:border-amber-400 hover:shadow-[0_12px_35px_rgba(245,158,11,0.15)] cursor-pointer">
+        <h3 className="text-xl text-amber-400 mb-5">
+          Familles et groupes
+        </h3>
+
+        <p className="text-neutral-400 leading-7">
+          Une solution de transport confortable pour les familles et
+          les groupes, selon le nombre de passagers et de bagages.
+        </p>
+      </div>
+
+
+      <div className="bg-neutral-950 border border-amber-500/20 rounded-3xl p-8 transition-all duration-300 hover:-translate-y-2 hover:border-amber-400 hover:shadow-[0_12px_35px_rgba(245,158,11,0.15)] cursor-pointer">
+        <h3 className="text-xl text-amber-400 mb-5">
+          Service VIP
+        </h3>
+
+        <p className="text-neutral-400 leading-7">
+          Une prestation personnalisée pour les clients recherchant
+          davantage de confort, de discrétion et de flexibilité.
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
 
 
       {/* ================= EXPERIENCE ================= */}

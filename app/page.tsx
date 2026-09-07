@@ -422,16 +422,13 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
       Nos services de chauffeur privé
     </h2>
 
-    <div className="grid md:grid-cols-3 gap-6">
+    <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
 
       <a
         href="/chauffeur-prive"
         className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
       >
-        <h3 className="text-xl text-amber-400 mb-3">
-          Chauffeur privé
-        </h3>
-
+        <h3 className="text-xl text-amber-400 mb-3">Chauffeur privé</h3>
         <p className="text-gray-400">
           Service premium en Île-de-France pour particuliers et professionnels.
         </p>
@@ -441,12 +438,9 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
         href="/chauffeur-prive-paris"
         className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
       >
-        <h3 className="text-xl text-amber-400 mb-3">
-          Chauffeur privé Paris
-        </h3>
-
+        <h3 className="text-xl text-amber-400 mb-3">Chauffeur privé Paris</h3>
         <p className="text-gray-400">
-          Service premium à Paris et Île-de-France.
+          Service premium à Paris et en Île-de-France.
         </p>
       </a>
 
@@ -454,10 +448,7 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
         href="/chauffeur-prive-orly"
         className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
       >
-        <h3 className="text-xl text-amber-400 mb-3">
-          Chauffeur privé Orly
-        </h3>
-
+        <h3 className="text-xl text-amber-400 mb-3">Chauffeur privé Orly</h3>
         <p className="text-gray-400">
           Transport premium vers l’aéroport d’Orly.
         </p>
@@ -467,12 +458,21 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
         href="/chauffeur-prive-cdg"
         className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
       >
-        <h3 className="text-xl text-amber-400 mb-3">
-          Chauffeur privé CDG
-        </h3>
-
+        <h3 className="text-xl text-amber-400 mb-3">Chauffeur privé CDG</h3>
         <p className="text-gray-400">
           Chauffeur haut de gamme vers Roissy CDG.
+        </p>
+      </a>
+
+      <a
+        href="/chauffeur-aeroport-beauvais"
+        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
+      >
+        <h3 className="text-xl text-amber-400 mb-3">
+          Chauffeur VTC Beauvais
+        </h3>
+        <p className="text-gray-400">
+          Transfert privé vers et depuis l’aéroport de Beauvais BVA.
         </p>
       </a>
 
@@ -480,10 +480,7 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
         href="/transport-vip"
         className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
       >
-        <h3 className="text-xl text-amber-400 mb-3">
-          Transport VIP
-        </h3>
-
+        <h3 className="text-xl text-amber-400 mb-3">Transport VIP</h3>
         <p className="text-gray-400">
           Déplacements exécutifs et clientèle premium.
         </p>
@@ -493,25 +490,9 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
         href="/chauffeur-business"
         className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
       >
-        <h3 className="text-xl text-amber-400 mb-3">
-          Chauffeur business
-        </h3>
-
+        <h3 className="text-xl text-amber-400 mb-3">Chauffeur business</h3>
         <p className="text-gray-400">
           Service professionnel pour entreprises.
-        </p>
-      </a>
-
-      <a
-        href="/mariage"
-        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
-      >
-        <h3 className="text-xl text-amber-400 mb-3">
-          Chauffeur mariage
-        </h3>
-
-        <p className="text-gray-400">
-          Transport premium pour mariages et événements privés.
         </p>
       </a>
 
@@ -522,32 +503,124 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
         <h3 className="text-xl text-amber-400 mb-3">
           Chauffeur VTC Disneyland Paris
         </h3>
-
         <p className="text-gray-400">
-          Transfert privé premium vers Disneyland Paris depuis Paris et l’Île-de-France.
+          Transfert privé premium vers Disneyland Paris.
         </p>
       </a>
 
-            <a
+      <a
         href="/chauffeur-vtc-versailles"
         className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
       >
         <h3 className="text-xl text-amber-400 mb-3">
           Chauffeur VTC Versailles
         </h3>
-
         <p className="text-gray-400">
-          Transfert privé premium vers Versailles depuis Paris et l’Île-de-France.
+          Transfert privé premium vers Versailles.
         </p>
       </a>
+
+      <a
+        href="/chauffeur-vtc-parc-asterix"
+        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
+      >
+        <h3 className="text-xl text-amber-400 mb-3">
+          Chauffeur VTC Parc Astérix
+        </h3>
+        <p className="text-gray-400">
+          Transport privé vers le Parc Astérix.
+        </p>
+      </a>
+
+      <a
+        href="/chauffeur-vtc-mariage"
+        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
+      >
+        <h3 className="text-xl text-amber-400 mb-3">
+          Chauffeur VTC Mariage
+        </h3>
+        <p className="text-gray-400">
+          Transport premium pour mariés, invités et événements.
+        </p>
+      </a>
+
+      <a
+        href="/voiture-mariage-chauffeur"
+        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
+      >
+        <h3 className="text-xl text-amber-400 mb-3">
+          Voiture de mariage
+        </h3>
+        <p className="text-gray-400">
+          Voiture avec chauffeur pour votre mariage.
+        </p>
+      </a>
+
+      <a
+        href="/chauffeur-prive-mise-a-disposition"
+        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
+      >
+        <h3 className="text-xl text-amber-400 mb-3">
+          Mise à disposition
+        </h3>
+        <p className="text-gray-400">
+          Chauffeur privé à l’heure pour vos déplacements et événements.
+        </p>
+      </a>
+
+      <a
+        href="/transport-longue-distance"
+        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
+      >
+        <h3 className="text-xl text-amber-400 mb-3">
+          Transport longue distance
+        </h3>
+        <p className="text-gray-400">
+          Transport privé avec chauffeur sur longue distance.
+        </p>
+      </a>
+
+      <a
+        href="/service-transport-personnes-chauffeur"
+        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
+      >
+        <h3 className="text-xl text-amber-400 mb-3">
+          Service de transport de personnes
+        </h3>
+        <p className="text-gray-400">
+          Service de transport de personnes avec chauffeur privé.
+        </p>
+      </a>
+
+      <a
+        href="/chauffeur-prive-gare"
+        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
+      >
+        <h3 className="text-xl text-amber-400 mb-3">
+          Chauffeur privé gare
+        </h3>
+        <p className="text-gray-400">
+          Transferts privés depuis et vers les gares.
+        </p>
+      </a>
+
+      <a
+        href="/chauffeur-prive-port"
+        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
+      >
+        <h3 className="text-xl text-amber-400 mb-3">
+          Chauffeur privé port
+        </h3>
+        <p className="text-gray-400">
+          Transport privé vers les ports et terminaux.
+        </p>
+      </a>
+
       <a
         href="/vtc-essonne"
         className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
       >
-        <h3 className="text-xl text-amber-400 mb-3">
-          VTC Essonne
-        </h3>
-
+        <h3 className="text-xl text-amber-400 mb-3">VTC Essonne</h3>
         <p className="text-gray-400">
           Chauffeur privé premium en Essonne.
         </p>
