@@ -4,6 +4,10 @@ export const metadata = {
   title: "Chauffeur VTC Disneyland Paris | Transfert Premium",
   description:
     "Chauffeur VTC Disneyland Paris : transferts privés depuis Paris, les aéroports et toute l’Île-de-France. Service premium, ponctualité et confort.",
+  alternates: {
+    canonical:
+      "https://www.sudidfexecutivetransport.fr/chauffeur-vtc-disneyland-paris",
+  },
 };
 
 export default function ChauffeurVtcDisneylandParis() {
