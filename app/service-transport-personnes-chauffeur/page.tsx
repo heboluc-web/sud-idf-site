@@ -4,6 +4,10 @@ export const metadata: Metadata = {
   title: "Service de transport de personnes avec chauffeur | VTC Premium",
   description:
     "Service de transport de personnes avec chauffeur à Paris et en Île-de-France. Chauffeur privé VTC pour déplacements privés, professionnels, transferts, événements et prestations sur mesure.",
+  alternates: {
+    canonical:
+      "https://www.sudidfexecutivetransport.fr/service-transport-personnes-chauffeur",
+  },
 };
 
 export default function ServiceTransportPersonnesChauffeur() {
