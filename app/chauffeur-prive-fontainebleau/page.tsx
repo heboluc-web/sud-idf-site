@@ -17,6 +17,10 @@ export const metadata: Metadata = {
     "transport premium Fontainebleau",
     "chauffeur privé Seine-et-Marne",
   ],
+
+  alternates: {
+    canonical: "https://www.sudidfexecutivetransport.fr/chauffeur-prive-fontainebleau",
+  },
 };
 
 export default function ChauffeurPriveFontainebleau() {

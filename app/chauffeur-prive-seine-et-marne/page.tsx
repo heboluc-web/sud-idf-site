@@ -18,6 +18,10 @@ export const metadata: Metadata = {
     "chauffeur business Seine-et-Marne",
     "transport premium Seine-et-Marne",
   ],
+
+  alternates: {
+    canonical: "https://www.sudidfexecutivetransport.fr/chauffeur-prive-seine-et-marne",
+  },
 };
 
 export default function ChauffeurPriveSeineEtMarne() {

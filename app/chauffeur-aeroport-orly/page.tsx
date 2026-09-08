@@ -16,6 +16,10 @@ export const metadata: Metadata = {
     "transport premium Orly",
     "VTC aéroport",
   ],
+
+  alternates: {
+    canonical: "https://www.sudidfexecutivetransport.fr/chauffeur-aeroport-orly",
+  },
 };
 
 export default function ChauffeurAeroportOrly() {

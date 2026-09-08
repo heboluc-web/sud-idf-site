@@ -15,6 +15,10 @@ export const metadata: Metadata = {
     "chauffeur aéroport CDG",
     "transport premium CDG",
   ],
+
+  alternates: {
+    canonical: "https://www.sudidfexecutivetransport.fr/transfert-cdg",
+  },
 };
 
 export default function TransfertCDG() {

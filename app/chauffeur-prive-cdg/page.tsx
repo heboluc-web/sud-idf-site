@@ -16,6 +16,10 @@ export const metadata: Metadata = {
     "transport premium CDG",
     "VTC Roissy Charles de Gaulle",
   ],
+
+  alternates: {
+    canonical: "https://www.sudidfexecutivetransport.fr/chauffeur-prive-cdg",
+  },
 };
 
 export default function ChauffeurPriveCDG() {

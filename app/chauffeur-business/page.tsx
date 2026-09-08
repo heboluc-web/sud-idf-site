@@ -19,6 +19,10 @@ export const metadata = {
     "chauffeur business Essonne",
     "chauffeur business Paris",
   ],
+
+  alternates: {
+    canonical: "https://www.sudidfexecutivetransport.fr/chauffeur-business",
+  },
 };
 
 export default function ChauffeurBusinessPage() {

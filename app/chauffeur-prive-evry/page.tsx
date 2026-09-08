@@ -18,6 +18,10 @@ export const metadata: Metadata = {
     "transport premium Évry",
     "chauffeur privé Essonne",
   ],
+
+  alternates: {
+    canonical: "https://www.sudidfexecutivetransport.fr/chauffeur-prive-evry",
+  },
 };
 
 export default function ChauffeurPriveEvry() {

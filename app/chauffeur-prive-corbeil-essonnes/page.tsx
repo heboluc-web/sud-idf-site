@@ -17,6 +17,10 @@ export const metadata: Metadata = {
     "transport premium Essonne",
     "chauffeur privé Essonne",
   ],
+
+  alternates: {
+    canonical: "https://www.sudidfexecutivetransport.fr/chauffeur-prive-corbeil-essonnes",
+  },
 };
 
 export default function ChauffeurPriveCorbeil() {

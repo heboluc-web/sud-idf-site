@@ -4,6 +4,10 @@ export const metadata: Metadata = {
   title: "Chauffeur privé port | VTC port Paris et Île-de-France",
   description:
     "Chauffeur privé port à Paris et en Île-de-France. VTC pour vos transferts vers et depuis les ports, avec un service premium, ponctuel et confortable.",
+
+  alternates: {
+    canonical: "https://www.sudidfexecutivetransport.fr/chauffeur-prive-port",
+  },
 };
 
 export default function ChauffeurPrivePort() {

@@ -4,6 +4,10 @@ export const metadata: Metadata = {
   title: "Chauffeur privé gare | VTC gare Paris et Île-de-France",
   description:
     "Chauffeur privé gare à Paris et en Île-de-France. VTC pour vos transferts depuis et vers les principales gares parisiennes, avec un service premium, ponctuel et confortable.",
+
+  alternates: {
+    canonical: "https://www.sudidfexecutivetransport.fr/chauffeur-prive-gare",
+  },
 };
 
 export default function ChauffeurPriveGare() {

@@ -1,3 +1,13 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Chauffeur mariage premium | Sud IDF Executive Transport",
+  description: "Service de chauffeur privé premium pour mariage en Île-de-France.",
+  alternates: {
+    canonical: "https://www.sudidfexecutivetransport.fr/chauffeur-vtc-mariage",
+  },
+};
+
 export default function Mariage() {
   return (
     <main className="min-h-screen bg-black text-white px-6 py-20">

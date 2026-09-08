@@ -15,6 +15,10 @@ export const metadata: Metadata = {
     "chauffeur Orly Essonne",
     "transport premium Orly",
   ],
+
+  alternates: {
+    canonical: "https://www.sudidfexecutivetransport.fr/transfert-orly",
+  },
 };
 
 export default function TransfertOrly() {

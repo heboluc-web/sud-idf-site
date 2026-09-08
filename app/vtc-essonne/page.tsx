@@ -16,6 +16,10 @@ export const metadata: Metadata = {
     "transfert Orly Essonne",
     "transfert CDG Essonne",
   ],
+
+  alternates: {
+    canonical: "https://www.sudidfexecutivetransport.fr/vtc-essonne",
+  },
 };
 
 export default function VTCEssonne() {

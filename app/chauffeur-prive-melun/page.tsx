@@ -17,6 +17,10 @@ export const metadata: Metadata = {
     "transport premium Melun",
     "chauffeur privé Seine-et-Marne",
   ],
+
+  alternates: {
+    canonical: "https://www.sudidfexecutivetransport.fr/chauffeur-prive-melun",
+  },
 };
 
 export default function ChauffeurPriveMelun() {

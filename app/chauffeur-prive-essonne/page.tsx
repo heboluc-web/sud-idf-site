@@ -17,6 +17,10 @@ export const metadata: Metadata = {
     "chauffeur business Essonne",
     "transport premium Essonne",
   ],
+
+  alternates: {
+    canonical: "https://www.sudidfexecutivetransport.fr/chauffeur-prive-essonne",
+  },
 };
 
 export default function ChauffeurPriveEssonne() {

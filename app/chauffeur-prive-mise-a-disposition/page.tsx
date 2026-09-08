@@ -4,6 +4,10 @@ export const metadata: Metadata = {
   title: "Chauffeur privé mise à disposition | Service Premium",
   description:
     "Chauffeur privé mise à disposition à Paris et en Île-de-France : véhicule avec chauffeur à l’heure pour réunions, séminaires, événements et déplacements professionnels.",
+
+  alternates: {
+    canonical: "https://www.sudidfexecutivetransport.fr/chauffeur-prive-mise-a-disposition",
+  },
 };
 
 export default function ChauffeurPriveMiseADisposition() {

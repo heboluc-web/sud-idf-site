@@ -5,6 +5,10 @@ export const metadata = {
 
   description:
     "Contactez Sud IDF Executive Transport pour vos réservations de chauffeur privé premium en Essonne, Paris et Île-de-France. Disponible 24h/24.",
+
+  alternates: {
+    canonical: "https://www.sudidfexecutivetransport.fr/contact",
+  },
 };
 
 export default function ContactPage() {

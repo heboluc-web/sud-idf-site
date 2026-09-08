@@ -60,11 +60,6 @@ export const metadata: Metadata = {
 
   category: "transport",
 
-  alternates: {
-    canonical:
-      "https://www.sudidfexecutivetransport.fr",
-  },
-
   robots: {
     index: true,
     follow: true,

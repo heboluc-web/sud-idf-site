@@ -4,6 +4,10 @@ export const metadata: Metadata = {
   title: "Chauffeur VTC Beauvais | Aéroport de Beauvais BVA",
   description:
     "Chauffeur VTC Beauvais et aéroport de Beauvais-Tillé. Transferts privés entre Paris, l’Île-de-France et l’aéroport BVA, avec un service premium, ponctuel et confortable.",
+
+  alternates: {
+    canonical: "https://www.sudidfexecutivetransport.fr/chauffeur-aeroport-beauvais",
+  },
 };
 
 export default function ChauffeurAeroportBeauvais() {

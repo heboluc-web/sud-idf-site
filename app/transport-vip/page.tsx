@@ -16,6 +16,10 @@ export const metadata: Metadata = {
     "chauffeur business",
     "VTC luxe",
   ],
+
+  alternates: {
+    canonical: "https://www.sudidfexecutivetransport.fr/transport-vip",
+  },
 };
 
 export default function TransportVIP() {

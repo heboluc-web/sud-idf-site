@@ -16,6 +16,10 @@ export const metadata: Metadata = {
     "chauffeur business Paris",
     "transport VIP Paris",
   ],
+
+  alternates: {
+    canonical: "https://www.sudidfexecutivetransport.fr/chauffeur-prive-paris",
+  },
 };
 
 export default function ChauffeurPriveParis() {
