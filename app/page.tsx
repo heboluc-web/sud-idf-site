@@ -193,7 +193,7 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 </p>
     {/* DESCRIPTION */}
     <p className="text-neutral-50 max-w-xl mb-10 text-sm md:text-base">
-      L'execellence au service de vos déplacements professionnels.
+      L'excellence au service de tous vos déplacements professionnels, privés et événementiels.
     </p>
 
     {/* BOUTON */}
@@ -335,8 +335,8 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
       </p>
 
       <p className="text-neutral-400 leading-relaxed text-sm mb-6">
-        La sécurité, la pontualité, la confidentialité et le confort sont nos priorités
-        pour assurer la tranquilité de nos clients.
+        La sécurité, la ponctualité, la confidentialité et le confort sont nos priorités
+        pour assurer la tranquillité de nos clients.
       </p>
  
       
@@ -401,8 +401,8 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
           <div className="grid md:grid-cols-3 gap-16">
             {[
-              ['Transferts Aéroports', 'Navette avec accueil personnalisé, gestion des bagages et suivi en temps réel.'],
-              ['Mise à disposition', 'Véhicule avec chauffeur dédié pour réunions, séminaires,conférences et événements.'],
+              ['Transferts Aéroports', 'Navette avec accueil personnalisé, gestion des bagages, suivi des vols et trains en temps réel.'],
+              ['Mise à disposition', 'Véhicule avec chauffeur dédié pour réunions, séminaires, conférences et événements.'],
               ['Transport Business', 'Image premium, ponctualité, sécurité, confort, discrétion et confidentialité totale.']
             ].map((item, index) => (
               <div key={index} className="p-12 bg-black/70 backdrop-blur-xl rounded-3xl border border-amber-500/20 hover:-translate-y-4 hover:shadow-[0_0_60px_rgba(212,175,55,0.15)] transition-all duration-700">
