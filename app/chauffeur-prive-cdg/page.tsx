@@ -5,7 +5,7 @@ export const metadata: Metadata = {
     "Chauffeur Privé CDG | Sud IDF Executive Transport",
 
   description:
-    "Service de chauffeur privé premium vers l’aéroport Roissy Charles-de-Gaulle. Transport haut de gamme, ponctualité et confort en Île-de-France.",
+    "Chauffeur privé CDG premium : transferts depuis Paris, Essonne et Île-de-France pour entreprises, hôtels, agences de voyages et voyageurs.",
 
   keywords: [
     "chauffeur privé CDG",
@@ -31,30 +31,33 @@ export default function ChauffeurPriveCDG() {
           Chauffeur privé CDG
         </h1>
 
+        <h2 className="text-2xl md:text-3xl font-semibold mb-6">
+          Chauffeur privé pour vos transferts à l’aéroport CDG
+        </h2>
+
         <p className="text-lg text-gray-300 mb-8 leading-8">
-          Sud IDF Executive Transport propose un service de
-          chauffeur privé premium vers l’aéroport
-          Roissy Charles-de-Gaulle pour tous vos déplacements.
+          Sud IDF Executive Transport assure vos transferts en
+          chauffeur privé vers et depuis l’aéroport Paris-CDG,
+          au départ de Paris, de l’Essonne et de toute l’Île-de-France.
         </p>
 
         <div className="space-y-6 text-gray-300 text-lg leading-8">
 
           <p>
-            Nous assurons vos transferts vers CDG depuis Paris,
-            l’Essonne et toute l’Île-de-France avec ponctualité,
-            discrétion et confort haut de gamme.
+            Nous proposons un transport premium vers Roissy-Charles-de-Gaulle
+            pour les déplacements professionnels, les voyages privés et les
+            transferts depuis ou vers les hôtels et les gares.
           </p>
 
           <p>
-            Nos prestations sont adaptées aux déplacements business,
-            voyages privés, transferts hôtels,
-            gares et trajets longue distance.
+            Ponctualité, confort et discrétion sont au cœur de chaque trajet,
+            avec une prise en charge sur réservation.
           </p>
 
           <p>
-            Réservez votre chauffeur privé vers l’aéroport CDG
-            pour bénéficier d’un transport fiable,
-            confortable et disponible sur réservation.
+            La prise en charge peut être organisée au départ ou à l’arrivée
+            de l’aéroport Paris-Charles-de-Gaulle, avec un service adapté
+            aux voyageurs individuels comme aux déplacements professionnels.
           </p>
 
         </div>
