@@ -48,7 +48,7 @@ export default function ChauffeurPriveOrly() {
           <p>
             Nos prestations de transport premium sont adaptées
             aux voyageurs business, déplacements privés,
-            transferts hôtels, gares et voyages longue distance.
+            transferts hôtels, gares et voyages longue distance. Les agences de voyages et les professionnels du tourisme peuvent également faire appel à notre service pour leurs clients.
           </p>
 
           <p>
