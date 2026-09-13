@@ -2,7 +2,8 @@
 
 export const metadata: Metadata = {
   title: "Demande envoyée | Sud IDF Executive Transport",
-  description: "Votre demande a bien été envoyée à Sud IDF Executive Transport.",
+  description:
+    "Votre demande a bien été envoyée à Sud IDF Executive Transport.",
   robots: {
     index: false,
     follow: false,
@@ -11,25 +12,26 @@ export const metadata: Metadata = {
     canonical: "https://www.sudidfexecutivetransport.fr/merci",
   },
 };
+
 export default function Merci() {
   return (
     <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-black via-gray-900 to-black text-center px-4">
 
       {/* LOGO */}
-      <img 
-        src="/logo.png" 
-        alt="Logo" 
+      <img
+        src="/logo.png"
+        alt="Logo Sud IDF Executive Transport"
         className="w-28 mb-6 animate-fade-in"
       />
 
       {/* TITRE */}
       <h1 className="text-4xl md:text-5xl text-amber-400 mb-6">
-        Demande envoyÃ©e
+        Demande envoyée
       </h1>
 
       {/* TEXTE */}
       <p className="text-gray-300 mb-8 max-w-md">
-        Merci pour votre demande. Nous vous rÃ©pondrons rapidement avec un devis personnalisÃ©.
+        Merci pour votre demande. Nous vous répondrons rapidement avec un devis personnalisé.
       </p>
 
       {/* BOUTON RETOUR */}
@@ -37,7 +39,7 @@ export default function Merci() {
         href="/"
         className="px-6 py-3 border border-amber-500 text-amber-400 rounded-xl hover:bg-amber-500 hover:text-black transition"
       >
-        Retour Ã  lâ€™accueil
+        Retour à l’accueil
       </a>
 
     </main>
