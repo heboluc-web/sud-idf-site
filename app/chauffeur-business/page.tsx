@@ -3,10 +3,10 @@ import Script from "next/script";
 
 export const metadata = {
   title:
-    "Chauffeur business premium | Sud IDF Executive Transport",
+    "Chauffeur Business Premium | Entreprises & Dirigeants | Sud IDF Executive Transport",
 
   description:
-    "Service de chauffeur business premium pour entreprises, dirigeants et professionnels en Essonne, Paris et Île-de-France.",
+    "Chauffeur business premium pour entreprises, dirigeants et professionnels à Paris, en Essonne et en Île-de-France. Transport exécutif sur réservation.",
 
   keywords: [
     "chauffeur business",
@@ -18,6 +18,8 @@ export const metadata = {
     "chauffeur VIP Paris",
     "chauffeur business Essonne",
     "chauffeur business Paris",
+    "transport exécutif entreprise",
+    "chauffeur professionnel Île-de-France",
   ],
 
   alternates: {
@@ -40,38 +42,42 @@ export default function ChauffeurBusinessPage() {
             "mainEntity": [
               {
                 "@type": "Question",
-                "name": "Proposez-vous un service de chauffeur business pour entreprises ?",
+                "name":
+                  "Proposez-vous un service de chauffeur business pour entreprises ?",
                 "acceptedAnswer": {
                   "@type": "Answer",
                   "text":
-                    "Oui, nous accompagnons entreprises, dirigeants, hôtels et professionnels avec un service de transport exécutif premium en Île-de-France."
+                    "Oui, nous accompagnons entreprises, dirigeants, hôtels et professionnels avec un service de transport exécutif premium à Paris, en Essonne et en Île-de-France."
                 }
               },
               {
                 "@type": "Question",
-                "name": "Intervenez-vous à Paris et en Île-de-France ?",
+                "name":
+                  "Dans quelles zones intervenez-vous pour les déplacements professionnels ?",
                 "acceptedAnswer": {
                   "@type": "Answer",
                   "text":
-                    "Nos chauffeurs business interviennent à Paris, La Défense, Évry-Courcouronnes, Corbeil-Essonnes, Melun, Orly et Roissy Charles-de-Gaulle."
+                    "Nous intervenons notamment à Paris, La Défense, Évry-Courcouronnes, Corbeil-Essonnes, Melun, ainsi qu'aux aéroports Paris-Orly et Paris-Charles-de-Gaulle."
                 }
               },
               {
                 "@type": "Question",
-                "name": "Peut-on réserver une mise à disposition ?",
+                "name":
+                  "Peut-on réserver une mise à disposition avec chauffeur ?",
                 "acceptedAnswer": {
                   "@type": "Answer",
                   "text":
-                    "Oui, nous proposons un service de mise à disposition avec chauffeur pour réunions, séminaires, événements et déplacements longue durée."
+                    "Oui, une mise à disposition avec chauffeur peut être organisée sur réservation pour les réunions, séminaires, événements et déplacements professionnels nécessitant plusieurs trajets."
                 }
               },
               {
                 "@type": "Question",
-                "name": "Êtes-vous disponible 24h/24 ?",
+                "name":
+                  "Comment réserver un chauffeur business ?",
                 "acceptedAnswer": {
                   "@type": "Answer",
                   "text":
-                    "Notre service de chauffeur business premium est disponible 24h/24 et 7j/7 sur réservation."
+                    "La réservation s'effectue sur demande afin de préparer la prise en charge, l'horaire, le lieu de départ et la destination selon les besoins du déplacement professionnel."
                 }
               }
             ]
@@ -85,38 +91,49 @@ export default function ChauffeurBusinessPage() {
           Chauffeur business premium
         </h1>
 
+        <h2 className="mb-6 text-3xl font-semibold text-amber-400">
+          Chauffeur privé pour entreprises et déplacements professionnels
+        </h2>
+
         <div className="space-y-8 text-xl leading-10 text-gray-200">
 
           <p>
             Sud IDF Executive Transport accompagne les entreprises,
-            dirigeants et professionnels avec un service de transport
-            business haut de gamme en Île-de-France.
+            dirigeants, cadres et professionnels avec un service de chauffeur
+            business premium à Paris, en Essonne et dans toute l’Île-de-France.
           </p>
 
           <p>
-            Nous assurons vos déplacements professionnels avec
-            ponctualité, discrétion, sécurité et confort premium
-            dans toute la région parisienne.
+            Nous assurons vos déplacements professionnels avec une prise en
+            charge organisée sur réservation, en privilégiant la ponctualité,
+            la discrétion, le confort et la qualité du service.
           </p>
 
           <p>
-            Notre service est idéal pour :
-            rendez-vous d’affaires, séminaires,
-            hôtels, salons professionnels,
-            déplacements VIP et mise à disposition.
+            Notre service s’adapte notamment aux rendez-vous d’affaires,
+            réunions, séminaires, salons professionnels, transferts entre
+            hôtels et lieux de rendez-vous, ainsi qu’aux déplacements de
+            dirigeants et de clients VIP.
           </p>
 
           <p>
-            Nos chauffeurs professionnels garantissent une expérience
-            premium adaptée aux exigences des entreprises,
-            directions générales et clients business.
+            Les entreprises, hôtels, agences événementielles et professionnels
+            du tourisme peuvent également faire appel à notre service pour
+            organiser les déplacements de leurs clients, collaborateurs ou
+            invités.
           </p>
 
           <p>
-            Nous intervenons notamment à :
-            Paris, La Défense, Évry-Courcouronnes,
-            Corbeil-Essonnes, Melun, Orly
-            et Roissy Charles-de-Gaulle.
+            Nous intervenons notamment à Paris, La Défense,
+            Évry-Courcouronnes, Corbeil-Essonnes, Melun, ainsi qu’aux
+            aéroports Paris-Orly et Paris-Charles-de-Gaulle.
+          </p>
+
+          <p>
+            Pour les besoins nécessitant plusieurs déplacements, une mise à
+            disposition avec chauffeur peut également être organisée sur
+            réservation, notamment pour les réunions, séminaires et événements
+            professionnels.
           </p>
 
         </div>
@@ -125,41 +142,44 @@ export default function ChauffeurBusinessPage() {
         <div className="mt-14 grid md:grid-cols-2 gap-6">
 
           <a
-            href="/mise-a-disposition"
+            href="/chauffeur-prive-mise-a-disposition"
             className="border border-amber-500/30 rounded-2xl p-6 bg-neutral-950 hover:border-amber-400 transition"
           >
             <h2 className="text-xl text-amber-400 mb-3">
-              Mise à disposition
+              Mise à disposition avec chauffeur
             </h2>
 
             <p className="text-gray-400">
-              Véhicule avec chauffeur pour vos événements et déplacements longue durée.
+              Véhicule avec chauffeur pour vos réunions, séminaires,
+              événements et déplacements professionnels.
             </p>
           </a>
 
           <a
-            href="/transfert-orly"
+            href="/transport-vip"
             className="border border-amber-500/30 rounded-2xl p-6 bg-neutral-950 hover:border-amber-400 transition"
           >
             <h2 className="text-xl text-amber-400 mb-3">
-              Transfert Orly
+              Transport VIP
             </h2>
 
             <p className="text-gray-400">
-              Chauffeur privé premium vers l’aéroport d’Orly.
+              Service de transport premium pour dirigeants, entreprises,
+              hôtels et événements.
             </p>
           </a>
 
           <a
-            href="/transfert-cdg"
+            href="/chauffeur-prive-paris"
             className="border border-amber-500/30 rounded-2xl p-6 bg-neutral-950 hover:border-amber-400 transition"
           >
             <h2 className="text-xl text-amber-400 mb-3">
-              Transfert CDG
+              Chauffeur privé Paris
             </h2>
 
             <p className="text-gray-400">
-              Service premium vers Roissy Charles-de-Gaulle.
+              Chauffeur privé premium pour vos déplacements à Paris et
+              en Île-de-France.
             </p>
           </a>
 
@@ -172,7 +192,35 @@ export default function ChauffeurBusinessPage() {
             </h2>
 
             <p className="text-gray-400">
-              Service premium dans toute l’Essonne.
+              Service de chauffeur privé premium dans toute l’Essonne.
+            </p>
+          </a>
+
+          <a
+            href="/chauffeur-aeroport-orly"
+            className="border border-amber-500/30 rounded-2xl p-6 bg-neutral-950 hover:border-amber-400 transition"
+          >
+            <h2 className="text-xl text-amber-400 mb-3">
+              Chauffeur aéroport Orly
+            </h2>
+
+            <p className="text-gray-400">
+              Transferts professionnels vers ou depuis l’aéroport
+              Paris-Orly.
+            </p>
+          </a>
+
+          <a
+            href="/chauffeur-aeroport-cdg"
+            className="border border-amber-500/30 rounded-2xl p-6 bg-neutral-950 hover:border-amber-400 transition"
+          >
+            <h2 className="text-xl text-amber-400 mb-3">
+              Chauffeur aéroport CDG
+            </h2>
+
+            <p className="text-gray-400">
+              Transferts professionnels vers ou depuis l’aéroport
+              Paris-Charles-de-Gaulle.
             </p>
           </a>
 
@@ -180,8 +228,9 @@ export default function ChauffeurBusinessPage() {
 
         {/* FAQ SEO */}
         <div className="mt-24">
+
           <h2 className="text-3xl font-semibold text-amber-400 mb-10">
-            Questions fréquentes
+            Questions fréquentes sur le chauffeur business
           </h2>
 
           <div className="space-y-6">
@@ -192,45 +241,45 @@ export default function ChauffeurBusinessPage() {
               </h3>
 
               <p className="text-gray-400 leading-7">
-                Oui, nous accompagnons entreprises, dirigeants,
-                hôtels et professionnels avec un service de transport
-                exécutif premium en Île-de-France.
+                Oui, nous accompagnons entreprises, dirigeants, hôtels et
+                professionnels avec un service de transport exécutif premium
+                à Paris, en Essonne et en Île-de-France.
               </p>
             </div>
 
             <div className="bg-neutral-950 border border-amber-500/20 rounded-2xl p-6">
               <h3 className="text-xl text-white mb-3">
-                Intervenez-vous à Paris et en Île-de-France ?
+                Dans quelles zones intervenez-vous pour les déplacements professionnels ?
               </h3>
 
               <p className="text-gray-400 leading-7">
-                Nos chauffeurs business interviennent à Paris,
-                La Défense, Évry-Courcouronnes,
-                Corbeil-Essonnes, Melun,
-                Orly et Roissy Charles-de-Gaulle.
+                Nous intervenons notamment à Paris, La Défense,
+                Évry-Courcouronnes, Corbeil-Essonnes, Melun, ainsi qu’aux
+                aéroports Paris-Orly et Paris-Charles-de-Gaulle.
               </p>
             </div>
 
             <div className="bg-neutral-950 border border-amber-500/20 rounded-2xl p-6">
               <h3 className="text-xl text-white mb-3">
-                Peut-on réserver une mise à disposition ?
+                Peut-on réserver une mise à disposition avec chauffeur ?
               </h3>
 
               <p className="text-gray-400 leading-7">
-                Oui, nous proposons un service de mise à disposition
-                avec chauffeur pour réunions, séminaires,
-                événements et déplacements longue durée.
+                Oui, une mise à disposition avec chauffeur peut être organisée
+                sur réservation pour les réunions, séminaires, événements et
+                déplacements professionnels nécessitant plusieurs trajets.
               </p>
             </div>
 
             <div className="bg-neutral-950 border border-amber-500/20 rounded-2xl p-6">
               <h3 className="text-xl text-white mb-3">
-                Êtes-vous disponible 24h/24 ?
+                Comment réserver un chauffeur business ?
               </h3>
 
               <p className="text-gray-400 leading-7">
-                Notre service de chauffeur business premium est disponible
-                24h/24 et 7j/7 sur réservation.
+                La réservation s’effectue sur demande afin de préparer la
+                prise en charge, l’horaire, le lieu de départ et la destination
+                selon les besoins du déplacement professionnel.
               </p>
             </div>
 
