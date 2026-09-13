@@ -701,7 +701,7 @@ ${form.message || "Aucun"}`;
                   ? "Berline : maximum 3 bagages (2 grandes valises + 1 valise cabine)."
                   : parseInt(form.passagers, 10) <= 3
                     ? "Classe V (1 à 3 passagers) : jusqu’à 10 valises."
-                    : "Classe V (4 à 6 passagers) : maximum 6 valises."}
+                    : "Classe V (4 à 7 passagers) : maximum 6 valises."}
             </p>
           )}
 
