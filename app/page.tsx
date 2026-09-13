@@ -323,7 +323,7 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
       </h2>
 
       <p className="text-neutral-300 leading-relaxed text-base mb-6 tracking-wide">
-        SUD IDF EXECUTIVE TRANSPORT est une structure spécialisée dans le transport exécutif dédié principalement 657aux entreprises, hôtelleries, groupes,
+        SUD IDF EXECUTIVE TRANSPORT est une structure spécialisée dans le transport exécutif dédié principalement aux entreprises, hôtelleries, groupes,
         directions générales, cabinets d’expertise, événementiels, navettes et bien d'autres professionnels et particuliers.
       </p>
 
