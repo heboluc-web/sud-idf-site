@@ -1,9 +1,22 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Service de transport de personnes avec chauffeur | VTC Premium",
+  title:
+    "Transport de personnes avec chauffeur | VTC Premium Île-de-France",
   description:
-    "Service de transport de personnes avec chauffeur à Paris et en Île-de-France. Chauffeur privé VTC pour déplacements privés, professionnels, transferts, événements et prestations sur mesure.",
+    "Service de transport de personnes avec chauffeur privé VTC en Île-de-France. Déplacements professionnels, transferts aéroports et gares, événements et prestations sur mesure.",
+  keywords: [
+    "transport de personnes avec chauffeur",
+    "chauffeur privé Île-de-France",
+    "VTC Île-de-France",
+    "VTC Essonne",
+    "chauffeur privé Essonne",
+    "transport avec chauffeur Paris",
+    "chauffeur business",
+    "transfert aéroport",
+    "transport événementiel",
+    "chauffeur VIP",
+  ],
   alternates: {
     canonical:
       "https://www.sudidfexecutivetransport.fr/service-transport-personnes-chauffeur",
@@ -25,21 +38,29 @@ export default function ServiceTransportPersonnesChauffeur() {
           </a>
 
           <div className="hidden items-center gap-8 text-xs tracking-[0.25em] text-neutral-300 md:flex">
-            <a href="/chauffeur-prive-essonne" className="hover:text-amber-400">
+            <a
+              href="/chauffeur-prive-essonne"
+              className="hover:text-amber-400"
+            >
               ESSONNE
             </a>
+
             <a href="/chauffeur-prive-orly" className="hover:text-amber-400">
               ORLY
             </a>
+
             <a href="/chauffeur-prive-cdg" className="hover:text-amber-400">
               CDG
             </a>
+
             <a href="/chauffeur-business" className="hover:text-amber-400">
               BUSINESS
             </a>
+
             <a href="/reservation" className="hover:text-amber-400">
               RÉSERVATION
             </a>
+
             <a href="/contact" className="hover:text-amber-400">
               CONTACT
             </a>
@@ -87,14 +108,20 @@ export default function ServiceTransportPersonnesChauffeur() {
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl font-light tracking-[0.18em] text-amber-400 md:text-4xl">
-              Votre transport avec chauffeur privé
+              Transport de personnes avec chauffeur privé en Île-de-France
             </h2>
 
             <p className="mt-8 text-base leading-8 text-neutral-400">
-              SUD IDF Executive Transport vous accompagne pour vos
-              déplacements personnels et professionnels avec une prestation
-              adaptée à vos besoins. Chaque trajet est organisé pour vous
-              offrir confort, ponctualité et sérénité.
+              SUD IDF Executive Transport vous accompagne pour vos déplacements
+              personnels et professionnels à Paris, en Essonne et dans toute
+              l’Île-de-France. Chaque trajet est organisé sur réservation afin
+              de vous offrir confort, ponctualité et sérénité.
+            </p>
+
+            <p className="mt-5 text-base leading-8 text-neutral-400">
+              Notre service de chauffeur privé VTC s’adresse aux particuliers,
+              entreprises, dirigeants, hôtels et professionnels ayant besoin
+              d’une solution de transport fiable, confortable et discrète.
             </p>
           </div>
 
@@ -110,7 +137,7 @@ export default function ServiceTransportPersonnesChauffeur() {
               ],
               [
                 "Transferts aéroports",
-                "Prise en charge vers et depuis les principaux aéroports de Paris et d’Île-de-France.",
+                "Prise en charge vers et depuis les principaux aéroports de Paris et d’Île-de-France, notamment Orly et CDG.",
               ],
               [
                 "Transferts gares",
@@ -150,7 +177,7 @@ export default function ServiceTransportPersonnesChauffeur() {
             </p>
 
             <h2 className="mt-5 text-3xl font-light tracking-[0.14em] text-white md:text-4xl">
-              Un chauffeur pour accompagner vos déplacements
+              Un chauffeur privé pour accompagner vos déplacements
             </h2>
 
             <p className="mt-7 text-base leading-8 text-neutral-400">
@@ -164,6 +191,13 @@ export default function ServiceTransportPersonnesChauffeur() {
               Nous pouvons également vous accompagner pour vos déplacements
               professionnels, événements, transferts aéroports et gares ou
               prestations privées sur mesure.
+            </p>
+
+            <p className="mt-5 text-base leading-8 text-neutral-400">
+              Pour les entreprises et les professionnels, notre service peut
+              accompagner les rendez-vous d’affaires, déplacements de
+              dirigeants, transferts entre hôtels et lieux professionnels
+              ainsi que les déplacements de clients ou collaborateurs.
             </p>
           </div>
 
@@ -179,6 +213,7 @@ export default function ServiceTransportPersonnesChauffeur() {
               <li>✓ Service adapté aux particuliers et entreprises</li>
               <li>✓ Trajets ponctuels ou prestations sur plusieurs heures</li>
               <li>✓ Service discret et personnalisé</li>
+              <li>✓ Réservation préalable pour préparer chaque trajet</li>
             </ul>
           </div>
         </div>
@@ -194,12 +229,12 @@ export default function ServiceTransportPersonnesChauffeur() {
             {[
               ["Paris", "/chauffeur-prive-paris"],
               ["Essonne", "/vtc-essonne"],
-              ["Seine-et-Marne", "/chauffeur-prive-paris"],
-              ["Hauts-de-Seine", "/chauffeur-prive-paris"],
+              ["Seine-et-Marne", "/chauffeur-prive-seine-et-marne"],
               ["Yvelines", "/chauffeur-vtc-versailles"],
               ["Val-de-Marne", "/chauffeur-prive-paris"],
               ["Val-d’Oise", "/chauffeur-prive-paris"],
               ["Seine-Saint-Denis", "/chauffeur-prive-paris"],
+              ["Hauts-de-Seine", "/chauffeur-prive-paris"],
             ].map(([place, href]) => (
               <a
                 key={place}
@@ -269,7 +304,7 @@ export default function ServiceTransportPersonnesChauffeur() {
               ],
               [
                 "Dans quelles zones intervenez-vous ?",
-                "Nous intervenons principalement à Paris et en Île-de-France, notamment dans l’Essonne et les principaux départements franciliens.",
+                "Nous intervenons principalement à Paris et en Île-de-France, notamment dans l’Essonne, la Seine-et-Marne et les principaux départements franciliens.",
               ],
               [
                 "Proposez-vous des transferts vers les aéroports ?",
@@ -326,7 +361,9 @@ export default function ServiceTransportPersonnesChauffeur() {
       <footer className="border-t border-amber-500/20 bg-black px-6 py-12">
         <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-3">
           <div>
-            <div className="text-lg tracking-[0.35em] text-white">SUD IDF</div>
+            <div className="text-lg tracking-[0.35em] text-white">
+              SUD IDF
+            </div>
 
             <div className="mt-1 text-[9px] tracking-[0.45em] text-amber-400">
               EXECUTIVE TRANSPORT
@@ -348,7 +385,10 @@ export default function ServiceTransportPersonnesChauffeur() {
                 Accueil
               </a>
 
-              <a href="/reservation" className="block hover:text-amber-400">
+              <a
+                href="/reservation"
+                className="block hover:text-amber-400"
+              >
                 Réservation
               </a>
 
@@ -380,7 +420,10 @@ export default function ServiceTransportPersonnesChauffeur() {
             CGV
           </a>
 
-          <a href="/confidentialite" className="hover:text-amber-400">
+          <a
+            href="/confidentialite"
+            className="hover:text-amber-400"
+          >
             Confidentialité
           </a>
         </div>
