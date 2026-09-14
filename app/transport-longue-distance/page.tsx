@@ -1,9 +1,25 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Transport longue distance | Chauffeur VTC Premium",
+  title: "Chauffeur VTC Longue Distance | Transport Premium Île-de-France",
   description:
-    "Transport longue distance avec chauffeur VTC depuis Paris et l’Île-de-France. Trajets privés, professionnels et transferts longue distance en véhicule premium.",
+    "Chauffeur VTC longue distance depuis Paris et l’Île-de-France. Transport privé et professionnel vers toute la France, transferts aéroports, gares et trajets sur mesure sur devis.",
+  keywords: [
+    "chauffeur longue distance",
+    "VTC longue distance",
+    "transport longue distance",
+    "chauffeur VTC longue distance",
+    "chauffeur privé longue distance",
+    "transport avec chauffeur longue distance",
+    "VTC Île-de-France",
+    "chauffeur privé Île-de-France",
+    "chauffeur longue distance Paris",
+    "transport longue distance Paris",
+    "chauffeur longue distance Essonne",
+    "transfert aéroport longue distance",
+    "transport professionnel longue distance",
+    "chauffeur VIP longue distance",
+  ],
   alternates: {
     canonical:
       "https://www.sudidfexecutivetransport.fr/transport-longue-distance",
@@ -85,13 +101,21 @@ export default function TransportLongueDistance() {
         <div className="mx-auto max-w-6xl">
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl font-light tracking-[0.16em] text-amber-400 md:text-4xl">
-              Un chauffeur pour vos trajets longue distance
+              Chauffeur VTC pour vos trajets longue distance
             </h2>
 
             <p className="mt-8 text-base leading-8 text-neutral-400">
+              Sud IDF Executive Transport propose un service de transport
+              longue distance avec chauffeur privé depuis Paris, l’Essonne et
+              l’ensemble de l’Île-de-France. Nous accompagnons les particuliers,
+              entreprises, dirigeants et professionnels qui recherchent un
+              trajet confortable, ponctuel et organisé sur mesure.
+            </p>
+
+            <p className="mt-5 text-base leading-8 text-neutral-400">
               Pour un déplacement professionnel, un voyage privé ou un
-              transfert entre plusieurs villes, nous organisons votre trajet
-              avec une prise en charge adaptée à votre programme.
+              transfert entre plusieurs villes, nous préparons votre prise en
+              charge selon votre programme, vos horaires et votre destination.
             </p>
           </div>
 
@@ -99,7 +123,7 @@ export default function TransportLongueDistance() {
             {[
               [
                 "Trajets professionnels",
-                "Déplacez-vous entre Paris et une autre ville sans les contraintes de conduite, avec un service adapté aux rendez-vous et aux horaires professionnels.",
+                "Déplacez-vous entre Paris et une autre ville sans les contraintes de conduite, avec un service adapté aux rendez-vous, aux horaires professionnels et aux déplacements de dirigeants.",
               ],
               [
                 "Déplacements privés",
@@ -107,11 +131,11 @@ export default function TransportLongueDistance() {
               ],
               [
                 "Transferts entre villes",
-                "Organisation de trajets directs entre l’Île-de-France et votre destination, selon vos horaires et vos besoins.",
+                "Organisation de trajets directs entre l’Île-de-France et votre destination, selon vos horaires et les besoins de votre déplacement.",
               ],
               [
                 "Aéroports et gares",
-                "Combinez votre trajet longue distance avec une prise en charge depuis ou vers les principaux aéroports et gares.",
+                "Combinez votre trajet longue distance avec une prise en charge depuis ou vers les principaux aéroports et gares de Paris et d’Île-de-France.",
               ],
               [
                 "Voyages en famille",
@@ -119,7 +143,7 @@ export default function TransportLongueDistance() {
               ],
               [
                 "Service VIP",
-                "Une prestation discrète et personnalisée pour les clients recherchant confort, tranquillité et ponctualité.",
+                "Une prestation discrète et personnalisée pour les clients recherchant confort, tranquillité, ponctualité et qualité de service.",
               ],
             ].map(([title, text]) => (
               <div
@@ -151,7 +175,13 @@ export default function TransportLongueDistance() {
               Chaque trajet longue distance est différent. Nous prenons en
               compte les lieux de départ et d’arrivée, les horaires, le nombre
               de passagers et le véhicule souhaité afin de préparer votre
-              prestation.
+              prestation dans les meilleures conditions.
+            </p>
+
+            <p className="mt-5 text-base leading-8 text-neutral-400">
+              Que vous partiez de Paris, de l’Essonne ou d’une autre commune
+              d’Île-de-France, nous pouvons organiser un trajet vers une
+              destination en France selon votre projet.
             </p>
 
             <p className="mt-5 text-base leading-8 text-neutral-400">
@@ -172,6 +202,7 @@ export default function TransportLongueDistance() {
               <li>✓ Prise en charge à l’adresse de votre choix</li>
               <li>✓ Trajet direct et personnalisé</li>
               <li>✓ Service discret et ponctuel</li>
+              <li>✓ Organisation adaptée aux déplacements professionnels</li>
               <li>✓ Tarif sur devis pour les demandes spécifiques</li>
             </ul>
           </div>
@@ -188,7 +219,7 @@ export default function TransportLongueDistance() {
             {[
               ["Paris", "/chauffeur-prive-paris"],
               ["Essonne", "/vtc-essonne"],
-              ["Seine-et-Marne", "/chauffeur-prive-paris"],
+              ["Seine-et-Marne", "/chauffeur-prive-seine-et-marne"],
               ["Hauts-de-Seine", "/chauffeur-prive-paris"],
               ["Yvelines", "/chauffeur-vtc-versailles"],
               ["Val-de-Marne", "/chauffeur-prive-paris"],
@@ -279,7 +310,9 @@ export default function TransportLongueDistance() {
                 <summary className="cursor-pointer list-none text-base text-white group-open:text-amber-400">
                   {question}
                 </summary>
-                <p className="mt-4 text-sm leading-7 text-neutral-400">{answer}</p>
+                <p className="mt-4 text-sm leading-7 text-neutral-400">
+                  {answer}
+                </p>
               </details>
             ))}
           </div>
