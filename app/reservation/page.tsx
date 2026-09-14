@@ -42,7 +42,7 @@ export default function Reservation() {
     if (name === "vehicule") {
       const maxPassagers =
         value === "Mercedes Classe V"
-          ? 6
+          ? 7
           : value === "Range Rover"
             ? 3
             : 10;
@@ -582,7 +582,98 @@ ${form.message || "Aucun"}`;
       );
     }
   };
+    const handleStripeCheckout = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
+    if (!formRef.current) return;
+
+    const formElement = formRef.current;
+
+    if (!formElement.checkValidity()) {
+      formElement.reportValidity();
+      setFormError(true);
+      return;
+    }
+
+    setFormError(false);
+
+    try {
+      // Récupération des données du formulaire
+      const formData = new FormData(formElement);
+      const formDataObject = Object.fromEntries(formData.entries());
+
+      // On conserve les informations déjà présentes dans l'état du formulaire
+      const reservationData = {
+  ...formDataObject,
+  ...form,
+  name: formDataObject.nom,
+phone: formDataObject.telephone,
+amount: formDataObject.prix,
+};
+
+      // Si aucun tarif TTC n'est disponible :
+      // il s'agit d'une demande de devis, on conserve FormSubmit.
+      const amountNumber = Number(
+       String(formDataObject.prix || "")
+          .replace(",", ".")
+          .replace(/[^\d.]/g, "")
+      );
+
+      if (!Number.isFinite(amountNumber) || amountNumber <= 0) {
+        const response = await fetch(
+          "https://formsubmit.co/contact@sudidfexecutivetransport.fr",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: new URLSearchParams(
+              Object.entries(reservationData).reduce(
+                (acc, [key, value]) => {
+                  acc[key] = String(value ?? "");
+                  return acc;
+                },
+                {} as Record<string, string>
+              )
+            ).toString(),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Erreur lors de l'envoi de la demande de devis.");
+        }
+
+        window.location.href = "/merci?type=devis";
+        return;
+      }
+
+      // Réservation avec paiement : création de la session Stripe
+      const response = await fetch(
+        "/api/stripe/create-checkout-session",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(reservationData),
+        }
+      );
+
+      const result = await response.json();
+
+      if (!response.ok || !result.url) {
+        throw new Error(
+          result.error || "Impossible de créer le paiement Stripe."
+        );
+      }
+
+      // Redirection vers Stripe Checkout
+      window.location.href = result.url;
+    } catch (error) {
+      console.error("Erreur réservation / paiement :", error);
+      setFormError(true);
+    }
+  };
   return (
     <main className="min-h-screen bg-black text-white px-6 py-20">
       <Script
@@ -602,8 +693,7 @@ ${form.message || "Aucun"}`;
 
         <form
           ref={formRef}
-          action="https://formsubmit.co/contact@sudidfexecutivetransport.fr"
-          method="POST"
+          onSubmit={handleStripeCheckout}
           className="space-y-6"
         >
           <input type="hidden" name="_captcha" value="false" />
