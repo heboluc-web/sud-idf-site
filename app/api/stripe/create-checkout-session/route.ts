@@ -22,7 +22,11 @@ export async function POST(req: Request) {
       baggages,
     } = data;
 
-    if (!amount || !email || !name) {
+    // ==============================
+    // VALIDATION DES INFORMATIONS
+    // ==============================
+
+    if (!name || !email || !amount) {
       return NextResponse.json(
         {
           error: "Informations de réservation incomplètes.",
@@ -31,13 +35,26 @@ export async function POST(req: Request) {
       );
     }
 
-    // Le montant arrive actuellement sous une forme comme :
-    // "165 € TTC" ou "165 TTC"
-    const amountNumber = Number(
-      String(amount).replace(",", ".").replace(/[^\d.]/g, "")
-    );
+    if (
+      typeof name !== "string" ||
+      typeof email !== "string" ||
+      typeof amount !== "string"
+    ) {
+      return NextResponse.json(
+        {
+          error: "Format des informations de réservation invalide.",
+        },
+        { status: 400 }
+      );
+    }
 
-    if (!Number.isFinite(amountNumber) || amountNumber <= 0) {
+    // ==============================
+    // VALIDATION DU MONTANT
+    // ==============================
+
+    const amountMatch = amount.match(/(\d+(?:[.,]\d{1,2})?)/);
+
+    if (!amountMatch) {
       return NextResponse.json(
         {
           error: "Montant de réservation invalide.",
@@ -46,30 +63,86 @@ export async function POST(req: Request) {
       );
     }
 
+    const amountNumber = Number(
+      amountMatch[1].replace(",", ".")
+    );
+
+    if (
+      !Number.isFinite(amountNumber) ||
+      amountNumber <= 0 ||
+      amountNumber > 10000
+    ) {
+      return NextResponse.json(
+        {
+          error: "Montant de réservation invalide.",
+        },
+        { status: 400 }
+      );
+    }
+
+    // On travaille en centimes pour éviter les problèmes
+    // d'arrondi lors du paiement Stripe.
     const amountInCents = Math.round(amountNumber * 100);
+
+    if (amountInCents < 100) {
+      return NextResponse.json(
+        {
+          error: "Le montant minimum de paiement est de 1 €.",
+        },
+        { status: 400 }
+      );
+    }
+
+    // ==============================
+    // ORIGINE DU SITE
+    // ==============================
 
     const origin =
       req.headers.get("origin") ||
       "https://www.sudidfexecutivetransport.fr";
+
+    const allowedOrigins = [
+      "http://localhost:3000",
+      "https://www.sudidfexecutivetransport.fr",
+    ];
+
+    if (!allowedOrigins.includes(origin)) {
+      return NextResponse.json(
+        {
+          error: "Origine de requête non autorisée.",
+        },
+        { status: 403 }
+      );
+    }
+
+    // ==============================
+    // CREATION SESSION STRIPE
+    // ==============================
 
     const session = await stripe.checkout.sessions.create({
       mode: "payment",
 
       payment_method_types: ["card"],
 
-      customer_email: email,
+      customer_email: email.trim(),
 
       line_items: [
         {
           price_data: {
             currency: "eur",
+
             product_data: {
-              name: `Réservation chauffeur privé - ${service || "Transport"}`,
+              name: `Réservation chauffeur privé - ${
+                service || "Transport"
+              }`,
+
               description:
-                "Sud IDF Executive Transport - paiement intégral de la réservation",
+                "SUD IDF Executive Transport - paiement intégral de la réservation",
             },
+
             unit_amount: amountInCents,
           },
+
           quantity: 1,
         },
       ],
@@ -86,23 +159,35 @@ export async function POST(req: Request) {
         vehicle: String(vehicle || ""),
         passengers: String(passengers || ""),
         baggages: String(baggages || ""),
-        amount: String(amountNumber),
+
+        // Montant réellement utilisé par Stripe
+        amount: String(amountNumber.toFixed(2)),
       },
 
-      success_url: `${origin}/merci?payment=success&session_id={CHECKOUT_SESSION_ID}`,
+      success_url:
+        `${origin}/merci?payment=success&session_id={CHECKOUT_SESSION_ID}`,
 
-      cancel_url: `${origin}/reservation?payment=cancelled`,
+      cancel_url:
+        `${origin}/reservation?payment=cancelled`,
     });
+
+    // ==============================
+    // REPONSE
+    // ==============================
 
     return NextResponse.json({
       url: session.url,
     });
   } catch (error) {
-    console.error("Erreur Stripe Checkout :", error);
+    console.error(
+      "Erreur Stripe Checkout :",
+      error
+    );
 
     return NextResponse.json(
       {
-        error: "Impossible de créer la session de paiement Stripe.",
+        error:
+          "Impossible de créer la session de paiement Stripe.",
       },
       { status: 500 }
     );
