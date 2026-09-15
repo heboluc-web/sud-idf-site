@@ -19,7 +19,7 @@ export async function POST(req: Request) {
       arrivee,
       vehicle,
       passengers,
-      baggages,
+      bagages,
     } = data;
 
     // ==============================
@@ -104,6 +104,7 @@ export async function POST(req: Request) {
     const allowedOrigins = [
       "http://localhost:3000",
       "https://www.sudidfexecutivetransport.fr",
+      "https://sudidfexecutivetransport.fr",
     ];
 
     if (!allowedOrigins.includes(origin)) {
@@ -158,7 +159,7 @@ export async function POST(req: Request) {
         arrivee: String(arrivee || ""),
         vehicle: String(vehicle || ""),
         passengers: String(passengers || ""),
-        baggages: String(baggages || ""),
+        bagages: String(bagages || ""),
 
         // Montant réellement utilisé par Stripe
         amount: String(amountNumber.toFixed(2)),
