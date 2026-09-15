@@ -17,6 +17,7 @@ export async function POST(req: Request) {
 
   if (!webhookSecret) {
     console.error("STRIPE_WEBHOOK_SECRET manquant.");
+
     return NextResponse.json(
       { error: "Configuration Stripe webhook manquante." },
       { status: 500 }
@@ -55,51 +56,76 @@ export async function POST(req: Request) {
         metadata,
       });
 
-      /*
-       * Envoi de l'e-mail via FormSubmit
-       */
+      // ==========================================
+      // ENVOI DE LA NOTIFICATION À L'ENTREPRISE
+      // ==========================================
+
       try {
         const formSubmitResponse = await fetch(
           "https://formsubmit.co/ajax/contact@sudidfexecutivetransport.fr",
           {
             method: "POST",
+
             headers: {
               "Content-Type": "application/json",
               Accept: "application/json",
             },
+
             body: JSON.stringify({
-              _subject: `✅ Paiement Stripe confirmé - ${metadata.name || "Client"}`,
-              _cc: customerEmail || undefined,
+              _subject: `✅ Paiement Stripe confirmé - ${
+                metadata.name || "Client"
+              }`,
+
               _template: "table",
 
-              "Statut du paiement": "PAIEMENT CONFIRMÉ",
-              "Montant payé": amountTotal,
-              "Nom": metadata.name || "",
-              "Téléphone": metadata.phone || "",
-              "E-mail client": customerEmail,
-              "Service": metadata.service || "",
-              "Départ": metadata.depart || "",
-              "Arrivée": metadata.arrivee || "",
-              "Date": metadata.date || "",
-              "Heure": metadata.heure || "",
-              "Passagers": metadata.passagers || "",
-              "Bagages": metadata.bagages || "",
-              "Session Stripe": session.id,
+              name: metadata.name || "",
+
+              email: customerEmail,
+
+              phone: metadata.phone || "",
+
+              service: metadata.service || "",
+
+              depart: metadata.depart || "",
+
+              arrivee: metadata.arrivee || "",
+
+              date: metadata.date || "",
+
+              time: metadata.time || "",
+
+              vehicle: metadata.vehicle || "",
+
+              passengers: metadata.passengers || "",
+
+              bagages: metadata.bagages || "",
+
+              amount: amountTotal,
+
+              payment_status: "PAIEMENT CONFIRMÉ",
+
+              stripe_session: session.id,
             }),
           }
         );
 
-        if (!formSubmitResponse.ok) {
-          const errorText = await formSubmitResponse.text();
+        const formSubmitText = await formSubmitResponse.text();
 
+        console.log("📨 Réponse FormSubmit :", {
+          status: formSubmitResponse.status,
+          ok: formSubmitResponse.ok,
+          response: formSubmitText,
+        });
+
+        if (!formSubmitResponse.ok) {
           console.error(
-            "❌ Erreur FormSubmit :",
+            "❌ FormSubmit a refusé l'envoi :",
             formSubmitResponse.status,
-            errorText
+            formSubmitText
           );
         } else {
           console.log(
-            "📧 E-mail de confirmation envoyé via FormSubmit."
+            "📧 Notification de réservation envoyée à contact@sudidfexecutivetransport.fr"
           );
         }
       } catch (emailError) {
@@ -110,12 +136,16 @@ export async function POST(req: Request) {
       }
     }
 
-    return NextResponse.json({ received: true });
+    return NextResponse.json({
+      received: true,
+    });
   } catch (error) {
     console.error("❌ Erreur webhook Stripe :", error);
 
     return NextResponse.json(
-      { error: "Signature Stripe invalide." },
+      {
+        error: "Signature Stripe invalide.",
+      },
       { status: 400 }
     );
   }
