@@ -589,14 +589,44 @@ ${form.message || "Aucun"}`;
 
     const formElement = formRef.current;
 
-    if (!formElement.checkValidity()) {
-      formElement.reportValidity();
-      setFormError(true);
-      return;
-    }
+const requiredFields = [
+  form.nom,
+  form.email,
+  form.telephone,
+  form.vehicule,
+  form.passagers,
+  form.bagages,
+  form.service,
+  ...(
+    ["Mise à disposition", "Mariage", "VIP", "Longue distance", "Séminaire"].includes(form.service)
+      ? []
+      : [form.depart, form.arrivee]
+  ),
+  form.date,
+  form.heure,
+];
 
-    setFormError(false);
+const isValid = requiredFields.every(
+  (field) => field && field.toString().trim() !== ""
+);
 
+const nombrePassagers = parseInt(form.passagers || "0", 10);
+const nombreBagages = parseInt(form.bagages || "0", 10);
+const maxBagages = getMaxBagagesPour(nombrePassagers, form.vehicule);
+
+if (
+  !isValid ||
+  !form.email.includes("@") ||
+  nombrePassagers < 1 ||
+  nombrePassagers > getMaxPassagers() ||
+  nombreBagages < 0 ||
+  nombreBagages > maxBagages
+) {
+  setFormError(true);
+  return;
+}
+
+setFormError(false);
     try {
       // Récupération des données du formulaire
       const formData = new FormData(formElement);
