@@ -472,13 +472,13 @@ export default function Reservation() {
   }, [form.depart, form.arrivee, form.vehicule, form.heure, form.service, form.dureeMiseADispo, form.dureeSeminaire]);
 
   const getMaxPassagers = () => {
-    if (form.vehicule === "Mercedes Classe V") return 6;
+    if (form.vehicule === "Mercedes Classe V") return 7;
     if (form.vehicule === "Range Rover") return 3;
     if (
       form.vehicule === "Mercedes Classe E" ||
       form.vehicule === "Mercedes Classe S"
     )
-      return 2;
+      return 3;
     return 10;
   };
 
