@@ -391,7 +391,7 @@ export default function Reservation() {
               cdgOrly: estNuit ? 160 : 140,
               parisDisney: estNuit ? 160 : 140,
               parisVersailles: estNuit ? 140 : 120,
-              parisBeauvais: estNuit ? 240 : 210,
+              parisBeauvais: 245,
               parisChantilly: estNuit ? 240 : 210,
             }
           : {
@@ -400,7 +400,7 @@ export default function Reservation() {
               cdgOrly: estNuit ? 140 : 120,
               parisDisney: estNuit ? 140 : 120,
               parisVersailles: estNuit ? 120 : 100,
-              parisBeauvais: estNuit ? 210 : 180,
+              parisBeauvais: 245,
               parisChantilly: estNuit ? 210 : 180,
             };
 
