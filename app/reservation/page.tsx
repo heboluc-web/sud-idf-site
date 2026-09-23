@@ -363,23 +363,67 @@ export default function Reservation() {
         const estNuit = heureCourse >= 19 || heureCourse < 7;
 
         const contientParis = texteTrajet.includes("paris");
+
+        // ===== ZONES FORFAITAIRES : NOM COMPLET + APPELLATION COURTE =====
+        // CDG : Terminal 1/T1, Terminal 2A/T2A ... Terminal 2G/T2G, Terminal 3/T3.
         const contientCDG =
           texteTrajet.includes("cdg") ||
           texteTrajet.includes("charles de gaulle") ||
-          texteTrajet.includes("roissy");
-        const contientOrly = texteTrajet.includes("orly");
+          texteTrajet.includes("charles-de-gaulle") ||
+          texteTrajet.includes("roissy") ||
+          texteTrajet.includes("terminal 1") ||
+          /\bt1\b/.test(texteTrajet) ||
+          texteTrajet.includes("terminal 2a") ||
+          /\bt2a\b/.test(texteTrajet) ||
+          texteTrajet.includes("terminal 2b") ||
+          /\bt2b\b/.test(texteTrajet) ||
+          texteTrajet.includes("terminal 2c") ||
+          /\bt2c\b/.test(texteTrajet) ||
+          texteTrajet.includes("terminal 2d") ||
+          /\bt2d\b/.test(texteTrajet) ||
+          texteTrajet.includes("terminal 2e") ||
+          /\bt2e\b/.test(texteTrajet) ||
+          texteTrajet.includes("terminal 2f") ||
+          /\bt2f\b/.test(texteTrajet) ||
+          texteTrajet.includes("terminal 2g") ||
+          /\bt2g\b/.test(texteTrajet) ||
+          texteTrajet.includes("terminal 3") ||
+          /\bt3\b/.test(texteTrajet) ||
+          texteTrajet.includes("le mesnil-amelot") ||
+          texteTrajet.includes("le mesnil amelot") ||
+          texteTrajet.includes("77990");
+
+        // Orly : aéroport + terminaux en toutes lettres et appellations courtes.
+        const contientOrly =
+          texteTrajet.includes("orly") ||
+          texteTrajet.includes("paris-orly") ||
+          texteTrajet.includes("terminal 1 orly") ||
+          texteTrajet.includes("terminal 2 orly") ||
+          texteTrajet.includes("terminal 3 orly") ||
+          texteTrajet.includes("terminal 4 orly") ||
+          texteTrajet.includes("orly 1") ||
+          texteTrajet.includes("orly 2") ||
+          texteTrajet.includes("orly 3") ||
+          texteTrajet.includes("orly 4");
+
         const contientLeBourget =
           texteTrajet.includes("le bourget") ||
+          texteTrajet.includes("paris-le bourget") ||
           texteTrajet.includes("93350");
+
         const contientBeauvais =
           texteTrajet.includes("beauvais") ||
+          texteTrajet.includes("bva") ||
           texteTrajet.includes("tillé") ||
           texteTrajet.includes("tille") ||
           texteTrajet.includes("60000") ||
           texteTrajet.includes("rte de l'aéroport") ||
           texteTrajet.includes("route de l'aéroport");
+
+        // Disneyland / Val d'Europe et établissements directement associés.
         const contientDisney =
           texteTrajet.includes("disneyland") ||
+          texteTrajet.includes("disneyland paris") ||
           texteTrajet.includes("marne-la-vallée") ||
           texteTrajet.includes("marne la vallée") ||
           texteTrajet.includes("marne-la-vallee") ||
@@ -399,8 +443,16 @@ export default function Reservation() {
           texteTrajet.includes("dream castle") ||
           texteTrajet.includes("magic circus") ||
           texteTrajet.includes("radisson blu");
-        const contientVersailles = texteTrajet.includes("versailles");
-        const contientChantilly = texteTrajet.includes("chantilly");
+
+        const contientVersailles =
+          texteTrajet.includes("versailles") ||
+          texteTrajet.includes("château de versailles") ||
+          texteTrajet.includes("chateau de versailles");
+
+        const contientChantilly =
+          texteTrajet.includes("chantilly") ||
+          texteTrajet.includes("château de chantilly") ||
+          texteTrajet.includes("chateau de chantilly");
 
         const tarifsJour: Record<string, Record<string, number>> = {
           "Mercedes Classe E": {
