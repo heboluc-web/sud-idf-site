@@ -454,8 +454,16 @@ export default function Reservation() {
           texteTrajet.includes("château de chantilly") ||
           texteTrajet.includes("chateau de chantilly");
 
+        const contientAsterix =
+  texteTrajet.includes("parc astérix") ||
+  texteTrajet.includes("parc asterix") ||
+  texteTrajet.includes("plailly") ||
+  texteTrajet.includes("60128") ||
+  texteTrajet.includes("arènes romaines") ||
+       texteTrajet.includes("arenes romaines");
         const tarifsJour: Record<string, Record<string, number>> = {
           "Mercedes Classe E": {
+            parisAsterix: 159,
             parisOrly: 129,
             parisCDG: 149,
             cdgOrly: 179,
@@ -466,6 +474,7 @@ export default function Reservation() {
             parisChantilly: 199,
           },
           "Mercedes Classe V": {
+            parisAsterix: 199,
             parisOrly: 169,
             parisCDG: 189,
             cdgOrly: 229,
@@ -476,6 +485,7 @@ export default function Reservation() {
             parisChantilly: 249,
           },
           "Range Rover": {
+            parisAsterix: 229,
             parisOrly: 199,
             parisCDG: 219,
             cdgOrly: 259,
@@ -486,6 +496,7 @@ export default function Reservation() {
             parisChantilly: 289,
           },
           "Mercedes Classe S": {
+            parisAsterix: 249,
             parisOrly: 179,
             parisCDG: 199,
             cdgOrly: 239,
@@ -496,6 +507,7 @@ export default function Reservation() {
             parisChantilly: 279,
           },
           "Mercedes-Maybach Classe S": {
+            parisAsterix: 299,
             parisOrly: 249,
             parisCDG: 279,
             cdgOrly: 299,
@@ -582,6 +594,9 @@ export default function Reservation() {
         } else if (contientParis && contientChantilly) {
           prixTTC = tarifsVehicule.parisChantilly;
           detailsPrix = "Forfait Paris ↔ Chantilly";
+          } else if (contientParis && contientAsterix) {
+            prixTTC = tarifsVehicule.parisAsterix;
+            detailsPrix = "Forfait Paris ↔ Parc Astérix";
         } else {
           const distanceKm =
             typeof element.distance?.value === "number"
