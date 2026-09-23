@@ -45,7 +45,11 @@ export default function Reservation() {
           ? 7
           : value === "Range Rover"
             ? 3
-            : 10;
+            : value === "Mercedes Classe S" ||
+              value === "Mercedes-Maybach Classe S" ||
+              value === "Mercedes Classe E"
+              ? 3
+              : 10;
 
       setForm((prev) => {
         const passagersActuels = parseInt(prev.passagers || "0", 10);
@@ -232,17 +236,17 @@ export default function Reservation() {
   };
 
   const calculerMiseADispo = () => {
-    const heures = Math.max(1, parseInt(form.dureeMiseADispo || "2", 10));
-    const estRangeRover = form.vehicule === "Range Rover";
-    const estBerline =
-      form.vehicule === "Mercedes Classe E" ||
-      form.vehicule === "Mercedes Classe S";
-    const tarifHoraireBase = estRangeRover ? 95 : 80;
+    const heures = Math.max(2, parseInt(form.dureeMiseADispo || "2", 10));
+    const tarifsHoraires: Record<string, number> = {
+      "Mercedes Classe E": 90,
+      "Mercedes Classe V": 100,
+      "Mercedes Classe S": 130,
+      "Mercedes-Maybach Classe S": 170,
+      "Range Rover": 100,
+    };
 
-    // MAD : tarif horaire progressif. Le forfait Séminaire est indépendant.
-    const tarifHoraire = Math.max(60, tarifHoraireBase - 5 * (heures - 1));
+    const tarifHoraire = tarifsHoraires[form.vehicule] || 100;
     const prixTTC = heures * tarifHoraire;
-    const prixFinalTTC = estBerline ? prixTTC * 0.9 : prixTTC;
     const kmInclus = heures * 25;
 
     setForm((prev) => ({
@@ -263,16 +267,17 @@ export default function Reservation() {
       "Séminaire",
     ].includes(form.service);
 
-    // Services sans trajet Google
     if (form.service === "Mise à disposition") {
       calculerMiseADispo();
       return;
     }
 
     if (serviceSansAdresse) {
-      const estRangeRover = form.vehicule === "Range Rover";
-
-      if (form.service === "Mariage" || form.service === "VIP" || form.service === "Longue distance") {
+      if (
+        form.service === "Mariage" ||
+        form.service === "VIP" ||
+        form.service === "Longue distance"
+      ) {
         setForm((prev) => ({
           ...prev,
           distance: "",
@@ -284,12 +289,11 @@ export default function Reservation() {
         return;
       }
 
-      // Séminaire : deux forfaits fixes.
-      // 4 h / 100 km = 350 € TTC ; 8 h / 200 km = 680 € TTC.
       const dureeSeminaire = form.dureeSeminaire || "4";
       const estForfait8h = dureeSeminaire === "8";
       const prixTTC = estForfait8h ? 680 : 350;
       const kmInclus = estForfait8h ? 200 : 100;
+
       setForm((prev) => ({
         ...prev,
         distance: `${kmInclus} km inclus`,
@@ -330,19 +334,10 @@ export default function Reservation() {
         const element = response.rows[0].elements[0];
         const distanceText = element.distance?.text || "";
         const dureeText = element.duration?.text || "";
-        const distanceKm = Number(element.distance?.value || 0) / 1000;
 
         const texteTrajet = `${form.depart} ${form.arrivee}`.toLowerCase();
         const heureCourse = parseInt(form.heure.split(":")[0] || "12", 10);
-        const estNuit = heureCourse >= 19 || heureCourse < 6;
-        const estRangeRover = form.vehicule === "Range Rover";
-        const estBerline =
-          form.vehicule === "Mercedes Classe E" ||
-          form.vehicule === "Mercedes Classe S";
-
-        const tarifKmJour = estRangeRover ? 2.5 : 2;
-        const tarifKmNuit = estRangeRover ? 3 : 2.5;
-        const tarifKm = estNuit ? tarifKmNuit : tarifKmJour;
+        const estNuit = heureCourse >= 22 || heureCourse < 7;
 
         const contientParis = texteTrajet.includes("paris");
         const contientCDG =
@@ -381,62 +376,98 @@ export default function Reservation() {
         const contientVersailles = texteTrajet.includes("versailles");
         const contientChantilly = texteTrajet.includes("chantilly");
 
+        const tarifsJour: Record<string, Record<string, number>> = {
+          "Mercedes Classe E": {
+            parisOrly: 129,
+            parisCDG: 149,
+            cdgOrly: 179,
+            parisDisney: 179,
+            parisVersailles: 149,
+            parisBeauvais: 249,
+            parisChantilly: 199,
+          },
+          "Mercedes Classe V": {
+            parisOrly: 169,
+            parisCDG: 189,
+            cdgOrly: 229,
+            parisDisney: 219,
+            parisVersailles: 189,
+            parisBeauvais: 299,
+            parisChantilly: 249,
+          },
+          "Mercedes Classe S": {
+            parisOrly: 179,
+            parisCDG: 199,
+            cdgOrly: 239,
+            parisDisney: 249,
+            parisVersailles: 199,
+            parisBeauvais: 329,
+            parisChantilly: 279,
+          },
+          "Mercedes-Maybach Classe S": {
+            parisOrly: 249,
+            parisCDG: 279,
+            cdgOrly: 299,
+            parisDisney: 329,
+            parisVersailles: 279,
+            parisBeauvais: 399,
+            parisChantilly: 349,
+          },
+          "Range Rover": {
+            parisOrly: 169,
+            parisCDG: 189,
+            cdgOrly: 229,
+            parisDisney: 219,
+            parisVersailles: 189,
+            parisBeauvais: 299,
+            parisChantilly: 249,
+          },
+        };
+
+        const tarifsStandardJour: Record<string, number> = {
+          "Mercedes Classe E": 99,
+          "Mercedes Classe V": 119,
+          "Mercedes Classe S": 149,
+          "Mercedes-Maybach Classe S": 189,
+          "Range Rover": 119,
+        };
+
+        const tarifsNuit = (tarif: number) => Math.round(tarif * 1.2);
+        const tarifsVehicule =
+          tarifsJour[form.vehicule] || tarifsJour["Mercedes Classe V"];
+
         let prixTTC = 0;
         let detailsPrix = "";
 
-        const forfaits = estRangeRover
-          ? {
-              parisOrly: estNuit ? 120 : 100,
-              parisCDG: estNuit ? 130 : 110,
-              cdgOrly: estNuit ? 160 : 140,
-              parisDisney: estNuit ? 160 : 140,
-              parisVersailles: estNuit ? 140 : 120,
-              parisBeauvais: estNuit ? 250 : 220,
-              parisChantilly: estNuit ? 240 : 210,
-            }
-          : {
-              parisOrly: estNuit ? 100 : 80,
-              parisCDG: estNuit ? 110 : 90,
-              cdgOrly: estNuit ? 140 : 120,
-              parisDisney: estNuit ? 140 : 120,
-              parisVersailles: estNuit ? 120 : 100,
-              parisBeauvais: estNuit ? 250 : 220,
-              parisChantilly: estNuit ? 210 : 180,
-            };
-
         if (contientParis && contientCDG) {
-          prixTTC = forfaits.parisCDG;
+          prixTTC = tarifsVehicule.parisCDG;
           detailsPrix = "Forfait Paris ↔ CDG";
         } else if (contientParis && contientOrly) {
-          prixTTC = forfaits.parisOrly;
+          prixTTC = tarifsVehicule.parisOrly;
           detailsPrix = "Forfait Paris ↔ Orly";
         } else if (contientCDG && contientOrly) {
-          prixTTC = forfaits.cdgOrly;
+          prixTTC = tarifsVehicule.cdgOrly;
           detailsPrix = "Forfait CDG ↔ Orly";
         } else if (contientParis && contientDisney) {
-          prixTTC = forfaits.parisDisney;
+          prixTTC = tarifsVehicule.parisDisney;
           detailsPrix = "Forfait Paris ↔ Disneyland";
         } else if (contientParis && contientVersailles) {
-          prixTTC = forfaits.parisVersailles;
+          prixTTC = tarifsVehicule.parisVersailles;
           detailsPrix = "Forfait Paris ↔ Versailles";
         } else if (contientParis && contientBeauvais) {
-          prixTTC = forfaits.parisBeauvais;
+          prixTTC = tarifsVehicule.parisBeauvais;
           detailsPrix = "Forfait Paris ↔ Beauvais";
         } else if (contientParis && contientChantilly) {
-          prixTTC = forfaits.parisChantilly;
+          prixTTC = tarifsVehicule.parisChantilly;
           detailsPrix = "Forfait Paris ↔ Chantilly";
         } else {
-          prixTTC = distanceKm * tarifKm;
-          if (contientCDG || contientOrly) {
-            prixTTC += 20;
-            detailsPrix = "Tarif kilométrique + supplément aéroport de 20 €";
-          } else {
-            detailsPrix = `Tarif kilométrique : ${tarifKm.toFixed(2)} €/km`;
-          }
+          prixTTC = tarifsStandardJour[form.vehicule] || 119;
+          detailsPrix = "Tarif standard";
         }
 
-        if (estBerline) {
-          prixTTC *= 0.9;
+        if (estNuit) {
+          prixTTC = tarifsNuit(prixTTC);
+          detailsPrix += " — tarif nuit";
         }
 
         const prixArrondi = Math.max(0, Math.round(prixTTC));
@@ -487,7 +518,8 @@ export default function Reservation() {
 
     if (
       vehicule === "Mercedes Classe E" ||
-      vehicule === "Mercedes Classe S"
+      vehicule === "Mercedes Classe S" ||
+      vehicule === "Mercedes-Maybach Classe S"
     ) {
       return 3;
     }
@@ -589,42 +621,6 @@ ${form.message || "Aucun"}`;
 
     const formElement = formRef.current;
 
-const requiredFields = [
-  form.nom,
-  form.email,
-  form.telephone,
-  form.vehicule,
-  form.passagers,
-  form.bagages,
-  form.service,
-  ...(
-    ["Mise à disposition", "Mariage", "VIP", "Longue distance", "Séminaire"].includes(form.service)
-      ? []
-      : [form.depart, form.arrivee]
-  ),
-  form.date,
-  form.heure,
-];
-
-const isValid = requiredFields.every(
-  (field) => field && field.toString().trim() !== ""
-);
-
-const nombrePassagers = parseInt(form.passagers || "0", 10);
-const nombreBagages = parseInt(form.bagages || "0", 10);
-const maxBagages = getMaxBagagesPour(nombrePassagers, form.vehicule);
-
-if (
-  !isValid ||
-  !form.email.includes("@") ||
-  nombrePassagers < 1 ||
-  nombrePassagers > getMaxPassagers() ||
-  nombreBagages < 0 ||
-  nombreBagages > maxBagages
-) {
-  setFormError(true);
-  return;
-}
 
 setFormError(false);
     try {
@@ -786,6 +782,7 @@ amount: formDataObject.prix,
 <option>Range Rover</option>
 <option>Mercedes Classe E</option>
 <option>Mercedes Classe S</option>
+<option>Mercedes-Maybach Classe S</option>
           </select>
 
           <input
@@ -817,7 +814,8 @@ amount: formDataObject.prix,
               {form.vehicule === "Range Rover"
                 ? "Range Rover : maximum 3 valises."
                 : form.vehicule === "Mercedes Classe E" ||
-                  form.vehicule === "Mercedes Classe S"
+                  form.vehicule === "Mercedes Classe S" ||
+                  form.vehicule === "Mercedes-Maybach Classe S"
                   ? "Berline : maximum 3 bagages (2 grandes valises + 1 valise cabine)."
                   : parseInt(form.passagers, 10) <= 3
                     ? "Classe V (1 à 3 passagers) : jusqu’à 10 valises."
