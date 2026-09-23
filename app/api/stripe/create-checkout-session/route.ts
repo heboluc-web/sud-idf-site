@@ -104,25 +104,35 @@ export async function POST(req: Request) {
       "https://www.sudidfexecutivetransport.fr",
       "https://sudidfexecutivetransport.fr",
     ]);
+// Si l'origine est présente, elle doit être autorisée.
+// Si elle est absente, on utilise le domaine de production.
+// On conserve également la valeur reçue pour diagnostic Vercel.
+const normalizedOrigin = requestOrigin?.trim() || null;
 
-    // Si l'origine est présente, elle doit être autorisée.
-    // Si elle est absente, on utilise le domaine de production
-    // comme origine de retour Stripe.
-    if (requestOrigin && !allowedOrigins.has(requestOrigin)) {
-      console.error("Origine de requête refusée :", requestOrigin);
+console.log("DEBUG ORIGIN STRIPE :", requestOrigin);
+console.log("DEBUG ORIGIN STRIPE NORMALISÉE :", normalizedOrigin);
 
-      return NextResponse.json(
-        {
-          error: "Origine de requête non autorisée.",
-        },
-        { status: 403 }
-      );
-    }
+if (
+  normalizedOrigin &&
+  !allowedOrigins.has(normalizedOrigin)
+) {
+  console.error(
+    "Origine de requête refusée :",
+    requestOrigin
+  );
 
-    const origin =
-      requestOrigin && allowedOrigins.has(requestOrigin)
-        ? requestOrigin
-        : "https://www.sudidfexecutivetransport.fr";
+  return NextResponse.json(
+    {
+      error: "Origine de requête non autorisée.",
+    },
+    { status: 403 }
+  );
+}
+
+const origin =
+  normalizedOrigin && allowedOrigins.has(normalizedOrigin)
+    ? normalizedOrigin
+    : "https://www.sudidfexecutivetransport.fr";
 
     // ==============================
     // CREATION SESSION STRIPE
