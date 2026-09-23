@@ -97,17 +97,20 @@ export async function POST(req: Request) {
     // ORIGINE DU SITE
     // ==============================
 
-    const origin =
-      req.headers.get("origin") ||
-      "https://www.sudidfexecutivetransport.fr";
+    const requestOrigin = req.headers.get("origin");
 
-    const allowedOrigins = [
+    const allowedOrigins = new Set([
       "http://localhost:3000",
       "https://www.sudidfexecutivetransport.fr",
       "https://sudidfexecutivetransport.fr",
-    ];
+    ]);
 
-    if (!allowedOrigins.includes(origin)) {
+    // Si l'origine est présente, elle doit être autorisée.
+    // Si elle est absente, on utilise le domaine de production
+    // comme origine de retour Stripe.
+    if (requestOrigin && !allowedOrigins.has(requestOrigin)) {
+      console.error("Origine de requête refusée :", requestOrigin);
+
       return NextResponse.json(
         {
           error: "Origine de requête non autorisée.",
@@ -115,6 +118,11 @@ export async function POST(req: Request) {
         { status: 403 }
       );
     }
+
+    const origin =
+      requestOrigin && allowedOrigins.has(requestOrigin)
+        ? requestOrigin
+        : "https://www.sudidfexecutivetransport.fr";
 
     // ==============================
     // CREATION SESSION STRIPE
