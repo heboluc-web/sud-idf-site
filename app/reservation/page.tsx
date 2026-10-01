@@ -766,7 +766,7 @@ ${form.message || "Aucun"}`;
       }
 
       window.open(
-        `https://wa.me/33650038514?text=${encodeURIComponent(message)}`,
+        `https://wa.me/33668863673?text=${encodeURIComponent(message)}`,
         "_blank"
       );
     }
@@ -802,34 +802,28 @@ amount: formDataObject.prix,
           .replace(/[^\d.]/g, "")
       );
 
-      if (!Number.isFinite(amountNumber) || amountNumber <= 0) {
-        const response = await fetch(
-          "https://formsubmit.co/contact@sudidfexecutivetransport.fr",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
-            },
-            body: new URLSearchParams(
-              Object.entries(reservationData).reduce(
-                (acc, [key, value]) => {
-                  acc[key] = String(value ?? "");
-                  return acc;
-                },
-                {} as Record<string, string>
-              )
-            ).toString(),
-          }
+          if (!Number.isFinite(amountNumber) || amountNumber <= 0) {
+      // Demande de devis sans paiement :
+      // envoi vers notre API Brevo dédiée.
+      const response = await fetch("/api/reservation/devis", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(reservationData),
+      });
+
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok || !result.success) {
+        throw new Error(
+          result.error || "Erreur lors de l'envoi de la demande de devis."
         );
-
-        if (!response.ok) {
-          throw new Error("Erreur lors de l'envoi de la demande de devis.");
-        }
-
-        window.location.href = "/merci?type=devis";
-        return;
       }
 
+      window.location.href = "/merci?type=devis";
+      return;
+    }
       // Réservation avec paiement : création de la session Stripe
       const response = await fetch(
         "/api/stripe/create-checkout-session",

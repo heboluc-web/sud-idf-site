@@ -3,6 +3,220 @@ import { NextResponse } from "next/server";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
+const BREVO_API_URL = "https://api.brevo.com/v3/smtp/email";
+const ENTREPRISE_EMAIL = "contact@sudidfexecutivetransport.fr";
+const EXPEDITEUR_EMAIL = "contact@sudidfexecutivetransport.fr";
+const EXPEDITEUR_NOM = "SUD IDF Executive Transport";
+
+function escapeHtml(value: unknown): string {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+function valeur(value: unknown): string {
+  const texte = String(value ?? "").trim();
+  return texte || "Non renseigné";
+}
+
+function construireDetailsHtml(
+  metadata: Stripe.Metadata,
+  amountTotal: string,
+  sessionId: string
+): string {
+  const champsConnus: Record<string, string> = {
+    name: "Nom",
+    email: "E-mail",
+    phone: "Téléphone",
+    service: "Service",
+    depart: "Départ",
+    arrivee: "Arrivée",
+    date: "Date",
+    time: "Heure",
+    vehicle: "Véhicule",
+    passengers: "Nombre de passagers",
+    bagages: "Bagages",
+  };
+
+  const champsAffiches = new Set<string>();
+
+  let lignes = "";
+
+  for (const [cle, libelle] of Object.entries(champsConnus)) {
+    if (cle === "email") {
+      continue;
+    }
+
+    champsAffiches.add(cle);
+
+    lignes += `
+      <tr>
+        <td style="padding:10px;border:1px solid #ddd;background:#f7f7f7;font-weight:bold;">
+          ${escapeHtml(libelle)}
+        </td>
+        <td style="padding:10px;border:1px solid #ddd;">
+          ${escapeHtml(valeur(metadata[cle]))}
+        </td>
+      </tr>
+    `;
+  }
+
+  // Ajout des éventuels champs supplémentaires présents dans Stripe
+  for (const [cle, value] of Object.entries(metadata)) {
+    if (champsAffiches.has(cle)) {
+      continue;
+    }
+
+    if (
+      cle === "amount" ||
+      cle === "amountTotal" ||
+      cle === "payment_status" ||
+      cle === "stripe_session"
+    ) {
+      continue;
+    }
+
+    lignes += `
+      <tr>
+        <td style="padding:10px;border:1px solid #ddd;background:#f7f7f7;font-weight:bold;">
+          ${escapeHtml(cle)}
+        </td>
+        <td style="padding:10px;border:1px solid #ddd;">
+          ${escapeHtml(valeur(value))}
+        </td>
+      </tr>
+    `;
+  }
+
+  lignes += `
+    <tr>
+      <td style="padding:10px;border:1px solid #ddd;background:#f7f7f7;font-weight:bold;">
+        Montant TTC
+      </td>
+      <td style="padding:10px;border:1px solid #ddd;font-weight:bold;">
+        ${escapeHtml(amountTotal)}
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding:10px;border:1px solid #ddd;background:#f7f7f7;font-weight:bold;">
+        Statut du paiement
+      </td>
+      <td style="padding:10px;border:1px solid #ddd;color:#16803c;font-weight:bold;">
+        PAIEMENT CONFIRMÉ
+      </td>
+    </tr>
+
+    <tr>
+      <td style="padding:10px;border:1px solid #ddd;background:#f7f7f7;font-weight:bold;">
+        Session Stripe
+      </td>
+      <td style="padding:10px;border:1px solid #ddd;">
+        ${escapeHtml(sessionId)}
+      </td>
+    </tr>
+  `;
+
+  return `
+    <div style="font-family:Arial,Helvetica,sans-serif;color:#222;line-height:1.5;">
+      <h2 style="margin-bottom:8px;color:#111;">
+        Réservation confirmée
+      </h2>
+
+      <p>
+        Le paiement Stripe a été confirmé pour cette réservation.
+      </p>
+
+      <table style="border-collapse:collapse;width:100%;max-width:700px;">
+        <tbody>
+          ${lignes}
+        </tbody>
+      </table>
+
+      <p style="margin-top:25px;">
+        <strong>SUD IDF Executive Transport</strong><br>
+        L’excellence au service de vos déplacements professionnels
+      </p>
+    </div>
+  `;
+}
+
+async function envoyerEmailBrevo({
+  destinataire,
+  nomDestinataire,
+  sujet,
+  htmlContent,
+  idempotencyKey,
+}: {
+  destinataire: string;
+  nomDestinataire?: string;
+  sujet: string;
+  htmlContent: string;
+  idempotencyKey: string;
+}) {
+  const apiKey = process.env.BREVO_API_KEY;
+
+  if (!apiKey) {
+    throw new Error("BREVO_API_KEY manquante.");
+  }
+
+  const response = await fetch(BREVO_API_URL, {
+    method: "POST",
+
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      "api-key": apiKey,
+      "Idempotency-Key": idempotencyKey,
+    },
+
+    body: JSON.stringify({
+      sender: {
+        email: EXPEDITEUR_EMAIL,
+        name: EXPEDITEUR_NOM,
+      },
+
+      to: [
+        {
+          email: destinataire,
+          ...(nomDestinataire
+            ? { name: nomDestinataire }
+            : {}),
+        },
+      ],
+
+      subject: sujet,
+
+      htmlContent,
+    }),
+  });
+
+  const responseText = await response.text();
+
+  if (!response.ok) {
+    console.error("❌ Erreur Brevo :", {
+      status: response.status,
+      response: responseText,
+      destinataire,
+    });
+
+    throw new Error(
+      `Brevo a refusé l'envoi : ${response.status}`
+    );
+  }
+
+  console.log("📧 E-mail Brevo envoyé :", {
+    destinataire,
+    status: response.status,
+    response: responseText,
+  });
+
+  return responseText;
+}
+
 export async function POST(req: Request) {
   const signature = req.headers.get("stripe-signature");
 
@@ -34,12 +248,18 @@ export async function POST(req: Request) {
     );
 
     if (event.type === "checkout.session.completed") {
-      const session = event.data.object as Stripe.Checkout.Session;
+      const session =
+        event.data.object as Stripe.Checkout.Session;
 
       const customerEmail =
         session.customer_details?.email ||
         session.customer_email ||
         "";
+
+      const customerName =
+        session.customer_details?.name ||
+        session.metadata?.name ||
+        "Client";
 
       const metadata = session.metadata || {};
 
@@ -56,84 +276,121 @@ export async function POST(req: Request) {
         metadata,
       });
 
-      // ==========================================
-      // ENVOI DE LA NOTIFICATION À L'ENTREPRISE
-      // ==========================================
+      // --------------------------------------------------
+      // On envoie les e-mails uniquement si le paiement
+      // est effectivement marqué comme payé.
+      // --------------------------------------------------
 
-      try {
-        const formSubmitResponse = await fetch(
-          "https://formsubmit.co/ajax/contact@sudidfexecutivetransport.fr",
-          {
-            method: "POST",
-
-            headers: {
-              "Content-Type": "application/json",
-              Accept: "application/json",
-            },
-
-            body: JSON.stringify({
-              _subject: `✅ Paiement Stripe confirmé - ${
-                metadata.name || "Client"
-              }`,
-
-              _template: "table",
-
-              name: metadata.name || "",
-
-              email: customerEmail,
-
-              phone: metadata.phone || "",
-
-              service: metadata.service || "",
-
-              depart: metadata.depart || "",
-
-              arrivee: metadata.arrivee || "",
-
-              date: metadata.date || "",
-
-              time: metadata.time || "",
-
-              vehicle: metadata.vehicle || "",
-
-              passengers: metadata.passengers || "",
-
-              bagages: metadata.bagages || "",
-
-              amount: amountTotal,
-
-              payment_status: "PAIEMENT CONFIRMÉ",
-
-              stripe_session: session.id,
-            }),
-          }
+      if (session.payment_status !== "paid") {
+        console.log(
+          "ℹ️ Session Stripe terminée mais paiement non confirmé :",
+          session.payment_status
         );
 
-        const formSubmitText = await formSubmitResponse.text();
-
-        console.log("📨 Réponse FormSubmit :", {
-          status: formSubmitResponse.status,
-          ok: formSubmitResponse.ok,
-          response: formSubmitText,
+        return NextResponse.json({
+          received: true,
         });
+      }
 
-        if (!formSubmitResponse.ok) {
-          console.error(
-            "❌ FormSubmit a refusé l'envoi :",
-            formSubmitResponse.status,
-            formSubmitText
-          );
-        } else {
-          console.log(
-            "📧 Notification de réservation envoyée à contact@sudidfexecutivetransport.fr"
-          );
-        }
-      } catch (emailError) {
-        console.error(
-          "❌ Erreur lors de l'envoi FormSubmit :",
-          emailError
+      const detailsHtml = construireDetailsHtml(
+        metadata,
+        amountTotal,
+        session.id
+      );
+
+      const nomClient =
+        metadata.name ||
+        customerName ||
+        "Client";
+
+      // --------------------------------------------------
+      // 1. NOTIFICATION À SUD IDF
+      // --------------------------------------------------
+
+      await envoyerEmailBrevo({
+        destinataire: ENTREPRISE_EMAIL,
+
+        nomDestinataire:
+          "SUD IDF Executive Transport",
+
+        sujet: `✅ Réservation payée - ${
+          metadata.name || "Client"
+        } - ${amountTotal}`,
+
+        htmlContent: `
+          <div style="font-family:Arial,Helvetica,sans-serif;">
+            <div style="background:#111;padding:20px;margin-bottom:20px;">
+              <h1 style="color:#d4af37;margin:0;">
+                SUD IDF Executive Transport
+              </h1>
+              <p style="color:white;margin:8px 0 0;">
+                Nouvelle réservation payée
+              </p>
+            </div>
+
+            ${detailsHtml}
+          </div>
+        `,
+
+        idempotencyKey: `${event.id}-entreprise`,
+      });
+
+      // --------------------------------------------------
+      // 2. CONFIRMATION AU CLIENT
+      // --------------------------------------------------
+
+      if (customerEmail) {
+        await envoyerEmailBrevo({
+          destinataire: customerEmail,
+
+          nomDestinataire: nomClient,
+
+          sujet: `✅ Confirmation de votre réservation - SUD IDF Executive Transport`,
+
+          htmlContent: `
+            <div style="font-family:Arial,Helvetica,sans-serif;">
+              <div style="background:#111;padding:20px;margin-bottom:20px;">
+                <h1 style="color:#d4af37;margin:0;">
+                  SUD IDF Executive Transport
+                </h1>
+                <p style="color:white;margin:8px 0 0;">
+                  Confirmation de votre réservation
+                </p>
+              </div>
+
+              <p>
+                Bonjour ${escapeHtml(nomClient)},
+              </p>
+
+              <p>
+                Nous vous confirmons la bonne réception de votre
+                réservation ainsi que de votre paiement.
+              </p>
+
+              ${detailsHtml}
+
+              <p style="margin-top:25px;">
+                Merci pour votre confiance.
+              </p>
+
+              <p>
+                <strong>SUD IDF Executive Transport</strong><br>
+                L’excellence au service de vos déplacements professionnels
+              </p>
+            </div>
+          `,
+
+          idempotencyKey: `${event.id}-client`,
+        });
+      } else {
+        console.warn(
+          "⚠️ Aucun e-mail client disponible dans la session Stripe."
         );
       }
+
+      console.log(
+        "✅ Notifications Brevo envoyées après paiement Stripe."
+      );
     }
 
     return NextResponse.json({
@@ -144,7 +401,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(
       {
-        error: "Signature Stripe invalide.",
+        error: "Signature Stripe invalide ou traitement du webhook impossible.",
       },
       { status: 400 }
     );
