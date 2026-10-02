@@ -219,10 +219,11 @@ export async function POST(req: Request) {
 
           <p style="margin-top:20px;">
   <img
-    src="https://www.sudidfexecutivetransport.fr/signature-email.png"
-    alt="SUD IDF Executive Transport"
-    style="display:block;width:450px;max-width:100%;height:auto;border:0;"
-  />
+  src="https://www.sudidfexecutivetransport.fr/signature-email.png"
+  alt="SUD IDF Executive Transport"
+  width="450"
+  style="display:block;width:450px;height:auto;border:0;"
+/>
 </p>
           
         </div>
