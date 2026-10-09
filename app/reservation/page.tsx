@@ -696,27 +696,32 @@ const tarifsJour: Record<string, Record<string, number>> = {
 }
 
 
+
 const trajetAvecAeroport =
   contientCDG ||
   contientOrly ||
   contientLeBourget ||
   contientBeauvais;
 
-// Vérifier le tarif de base avant les frais fixes.
-// La majoration de nuit existante est neutralisée pour le seuil.
+// Les frais fixes concernent uniquement les trajets régionaux.
+// Les forfaits Paris-aéroport restent inchangés.
+const trajetRegionalAvecAeroport =
+  trajetAvecAeroport &&
+  !contientParis;
+
+// Seuil évalué sur le tarif de base avant la majoration de nuit.
 const prixBasePourSeuilAeroport = estNuit
   ? prixTTC / 1.12
   : prixTTC;
 
-// Ajouter 20 € TTC uniquement si le tarif de base
-// ne dépasse pas 154 € TTC.
 if (
-  trajetAvecAeroport &&
+  trajetRegionalAvecAeroport &&
   prixBasePourSeuilAeroport <= 154
 ) {
   prixTTC += 20;
   detailsPrix += " — frais fixes aéroport : 20 € TTC";
 }
+
 
 
         const prixArrondi = Math.max(0, Math.round(prixTTC));
