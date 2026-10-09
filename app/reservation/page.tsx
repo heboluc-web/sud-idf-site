@@ -250,7 +250,7 @@ export default function Reservation() {
 
     const tarifHoraire = tarifsHoraires[form.vehicule] || 100;
     const tarifHoraireFinal = estNuit
-      ? Math.round(tarifHoraire * 1.2)
+      ? Math.round(tarifHoraire * 1.12)
       : tarifHoraire;
     const prixTTC = heures * tarifHoraireFinal;
     const kmInclus = heures * 25;
@@ -312,7 +312,7 @@ export default function Reservation() {
       const tarifBase =
         tarifsSeminaire[form.vehicule]?.[dureeSeminaire] ??
         (estForfait8h ? 780 : 430);
-      const prixTTC = estNuit ? Math.round(tarifBase * 1.2) : tarifBase;
+      const prixTTC = estNuit ? Math.round(tarifBase * 1.12) : tarifBase;
       const kmInclus = estForfait8h ? 200 : 100;
 
       setForm((prev) => ({
@@ -358,11 +358,27 @@ export default function Reservation() {
         const distanceText = element.distance?.text || "";
         const dureeText = element.duration?.text || "";
 
-        const texteTrajet = `${form.depart} ${form.arrivee}`.toLowerCase();
-        const heureCourse = parseInt(form.heure.split(":")[0] || "12", 10);
-        const estNuit = heureCourse >= 19 || heureCourse < 7;
 
-        const contientParis = texteTrajet.includes("paris");
+const departNormalise = form.depart.toLowerCase();
+const arriveeNormalisee = form.arrivee.toLowerCase();
+
+const texteTrajet = `${departNormalise} ${arriveeNormalisee}`;
+
+const heureCourse = parseInt(form.heure.split(":")[0] || "12", 10);
+const estNuit = heureCourse >= 19 || heureCourse < 7;
+
+const contientParis = texteTrajet.includes("paris");
+
+const departEstParis =
+  departNormalise.includes("paris") ||
+  departNormalise.includes("750");
+
+const arriveeEstParis =
+  arriveeNormalisee.includes("paris") ||
+  arriveeNormalisee.includes("750");
+
+const trajetParisParis = departEstParis && arriveeEstParis;
+
 
         // ===== ZONES FORFAITAIRES : NOM COMPLET + APPELLATION COURTE =====
         // CDG : Terminal 1/T1, Terminal 2A/T2A ... Terminal 2G/T2G, Terminal 3/T3.
@@ -461,63 +477,75 @@ export default function Reservation() {
   texteTrajet.includes("60128") ||
   texteTrajet.includes("arènes romaines") ||
        texteTrajet.includes("arenes romaines");
-        const tarifsJour: Record<string, Record<string, number>> = {
-          "Mercedes Classe E": {
-            parisAsterix: 159,
-            parisOrly: 129,
-            parisCDG: 149,
-            cdgOrly: 179,
-            parisLeBourget: 149,
-            parisDisney: 179,
-            parisVersailles: 149,
-            parisBeauvais: 249,
-            parisChantilly: 199,
-          },
-          "Mercedes Classe V": {
-            parisAsterix: 199,
-            parisOrly: 169,
-            parisCDG: 189,
-            cdgOrly: 229,
-            parisLeBourget: 189,
-            parisDisney: 219,
-            parisVersailles: 189,
-            parisBeauvais: 299,
-            parisChantilly: 249,
-          },
-          "Range Rover": {
-            parisAsterix: 229,
-            parisOrly: 199,
-            parisCDG: 219,
-            cdgOrly: 259,
-            parisLeBourget: 219,
-            parisDisney: 259,
-            parisVersailles: 219,
-            parisBeauvais: 349,
-            parisChantilly: 289,
-          },
-          "Mercedes Classe S": {
-            parisAsterix: 249,
-            parisOrly: 179,
-            parisCDG: 199,
-            cdgOrly: 239,
-            parisLeBourget: 229,
-            parisDisney: 249,
-            parisVersailles: 199,
-            parisBeauvais: 329,
-            parisChantilly: 279,
-          },
-          "Mercedes-Maybach Classe S": {
-            parisAsterix: 299,
-            parisOrly: 249,
-            parisCDG: 279,
-            cdgOrly: 299,
-            parisLeBourget: 299,
-            parisDisney: 329,
-            parisVersailles: 279,
-            parisBeauvais: 399,
-            parisChantilly: 349,
-          },
-        };
+
+
+const tarifsJour: Record<string, Record<string, number>> = {
+  "Mercedes Classe E": {
+    parisParis: 80,
+    parisAsterix: 129,
+    parisOrly: 99,
+    parisCDG: 119,
+    cdgOrly: 149,
+    parisLeBourget: 119,
+    parisDisney: 149,
+    parisVersailles: 119,
+    parisBeauvais: 219,
+    parisChantilly: 169,
+  },
+
+  "Mercedes Classe V": {
+    parisParis: 90,
+    parisAsterix: 169,
+    parisOrly: 139,
+    parisCDG: 159,
+    cdgOrly: 199,
+    parisLeBourget: 159,
+    parisDisney: 189,
+    parisVersailles: 159,
+    parisBeauvais: 269,
+    parisChantilly: 219,
+  },
+
+  "Range Rover": {
+    parisParis: 110,
+    parisAsterix: 199,
+    parisOrly: 169,
+    parisCDG: 189,
+    cdgOrly: 229,
+    parisLeBourget: 189,
+    parisDisney: 229,
+    parisVersailles: 189,
+    parisBeauvais: 319,
+    parisChantilly: 259,
+  },
+
+  "Mercedes Classe S": {
+    parisParis: 130,
+    parisAsterix: 219,
+    parisOrly: 149,
+    parisCDG: 169,
+    cdgOrly: 209,
+    parisLeBourget: 199,
+    parisDisney: 219,
+    parisVersailles: 169,
+    parisBeauvais: 299,
+    parisChantilly: 249,
+  },
+
+  "Mercedes-Maybach Classe S": {
+    parisParis: 150,
+    parisAsterix: 269,
+    parisOrly: 219,
+    parisCDG: 249,
+    cdgOrly: 269,
+    parisLeBourget: 269,
+    parisDisney: 299,
+    parisVersailles: 249,
+    parisBeauvais: 369,
+    parisChantilly: 319,
+  },
+};
+
 
         const tarifsKmJour: Record<string, number> = {
           "Mercedes Classe E": 2.2,
@@ -539,17 +567,27 @@ export default function Reservation() {
           tarifsJour[form.vehicule] || tarifsJour["Mercedes Classe V"];
         const tarifKmJour = tarifsKmJour[form.vehicule] || 2.8;
         const minimumJourVehicule = minimumJour[form.vehicule] || 70;
-        const tarifKm = estNuit ? tarifKmJour * 1.2 : tarifKmJour;
+        const tarifKm = estNuit ? tarifKmJour * 1.12 : tarifKmJour;
         const minimum = estNuit
-          ? Math.round(minimumJourVehicule * 1.2)
+          ? Math.round(minimumJourVehicule * 1.12)
           : minimumJourVehicule;
 
-        const tarifsNuit = (tarif: number) => Math.round(tarif * 1.2);
+        const tarifsNuit = (tarif: number) => Math.round(tarif * 1.12);
 
         let prixTTC = 0;
         let detailsPrix = "";
 
-        if (form.service === "Transport standard") {
+        if (form.service === "Transport standard" && !(
+  trajetParisParis &&
+  !contientCDG &&
+  !contientOrly &&
+  !contientLeBourget &&
+  !contientDisney &&
+  !contientVersailles &&
+  !contientBeauvais &&
+  !contientChantilly &&
+  !contientAsterix
+)) {
           const distanceKm =
             typeof element.distance?.value === "number"
               ? element.distance.value / 1000
@@ -570,10 +608,25 @@ export default function Reservation() {
               ? ` — minimum ${minimum} €`
               : ""
           }`;
-        } else if (contientParis && contientCDG) {
-          prixTTC = tarifsVehicule.parisCDG;
-          detailsPrix = "Forfait Paris ↔ CDG";
-        } else if (contientParis && contientOrly) {
+
+} else if (
+  trajetParisParis &&
+  !contientCDG &&
+  !contientOrly &&
+  !contientLeBourget &&
+  !contientDisney &&
+  !contientVersailles &&
+  !contientBeauvais &&
+  !contientChantilly &&
+  !contientAsterix
+) {
+  prixTTC = tarifsVehicule.parisParis;
+  detailsPrix = "Forfait Paris ↔ Paris";
+} else if (contientParis && contientCDG) {
+  prixTTC = tarifsVehicule.parisCDG;
+  detailsPrix = "Forfait Paris ↔ CDG";
+} else if (contientParis && contientOrly) {
+
           prixTTC = tarifsVehicule.parisOrly;
           detailsPrix = "Forfait Paris ↔ Orly";
         } else if (contientCDG && contientOrly) {
@@ -620,12 +673,27 @@ export default function Reservation() {
           }`;
         }
 
-        if (estNuit) {
-          if (form.service !== "Transport standard") {
-            prixTTC = tarifsNuit(prixTTC);
-          }
-          detailsPrix += " — tarif nuit";
-        }
+       if (estNuit) {
+  const trajetParisParisApplicable =
+    trajetParisParis &&
+    !contientCDG &&
+    !contientOrly &&
+    !contientLeBourget &&
+    !contientDisney &&
+    !contientVersailles &&
+    !contientBeauvais &&
+    !contientChantilly &&
+    !contientAsterix;
+
+  if (
+    form.service !== "Transport standard" ||
+    trajetParisParisApplicable
+  ) {
+    prixTTC = tarifsNuit(prixTTC);
+  }
+
+  detailsPrix += " — tarif nuit";
+}
 
         const prixArrondi = Math.max(0, Math.round(prixTTC));
         setForm((prev) => ({
