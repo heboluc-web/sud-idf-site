@@ -695,6 +695,30 @@ const tarifsJour: Record<string, Record<string, number>> = {
   detailsPrix += " — tarif nuit";
 }
 
+
+const trajetAvecAeroport =
+  contientCDG ||
+  contientOrly ||
+  contientLeBourget ||
+  contientBeauvais;
+
+// Vérifier le tarif de base avant les frais fixes.
+// La majoration de nuit existante est neutralisée pour le seuil.
+const prixBasePourSeuilAeroport = estNuit
+  ? prixTTC / 1.12
+  : prixTTC;
+
+// Ajouter 20 € TTC uniquement si le tarif de base
+// ne dépasse pas 154 € TTC.
+if (
+  trajetAvecAeroport &&
+  prixBasePourSeuilAeroport <= 154
+) {
+  prixTTC += 20;
+  detailsPrix += " — frais fixes aéroport : 20 € TTC";
+}
+
+
         const prixArrondi = Math.max(0, Math.round(prixTTC));
         setForm((prev) => ({
           ...prev,
