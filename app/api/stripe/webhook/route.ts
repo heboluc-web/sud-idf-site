@@ -157,7 +157,9 @@ async function envoyerEmailBrevo({
   htmlContent: string;
   idempotencyKey: string;
 }) {
-  const apiKey = process.env.BREVO_API_KEY;
+  const apiKey =
+  process.env.BREVO_API_KEY ||
+  process.env.CLÉ_API_BREVO;
 
   if (!apiKey) {
     throw new Error("BREVO_API_KEY manquante.");
@@ -227,7 +229,9 @@ export async function POST(req: Request) {
     );
   }
 
-  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  const webhookSecret = 
+     process.env.STRIPE_WEBHOOK_SECRET ||
+     process.env["SECRET DU WEBHOOK STRIPE"];
 
   if (!webhookSecret) {
     console.error("STRIPE_WEBHOOK_SECRET manquant.");
@@ -387,6 +391,43 @@ export async function POST(req: Request) {
           "⚠️ Aucun e-mail client disponible dans la session Stripe."
         );
       }
+ 
+      
+      // 3. ALERTE E-MAIL PRIORITAIRE À SUD IDF APRÈS PAIEMENT
+      try {
+        await envoyerEmailBrevo({
+          destinataire: "contact@sudidfexecutivetransport.fr",
+          nomDestinataire: "SUD IDF Executive Transport",
+          sujet: `🚨 NOUVELLE RÉSERVATION PAYÉE - ${nomClient}`,
+          htmlContent: `
+            <div style="font-family:Arial,Helvetica,sans-serif;color:#222;">
+              <div style="background:#111;padding:20px;text-align:center;">
+                <h1 style="color:#d4af37;margin:0;">
+                  SUD IDF Executive Transport
+                </h1>
+                <p style="color:white;">Nouvelle réservation payée</p>
+              </div>
+              <div style="padding:20px;border:1px solid #d4af37;">
+                <h2 style="color:#b8860b;">🚨 Alerte prioritaire</h2>
+                <p>Un paiement Stripe vient d’être confirmé.</p>
+                <p><strong>Client :</strong> ${escapeHtml(nomClient)}</p>
+                <p><strong>Montant payé :</strong> ${escapeHtml(String(amountTotal))}</p>
+                <p><strong>Départ :</strong> ${escapeHtml(String(metadata.depart || "Non renseigné"))}</p>
+                <p><strong>Date :</strong> ${escapeHtml(String(metadata.date || "Non renseignée"))}</p>
+                <p><strong>Heure :</strong> ${escapeHtml(String(metadata.time || "Non renseignée"))}</p>
+              </div>
+            </div>
+          `,
+          idempotencyKey: `${event.id}-alerte-prioritaire`,
+        });
+      } catch (emailAlerteError) {
+        console.error(
+          "Échec de l'alerte e-mail prioritaire à SUD IDF :",
+          emailAlerteError
+        );
+      }
+
+
 
       console.log(
         "✅ Notifications Brevo envoyées après paiement Stripe."

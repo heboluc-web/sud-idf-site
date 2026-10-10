@@ -19,6 +19,9 @@ export async function POST(req: Request) {
       arrivee,
       vehicle,
       passengers,
+      tripType,
+      returnDate,
+      returnTime,
       bagages,
     } = data;
 
@@ -178,7 +181,10 @@ const origin =
         vehicle: String(vehicle || ""),
         passengers: String(passengers || ""),
         bagages: String(bagages || ""),
-
+        tripType: String(tripType || "aller-simple"),
+        returnDate: String(returnDate || ""),
+        returnTime: String(returnTime || ""),
+        
         // Montant réellement utilisé par Stripe
         amount: String(amountNumber.toFixed(2)),
       },

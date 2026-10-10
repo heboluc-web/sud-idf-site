@@ -323,7 +323,7 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
       </h2>
 
       <p className="text-neutral-300 leading-relaxed text-base mb-6 tracking-wide">
-        SUD IDF EXECUTIVE TRANSPORT est une structure de service de transport privé exécutif avec chauffeur VTC, spécialisé dans les transferts vers les aéroports, les déplacements professionnels, les événements et les trajets privés. Nous proposons un service haut de gamme, ponctuel et personnalisé en Île-de-France, notamment à Paris, Orly, CDG, BVA, Disneyland, Versaille, en Essonne et en Seine-et-Marne.
+        SUD IDF EXECUTIVE TRANSPORT est une structure de service de transport privé exécutif avec chauffeur VTC, spécialisé dans les transferts vers les aéroports, les déplacements professionnels, les événements et les trajets privés. Nous proposons un service haut de gamme, ponctuel et personnalisé en Île-de-France, notamment à Paris, Orly, CDG, BVA, Disneyland, Versailles, en Essonne et en Seine-et-Marne.
       </p>
 
       <p className="text-neutral-400 leading-relaxed text-sm mb-6">
