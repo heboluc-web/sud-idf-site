@@ -1,3 +1,4 @@
+import { verifierSessionReservation } from "@/lib/reservation-access";
 import Stripe from "stripe";
 import { NextRequest, NextResponse } from "next/server";
 import { createHash } from "node:crypto";
@@ -306,19 +307,48 @@ export async function GET(request: NextRequest) {
   const token = request.nextUrl.searchParams.get("token") ?? "";
 
   try {
-    const reservation = await trouverReservation(token);
+    let reservation = null;
+
+    if (token) {
+      // Conserver le fonctionnement des anciens liens par e-mail.
+      reservation = await trouverReservation(token);
+    } else {
+      // Nouvel accès après validation du code par e-mail.
+      const cookie = request.cookies.get("reservation_access")?.value;
+      const reservationId = verifierSessionReservation(cookie);
+
+      if (reservationId) {
+        const { data, error } = await supabaseAdmin
+          .from("reservations")
+          .select("*")
+          .eq("id", reservationId)
+          .maybeSingle();
+
+        if (error) {
+          console.error("Erreur de lecture de la réservation :", error.message);
+          return NextResponse.json(
+            { error: "Impossible de consulter le dossier pour le moment." },
+            { status: 500 }
+          );
+        }
+
+        reservation = data;
+      }
+    }
 
     if (!reservation) {
       return NextResponse.json(
-        { error: "Lien invalide ou expiré. Vérifiez votre e-mail." },
+        { error: "Lien invalide ou expiré. Vérifiez votre accès par e-mail." },
         { status: 404 }
       );
     }
 
     return NextResponse.json({ reservation });
-  } catch {
+  } catch (error) {
+    console.error("Erreur de vérification de l'accès :", error);
+
     return NextResponse.json(
-      { error: "Impossible de vérifier le lien pour le moment." },
+      { error: "Impossible de vérifier l'accès pour le moment." },
       { status: 500 }
     );
   }
@@ -329,10 +359,12 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
 
     const token = typeof body.token === "string" ? body.token : "";
+    const cookie = request.cookies.get("reservation_access")?.value;
+    const reservationIdSession = verifierSessionReservation(cookie);
     const typeDemande = body.type_demande;
     const message = typeof body.message === "string" ? body.message.trim() : "";
 
-    if (!token || token.length > 200) {
+   if ((!token && !reservationIdSession) || token.length > 200) {
       return NextResponse.json(
         { error: "Lien sécurisé manquant ou invalide." },
         { status: 400 }
@@ -363,7 +395,20 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const reservation = await trouverReservation(token);
+    const reservation = token
+  ? await trouverReservation(token)
+  : reservationIdSession
+    ? await (async () => {
+        const { data, error } = await supabaseAdmin
+          .from("reservations")
+          .select("*")
+          .eq("id", reservationIdSession)
+          .maybeSingle();
+
+        if (error) throw error;
+        return data;
+      })()
+    : null;
 
     if (!reservation) {
       return NextResponse.json(

@@ -34,19 +34,20 @@ function GestionReservation() {
     let actif = true;
 
     async function chargerReservation() {
-      if (!token) {
-        setErreur("Le lien est incomplet. Vérifiez le lien reçu par e-mail.");
-        setChargement(false);
-        return;
-      }
+      // Le token est facultatif : l'API vérifiera le cookie sécurisé si nécessaire.
 
       try {
-        const reponse = await fetch(
-          `/api/reservation/gerer?token=${encodeURIComponent(token)}`
-        );
-        const resultat = await reponse.json();
+        const response = await fetch(
+  token
+    ? `/api/reservation/gerer?token=${encodeURIComponent(token)}`
+    : "/api/reservation/gerer",
+  {
+    credentials: "same-origin",
+  }
+);
+        const resultat = await response.json();
 
-        if (!reponse.ok) {
+        if (!response.ok) {
           throw new Error(
             resultat.error || "Impossible de retrouver votre demande."
           );
@@ -91,15 +92,16 @@ function GestionReservation() {
     setEnvoi(true);
 
     try {
-      const reponse = await fetch("/api/reservation/gerer", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          token,
-          type_demande: typeDemande,
-          message: message.trim(),
-        }),
-      });
+     const reponse = await fetch("/api/reservation/gerer", {
+  method: "POST",
+  credentials: "same-origin",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    ...(token ? { token } : {}),
+    type_demande: typeDemande,
+    message: message.trim(),
+  }),
+});
 
       const resultat = await reponse.json();
 
