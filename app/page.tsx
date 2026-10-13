@@ -35,6 +35,7 @@ export default function SudIdfExecutiveTransport() {
   const [visible, setVisible] = useState(false)
 useEffect(() => {
   setVisible(true)
+
 }, [])
 
 const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>({})
@@ -915,16 +916,54 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
   {/* FORMULAIRE */}
   <form
-    id="devisForm"
-    action="https://formsubmit.co/contact@sudidfexecutivetransport.fr"
-    method="POST"
-    className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-6 items-center"
-  >
+  id="devisForm"
+  onSubmit={async (e) => {
+    e.preventDefault();
 
-    <input type="hidden" name="_next" value="https://www.sudidfexecutivetransport.fr/merci" />
-    <input type="hidden" name="_captcha" value="false" />
-    <input type="hidden" name="_subject" value="Demande de devis corporate" />
-    <input type="hidden" name="_template" value="table" />
+    const isEmpty = (value: string) => !value || value.trim() === "";
+
+    if (
+      isEmpty(form.name) ||
+      isEmpty(form.email) ||
+      isEmpty(form.phone) ||
+      isEmpty(form.date) ||
+      isEmpty(form.message)
+    ) {
+      setFormError(true);
+      return;
+    }
+
+    setFormError(false);
+
+    try {
+      const response = await fetch("/api/reservation/devis", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nom: form.name,
+          company: form.company,
+          email: form.email,
+          telephone: form.phone,
+          date: form.date,
+          message: form.message,
+          service: "Devis corporate",
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok || !result.success) {
+        alert(result.error || "L'envoi a échoué. Merci de réessayer.");
+        return;
+      }
+
+      window.location.href = "/merci";
+    } catch {
+      alert("Impossible d'envoyer la demande pour le moment. Merci de réessayer.");
+    }
+  }}
+  className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-6 items-center"
+>
 
     {/* INPUTS CONNECTÉS AU STATE */}
     <input
@@ -991,48 +1030,6 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
       ENVOYER LA DEMANDE
     </button>
   </form>
-
-  {/* WHATSAPP */}
-  <div className="mt-10 flex justify-center">
-    <button
-      type="button"
-      onClick={() => {
-
-        const isEmpty = (value: any) => !value || value.trim() === ""
-
-if (
-  isEmpty(form.name) ||
-  isEmpty(form.email) ||
-  isEmpty(form.phone) ||
-  isEmpty(form.date) ||
-  isEmpty(form.message)
-) {
-  setFormError(true)
-  return
-}
-
-        setFormError(false)
-
-        const message = `Bonjour, demande de devis :
-
-Nom: ${form.name}
-Entreprise: ${form.company}
-Email: ${form.email}
-Téléphone: ${form.phone}
-Date: ${form.date}
-
-Message: ${form.message}`
-
-        window.open(
-          `https://wa.me/33668863673?text=${encodeURIComponent(message)}`,
-          "_blank"
-        )
-      }}
-      className="bg-amber-500 hover:bg-amber-400 text-black px-10 py-4 rounded-full tracking-[0.3em] transition-all duration-300 shadow-[0_0_30px_rgba(251,191,36,0.3)]"
-    >
-      WHATSAPP DIRECT
-    </button>
-  </div>
 </section>
 
 {/* ================= SEO LINKS ================= */}

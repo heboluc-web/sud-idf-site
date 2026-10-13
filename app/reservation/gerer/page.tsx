@@ -298,6 +298,15 @@ function GestionReservation() {
           </p>
         </div>
 
+        <div className="px-5 pb-4">
+  <a
+    href="/"
+    className="flex w-full items-center justify-center rounded-xl border border-[#C6A04A] px-6 py-3 font-semibold text-[#C6A04A] transition hover:bg-[#C6A04A] hover:text-black"
+  >
+    ← Retour à l’accueil
+  </a>
+</div>
+
         <footer className="border-t border-amber-500/30 px-5 py-4 text-center text-xs tracking-wide text-zinc-500">
           L’excellence au service de vos déplacements professionnels
         </footer>
