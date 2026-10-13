@@ -2656,12 +2656,13 @@ amount: formDataObject.prix,
     Consultez votre dossier pour demander une modification ou une annulation.
   </p>
 
-  <a
-    href="/reservation/gerer"
-    className="mt-4 flex w-full items-center justify-center rounded-xl bg-[#C6A04A] px-6 py-4 font-semibold text-black transition hover:bg-[#D4AF62]"
-  >
-    Gérer ma réservation
-  </a>
+<a
+  href="/reservation/acces"
+  className="mt-4 flex w-full items-center justify-center rounded-xl bg-[#C6A04A] px-6 py-4 font-semibold text-black transition hover:bg-[#D4AF62]"
+>
+  Gérer ma réservation
+</a>
+
 
   <p className="mt-3 text-xs text-gray-400">
     Accédez à votre réservation pour gérer votre dossier.
