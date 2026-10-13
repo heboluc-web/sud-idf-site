@@ -1,7 +1,23 @@
+
+import { supabaseAdmin } from "@/lib/supabase-admin";
 import Stripe from "stripe";
 import { NextResponse } from "next/server";
+import { randomBytes, createHash } from "node:crypto";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+function creerReference(): string {
+  const date = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+  const suffixe = randomBytes(4).toString("hex").toUpperCase();
+  return `SID-${date}-${suffixe}`;
+}
+
+function creerJetonAcces(): string {
+  return randomBytes(32).toString("base64url");
+}
+
+function hasherJeton(token: string): string {
+  return createHash("sha256").update(token).digest("hex");
+}
 
 const BREVO_API_URL = "https://api.brevo.com/v3/smtp/email";
 const ENTREPRISE_EMAIL = "contact@sudidfexecutivetransport.fr";
@@ -296,6 +312,93 @@ export async function POST(req: Request) {
         });
       }
 
+      
+      // Enregistrement de la réservation payée dans Supabase
+      const emailReservation = customerEmail || metadata.email || "";
+      const nomReservation = metadata.name || customerName || "Client";
+
+      if (!emailReservation) {
+        throw new Error("E-mail client manquant pour enregistrer la réservation.");
+      }
+
+      const { data: reservationExistante, error: rechercheErreur } =
+        await supabaseAdmin
+          .from("reservations")
+          .select("id, reference")
+          .eq("stripe_session_id", session.id)
+          .maybeSingle();
+
+      if (rechercheErreur) {
+        throw rechercheErreur;
+      }
+
+      let lienGestionReservation = "";
+
+      if (!reservationExistante) {
+        const jetonAcces = creerJetonAcces();
+        const referenceReservation = creerReference();
+
+        const { data: reservationCreee, error: insertionErreur } =
+          await supabaseAdmin
+            .from("reservations")
+            .insert({
+              reference: referenceReservation,
+              type: "reservation",
+              statut: "en_attente",
+              statut_paiement: "paye",
+              stripe_session_id: session.id,
+              nom: nomReservation,
+              email: emailReservation,
+              telephone: metadata.phone || null,
+              service: metadata.service || null,
+              vehicule: metadata.vehicle || null,
+              passagers: metadata.passengers || null,
+              bagages: metadata.bagages || null,
+              depart: metadata.depart || null,
+              arrivee: metadata.arrivee || null,
+              date_trajet: metadata.date || null,
+              heure_trajet: metadata.time || null,
+              montant_ttc:
+                typeof session.amount_total === "number"
+                  ? session.amount_total / 100
+                  : null,
+              details: {
+                ...metadata,
+                tripType: metadata.tripType || null,
+                returnDate: metadata.returnDate || null,
+                returnTime: metadata.returnTime || null,
+                stripe_session_id: session.id,
+              },
+              jeton_acces_hash: hasherJeton(jetonAcces),
+            })
+            .select("id, reference")
+            .single();
+
+        if (insertionErreur) {
+          throw insertionErreur;
+        }
+
+        const siteUrl = (
+          process.env.NEXT_PUBLIC_SITE_URL ||
+          process.env.SITE_URL ||
+          "https://www.sudidfexecutivetransport.fr"
+        ).replace(/\/+$/, "");
+
+        lienGestionReservation =
+          `${siteUrl}/reservation/gerer?token=${encodeURIComponent(jetonAcces)}`;
+
+        console.log("Réservation enregistrée dans Supabase :", {
+          reference: reservationCreee.reference,
+          sessionId: session.id,
+        });
+      } else {
+        console.log(
+          "Réservation déjà enregistrée pour cette session Stripe :",
+          reservationExistante.reference
+        );
+      }
+
+
       const detailsHtml = construireDetailsHtml(
         metadata,
         amountTotal,
@@ -370,6 +473,13 @@ export async function POST(req: Request) {
                 Nous vous confirmons la bonne réception de votre
                 réservation ainsi que de votre paiement.
               </p>
+
+              
+              ${
+                lienGestionReservation
+                  ? `<p>Pour demander une modification ou une annulation, utilisez votre <a href="${escapeHtml(lienGestionReservation)}">espace de gestion de réservation</a>. Toute demande reste soumise à confirmation.</p>`
+                  : ""
+              }
 
               ${detailsHtml}
 

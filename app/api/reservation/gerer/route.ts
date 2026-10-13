@@ -1,7 +1,9 @@
-
+import Stripe from "stripe";
 import { NextRequest, NextResponse } from "next/server";
 import { createHash } from "node:crypto";
 import { supabaseAdmin } from "@/lib/supabase-admin";
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export const runtime = "nodejs";
 
@@ -33,7 +35,7 @@ async function trouverReservation(token: string) {
   const { data, error } = await supabaseAdmin
     .from("reservations")
     .select(
-      "id, reference, type, statut, date_trajet, heure_trajet, depart, arrivee, service, vehicule"
+      "id, reference, type, statut, statut_paiement, stripe_session_id, montant_ttc, date_trajet, heure_trajet, depart, arrivee, service, vehicule"
     )
     .eq("jeton_acces_hash", jetonHash)
     .maybeSingle();
@@ -76,7 +78,7 @@ async function notifierEntreprise({
     body: JSON.stringify({
       sender: {
         name: EXPEDITEUR_NOM,
-        email: EXPEDITEUR_EMAIL,
+        email: process.env.BREVO_SENDER_EMAIL || EXPEDITEUR_EMAIL,
       },
       to: [{ email: ENTREPRISE_EMAIL, name: EXPEDITEUR_NOM }],
       subject: `${libelle} - ${reference}`,
@@ -103,6 +105,202 @@ async function notifierEntreprise({
     throw new Error("L'e-mail de notification n'a pas pu être envoyé.");
   }
 }
+
+async function rembourserReservation(
+  reservation: {
+    id: string;
+    stripe_session_id: string | null;
+  },
+  pourcentage: 50 | 100
+) {
+  if (!reservation.stripe_session_id) {
+    throw new Error("Aucune session Stripe associée.");
+  }
+
+  // Verrou atomique : une seule demande peut poursuivre.
+  const { data: verrouille, error: erreurVerrou } =
+    await supabaseAdmin.rpc("verrouiller_annulation", {
+      p_reservation_id: reservation.id,
+    });
+
+  if (erreurVerrou) throw erreurVerrou;
+
+  if (verrouille !== true) {
+    throw new Error(
+      "Réservation déjà annulée, remboursée ou en cours de traitement."
+    );
+  }
+
+  try {
+    const session = await stripe.checkout.sessions.retrieve(
+      reservation.stripe_session_id
+    );
+
+    if (
+      session.payment_status !== "paid" ||
+      typeof session.amount_total !== "number" ||
+      !session.payment_intent
+    ) {
+      throw new Error("Paiement Stripe non confirmé.");
+    }
+
+    const montantCentimes = Math.floor(
+      (session.amount_total * pourcentage) / 100
+    );
+
+    if (montantCentimes <= 0) {
+      throw new Error("Montant du remboursement invalide.");
+    }
+
+    const remboursement = await stripe.refunds.create(
+      {
+        payment_intent:
+          typeof session.payment_intent === "string"
+            ? session.payment_intent
+            : session.payment_intent.id,
+        amount: montantCentimes,
+      },
+      {
+        idempotencyKey: `reservation-${reservation.id}-remboursement`,
+      }
+    );
+
+    const statut =
+      pourcentage === 100 ? "rembourse" : "rembourse_partiel";
+
+    const { error: erreurMaj } = await supabaseAdmin
+      .from("reservations")
+      .update({
+        stripe_refund_id: remboursement.id,
+        montant_rembourse: montantCentimes / 100,
+        statut_remboursement: statut,
+        remboursement_traite_at: new Date().toISOString(),
+        statut: "annulee",
+        annulation_en_cours: false,
+      })
+      .eq("id", reservation.id);
+
+    if (erreurMaj) {
+      // Ne pas relancer aveuglément le remboursement :
+      // Stripe peut déjà l'avoir exécuté.
+      throw new Error(
+        `Remboursement Stripe ${remboursement.id} effectué, mais mise à jour Supabase échouée.`
+      );
+    }
+
+    return {
+      remboursementId: remboursement.id,
+      montant: montantCentimes / 100,
+      pourcentage,
+    };
+ 
+  } catch (erreur) {
+    // Ne jamais libérer le verrou si Stripe a confirmé
+    // le remboursement mais que Supabase n'a pas été mis à jour.
+    const { data: controle, error: erreurControle } =
+      await supabaseAdmin
+        .from("reservations")
+        .select("stripe_refund_id")
+        .eq("id", reservation.id)
+        .maybeSingle();
+
+    if (erreurControle) {
+      console.error(
+        "Impossible de vérifier le remboursement :",
+        erreurControle
+      );
+    } else if (!controle?.stripe_refund_id) {
+      // À ce stade, le résultat Stripe peut être incertain :
+      // on conserve le verrou par sécurité.
+      console.error(
+        "État du remboursement incertain. Verrou conservé.",
+        erreur
+      );
+    }
+
+    throw erreur;
+  }
+
+}
+
+
+function convertirDateHeureParisEnUTC(
+  date: string,
+  heure: string
+): Date | null {
+  const dateMatch = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date);
+  const heureMatch = /^(\d{2}):(\d{2})(?::(\d{2}))?$/.exec(heure);
+
+  if (!dateMatch || !heureMatch) return null;
+
+  const [, annee, mois, jour] = dateMatch;
+  const [, h, m, s = "0"] = heureMatch;
+
+  const cible = Date.UTC(
+    Number(annee),
+    Number(mois) - 1,
+    Number(jour),
+    Number(h),
+    Number(m),
+    Number(s)
+  );
+
+  const format = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Europe/Paris",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hourCycle: "h23",
+  });
+
+  let estimation = cible;
+
+  for (let i = 0; i < 4; i++) {
+    const parties = format.formatToParts(new Date(estimation));
+    const valeurs = Object.fromEntries(
+      parties.map((partie) => [partie.type, partie.value])
+    );
+
+    const representationUTC = Date.UTC(
+      Number(valeurs.year),
+      Number(valeurs.month) - 1,
+      Number(valeurs.day),
+      Number(valeurs.hour),
+      Number(valeurs.minute),
+      Number(valeurs.second)
+    );
+
+    const correction = cible - representationUTC;
+    if (correction === 0) break;
+
+    estimation += correction;
+  }
+
+  const resultat = new Date(estimation);
+  const verif = Object.fromEntries(
+    format.formatToParts(resultat).map((partie) => [
+      partie.type,
+      partie.value,
+    ])
+  );
+
+  if (
+    verif.year !== annee ||
+    verif.month !== mois ||
+    verif.day !== jour ||
+    verif.hour !== h ||
+    verif.minute !== m ||
+    verif.second !== s.padStart(2, "0")
+  ) {
+    return null;
+  }
+
+  return resultat;
+}
+
 
 export async function GET(request: NextRequest) {
   const token = request.nextUrl.searchParams.get("token") ?? "";
@@ -173,7 +371,59 @@ export async function POST(request: NextRequest) {
         { status: 404 }
       );
     }
+    
+    
+    const dateHeureTrajet =
+      reservation.date_trajet && reservation.heure_trajet
+      ? convertirDateHeureParisEnUTC(
+        reservation.date_trajet,
+        reservation.heure_trajet
+      )
+    : null;
 
+
+    const dateTrajetValide =
+      dateHeureTrajet !== null &&
+      !Number.isNaN(dateHeureTrajet.getTime());
+
+    const heuresAvantTrajet = dateTrajetValide
+      ? (dateHeureTrajet.getTime() - Date.now()) / 3600000
+      : null;
+
+    const modificationEligible =
+      typeDemande === "modification" &&
+      heuresAvantTrajet !== null &&
+      heuresAvantTrajet >= 4;
+
+    const annulationEligible =
+      typeDemande === "annulation" &&
+      heuresAvantTrajet !== null &&
+      heuresAvantTrajet >= 0;
+
+    const tauxRemboursement = !annulationEligible
+      ? 0
+      : heuresAvantTrajet! >= 48
+        ? 100
+        : 50;
+
+    const montantRemboursementPrevu =
+      typeof reservation.montant_ttc === "number"
+        ? Math.round(
+            (reservation.montant_ttc * tauxRemboursement) / 100 * 100
+          ) / 100
+        : null;
+
+    
+if (typeDemande === "annulation") {
+  if (!annulationEligible) {
+    return NextResponse.json(
+      {
+        error: "L'annulation n'est plus possible après le départ.",
+      },
+      { status: 400 }
+    );
+  }
+}
     const { error } = await supabaseAdmin
       .from("demandes_reservation")
       .insert({
@@ -190,6 +440,7 @@ export async function POST(request: NextRequest) {
         { status: 500 }
       );
     }
+
 
     try {
       await notifierEntreprise({
