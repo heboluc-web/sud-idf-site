@@ -79,11 +79,6 @@ function GestionReservation() {
     setErreur("");
     setConfirmation("");
 
-    if (!token) {
-      setErreur("Le lien sécurisé est absent.");
-      return;
-    }
-
     if (typeDemande === "modification" && !message.trim()) {
       setErreur("Précisez les modifications souhaitées.");
       return;

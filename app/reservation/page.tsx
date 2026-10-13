@@ -1689,11 +1689,13 @@ if (
 
   const sendWhatsApp = () => {
 
-    const serviceSansAdresse = [
-
-      "Mise à disposition", "Mariage", "VIP", "Longue distance", "Séminaire",
-
-    ].includes(form.service);
+  const serviceSansAdresse = [
+  "Mise à disposition",
+  "Mariage",
+  "VIP",
+  "Longue distance",
+  "Séminaire",
+].includes(form.service);
 
     if (form.tripType === "aller-retour" && serviceSansAdresse) {
       setFormError("⚠️ L’option aller-retour est disponible uniquement pour les trajets avec un départ et une arrivée. Pour cette prestation, choisissez aller simple.");
@@ -1716,66 +1718,41 @@ if (
       setFormError("⚠️ Le retour doit avoir lieu après le départ.");
       return;
     }
+    
+const requiredFields = [
+  form.nom,
+  form.telephone,
+  form.email,
+  form.vehicule,
+  form.passagers,
+  form.bagages,
+  form.service,
+  form.date,
+  form.heure,
+  ...(serviceSansAdresse ? [] : [form.depart, form.arrivee]),
+  ...(form.tripType === "aller-retour"
+    ? [form.returnDate, form.returnTime]
+    : []),
+];
 
-    const requiredFields = [
+const isValid = requiredFields.every(
+  (field) => field != null && String(field).trim() !== ""
+);
 
-      form.nom,
+const nombrePassagers = parseInt(form.passagers || "0", 10);
+const nombreBagages = parseInt(form.bagages || "0", 10);
+const maxBagages = getMaxBagagesPour(nombrePassagers, form.vehicule);
 
-      form.telephone,
-
-      form.vehicule,
-
-      form.passagers,
-
-      form.bagages,
-
-      form.service,
-
-      ...(
-
-        ["Mise à disposition", "Mariage", "VIP", "Longue distance", "Séminaire"].includes(form.service)
-
-          ? []
-
-          : [form.depart, form.arrivee]
-
-      ),
-
-      form.date,
-
-      form.heure,
-
-      ...(form.tripType === "aller-retour" ? [form.returnDate, form.returnTime] : []),
-
-    ];
-
-    const isValid = requiredFields.every(
-
-      (field) => field && field.toString().trim() !== ""
-
-    );
-
-    const nombrePassagers = parseInt(form.passagers || "0", 10);
-
-    const nombreBagages = parseInt(form.bagages || "0", 10);
-
-    const maxBagages = getMaxBagagesPour(nombrePassagers, form.vehicule);
-
-    if (
-
-      !isValid ||
-
-      nombrePassagers > getMaxPassagers() ||
-
-      nombreBagages > maxBagages
-
-    ) {
-
-      setFormError("⚠️ Merci de remplir tous les champs obligatoires.");
-
-      return;
-
-    }
+if (
+  !isValid ||
+  nombrePassagers < 1 ||
+  nombrePassagers > getMaxPassagers() ||
+  nombreBagages < 0 ||
+  nombreBagages > maxBagages
+) {
+  setFormError("⚠️ Merci de remplir tous les champs obligatoires et de vérifier le nombre de passagers et de bagages.");
+  return;
+}
 
     setFormError("");
 
