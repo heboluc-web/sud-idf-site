@@ -2342,7 +2342,7 @@ amount: formDataObject.prix,
 
                   autoComplete="off"
 
-                  placeholder="Départ"
+                  placeholder="Départ (adresse complète)"
 
                   className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
 
@@ -2416,7 +2416,7 @@ amount: formDataObject.prix,
 
                   autoComplete="off"
 
-                  placeholder="Arrivée"
+                 placeholder="Arrivée (adresse complète)"
 
                   className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
 
@@ -2578,7 +2578,7 @@ amount: formDataObject.prix,
 
           >
 
-            ✨ Envoyer ma demande
+            ✨ Payer en ligne en toute sécurité
 
           </button>
 
@@ -2604,7 +2604,7 @@ amount: formDataObject.prix,
 
         >
 
-          📲 Envoyer via WhatsApp
+          📲 Envoyer ma demande via WhatsApp
 
         </button>
 
