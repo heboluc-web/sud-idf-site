@@ -41,7 +41,8 @@ function valeur(value: unknown): string {
 function construireDetailsHtml(
   metadata: Stripe.Metadata,
   amountTotal: string,
-  sessionId: string
+  sessionId: string,
+  pourClient: boolean = false
 ): string {
   const champsConnus: Record<string, string> = {
     name: "Nom",
@@ -82,6 +83,24 @@ function construireDetailsHtml(
 
   // Ajout des éventuels champs supplémentaires présents dans Stripe
   for (const [cle, value] of Object.entries(metadata)) {
+    const cleNormalisee = cle.toLowerCase();
+
+    if (
+      pourClient &&
+      (
+        cleNormalisee.includes("distance") ||
+        cleNormalisee.includes("kilometre") ||
+        cleNormalisee.includes("kilomètre") ||
+        cleNormalisee.includes("tarif") ||
+        cleNormalisee.includes("montant") ||
+        cleNormalisee.includes("price") ||
+        cleNormalisee.includes("amount") ||
+        cleNormalisee === "km"
+      )
+    ) {
+      continue;
+    }
+
     if (champsAffiches.has(cle)) {
       continue;
     }
@@ -399,11 +418,18 @@ export async function POST(req: Request) {
       }
 
 
-      const detailsHtml = construireDetailsHtml(
-        metadata,
-        amountTotal,
-        session.id
-      );
+      const detailsHtmlEntreprise = construireDetailsHtml(
+  metadata,
+  amountTotal,
+  session.id
+);
+
+const detailsHtmlClient = construireDetailsHtml(
+  metadata,
+  amountTotal,
+  session.id,
+  true
+);
 
       const nomClient =
         metadata.name ||
@@ -435,7 +461,7 @@ export async function POST(req: Request) {
               </p>
             </div>
 
-            ${detailsHtml}
+            ${detailsHtmlEntreprise}
           </div>
         `,
 
@@ -481,7 +507,7 @@ export async function POST(req: Request) {
                   : ""
               }
 
-              ${detailsHtml}
+              ${detailsHtmlClient}
 
               <p style="margin-top:25px;">
                 Merci pour votre confiance.
