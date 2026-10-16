@@ -352,10 +352,11 @@ export async function POST(req: Request) {
       }
 
       let lienGestionReservation = "";
+let referenceReservation = reservationExistante?.reference || "";
 
       if (!reservationExistante) {
         const jetonAcces = creerJetonAcces();
-        const referenceReservation = creerReference();
+        referenceReservation = creerReference();
 
         const { data: reservationCreee, error: insertionErreur } =
           await supabaseAdmin
@@ -494,7 +495,10 @@ const detailsHtmlClient = construireDetailsHtml(
               <p>
                 Bonjour ${escapeHtml(nomClient)},
               </p>
-
+              <p>
+  <strong>Votre référence de réservation :</strong>
+  ${escapeHtml(referenceReservation || "En cours de génération")}
+</p>
               <p>
                 Nous vous confirmons la bonne réception de votre
                 réservation ainsi que de votre paiement.
@@ -513,10 +517,17 @@ const detailsHtmlClient = construireDetailsHtml(
                 Merci pour votre confiance.
               </p>
 
-              <p>
-                <strong>SUD IDF Executive Transport</strong><br>
-                L’excellence au service de vos déplacements professionnels
-              </p>
+              <div style="margin-top:25px;padding-top:20px;border-top:1px solid #d4af37;">
+  <p style="margin-bottom:12px;">
+    Merci pour votre confiance.
+  </p>
+  <img
+    src="https://www.sudidfexecutivetransport.fr/signature-email.png"
+    alt="Signature SUD IDF Executive Transport"
+    width="420"
+    style="display:block;width:100%;max-width:420px;height:auto;border:0;"
+  />
+</div>
             </div>
           `,
 
