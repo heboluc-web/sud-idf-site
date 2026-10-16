@@ -364,6 +364,46 @@ export async function POST(request: NextRequest) {
     const typeDemande = body.type_demande;
     const message = typeof body.message === "string" ? body.message.trim() : "";
 
+    
+    const nouvelleDateTrajet =
+      typeof body.nouvelle_date_trajet === "string"
+        ? body.nouvelle_date_trajet
+        : null;
+
+    const nouvelleHeureTrajet =
+      typeof body.nouvelle_heure_trajet === "string"
+        ? body.nouvelle_heure_trajet
+        : null;
+
+    const nouveauDepart =
+      typeof body.nouveau_depart === "string"
+        ? body.nouveau_depart.trim()
+        : null;
+
+    const nouvelleArrivee =
+      typeof body.nouvelle_arrivee === "string"
+        ? body.nouvelle_arrivee.trim()
+        : null;
+
+    const nouveauVehicule =
+      typeof body.nouveau_vehicule === "string"
+        ? body.nouveau_vehicule
+        : null;
+
+    const montantTtcPropose =
+      typeof body.montant_ttc_propose === "number" &&
+      Number.isFinite(body.montant_ttc_propose) &&
+      body.montant_ttc_propose >= 0
+        ? body.montant_ttc_propose
+        : null;
+
+    const detailsModification =
+      body.details_modification &&
+      typeof body.details_modification === "object" &&
+      !Array.isArray(body.details_modification)
+        ? body.details_modification
+        : null;
+
    if ((!token && !reservationIdSession) || token.length > 200) {
       return NextResponse.json(
         { error: "Lien sécurisé manquant ou invalide." },
@@ -478,14 +518,74 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    
+    if (typeDemande === "annulation") {
+      if (reservation.statut_paiement !== "paye") {
+        return NextResponse.json(
+          {
+            error:
+              "Cette réservation ne possède pas de paiement confirmé à rembourser.",
+          },
+          { status: 400 }
+        );
+      }
+
+      try {
+        const resultat = await rembourserReservation(
+          reservation,
+          tauxRemboursement as 50 | 100
+        );
+
+        let notification = true;
+
+        try {
+          await notifierEntreprise({
+            reference: reservation.reference,
+            typeDemande,
+            message: `Annulation effectuée. Remboursement de ${resultat.montant.toFixed(2)} € (${resultat.pourcentage} %).`,
+          });
+        } catch (erreurNotification) {
+          notification = false;
+          console.error(
+            "Remboursement effectué, mais notification Brevo échouée :",
+            erreurNotification
+          );
+        }
+
+        return NextResponse.json({
+          success: true,
+          notification,
+          message: `Annulation effectuée. Remboursement de ${resultat.montant.toFixed(2)} € (${resultat.pourcentage} %).`,
+          remboursement: resultat,
+        });
+      } catch (erreur) {
+        console.error("Erreur remboursement annulation :", erreur);
+
+        return NextResponse.json(
+          {
+            error:
+              "Le remboursement n'a pas pu être confirmé. La réservation doit être vérifiée avant toute nouvelle tentative.",
+          },
+          { status: 500 }
+        );
+      }
+    }
+
     const { error } = await supabaseAdmin
       .from("demandes_reservation")
-      .insert({
-        reservation_id: reservation.id,
-        type_demande: typeDemande,
-        message: message || null,
-        statut: "en_attente",
-      });
+         .insert({
+      reservation_id: reservation.id,
+      type_demande: typeDemande,
+      message: message || null,
+      statut: "en_attente",
+      nouvelle_date_trajet: nouvelleDateTrajet,
+      nouvelle_heure_trajet: nouvelleHeureTrajet,
+      nouveau_depart: nouveauDepart,
+      nouvelle_arrivee: nouvelleArrivee,
+      nouveau_vehicule: nouveauVehicule,
+      montant_ttc_propose: montantTtcPropose,
+      details_modification: detailsModification,
+    });
 
     if (error) {
       console.error("Erreur d'enregistrement de la demande :", error.message);
