@@ -435,6 +435,7 @@ export async function POST(request: NextRequest) {
       ? (dateHeureTrajet.getTime() - Date.now()) / 3600000
       : null;
 
+   
     const modificationEligible =
       typeDemande === "modification" &&
       heuresAvantTrajet !== null &&
@@ -458,17 +459,25 @@ export async function POST(request: NextRequest) {
           ) / 100
         : null;
 
-    
-if (typeDemande === "annulation") {
-  if (!annulationEligible) {
-    return NextResponse.json(
-      {
-        error: "L'annulation n'est plus possible après le départ.",
-      },
-      { status: 400 }
-    );
-  }
-}
+    if (typeDemande === "modification" && !modificationEligible) {
+      return NextResponse.json(
+        {
+          error:
+            "La modification doit être demandée au moins 4 heures avant le départ.",
+        },
+        { status: 400 }
+      );
+    }
+
+    if (typeDemande === "annulation" && !annulationEligible) {
+      return NextResponse.json(
+        {
+          error: "L'annulation n'est plus possible après le départ.",
+        },
+        { status: 400 }
+      );
+    }
+
     const { error } = await supabaseAdmin
       .from("demandes_reservation")
       .insert({
