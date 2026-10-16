@@ -513,10 +513,6 @@ const detailsHtmlClient = construireDetailsHtml(
 
               ${detailsHtmlClient}
 
-              <p style="margin-top:25px;">
-                Merci pour votre confiance.
-              </p>
-
               <div style="margin-top:25px;padding-top:20px;border-top:1px solid #d4af37;">
   <p style="margin-bottom:12px;">
     Merci pour votre confiance.
