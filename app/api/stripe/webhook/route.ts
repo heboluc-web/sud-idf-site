@@ -11,6 +11,7 @@ function creerReference(): string {
   return `SID-${date}-${suffixe}`;
 }
 
+
 function creerJetonAcces(): string {
   return randomBytes(32).toString("base64url");
 }
@@ -537,14 +538,20 @@ const detailsHtmlClient = construireDetailsHtml(
  
       
       // 3. ALERTE E-MAIL PRIORITAIRE : prise en charge dans moins de 4 heures
+
+const dateReservation = String(metadata.date ?? "").trim();
+const heureReservation = String(metadata.time ?? "").trim();
+
 const dateHeureTrajet = new Date(
-  `${String(metadata.date ?? "").trim()}T${String(metadata.time ?? "").trim()}`
+  `${dateReservation}T${heureReservation}:00+01:00`
 );
 
 const heuresAvantTrajet =
   dateHeureTrajet.getTime() - Date.now();
 
 const reservationPrioritaire =
+  /^\d{4}-\d{2}-\d{2}$/.test(dateReservation) &&
+  /^\d{2}:\d{2}$/.test(heureReservation) &&
   Number.isFinite(dateHeureTrajet.getTime()) &&
   heuresAvantTrajet >= 0 &&
   heuresAvantTrajet < 4 * 60 * 60 * 1000;
@@ -585,8 +592,8 @@ const reservationPrioritaire =
   }
 
       console.log(
-        "✅ Notifications Brevo envoyées après paiement Stripe."
-      );
+     "✅ Traitement des notifications après paiement Stripe terminé."
+     );
     }
 
     return NextResponse.json({
