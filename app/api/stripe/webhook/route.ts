@@ -536,7 +536,20 @@ const detailsHtmlClient = construireDetailsHtml(
       }
  
       
-      // 3. ALERTE E-MAIL PRIORITAIRE À SUD IDF APRÈS PAIEMENT
+      // 3. ALERTE E-MAIL PRIORITAIRE : prise en charge dans moins de 4 heures
+const dateHeureTrajet = new Date(
+  `${String(metadata.date ?? "").trim()}T${String(metadata.time ?? "").trim()}`
+);
+
+const heuresAvantTrajet =
+  dateHeureTrajet.getTime() - Date.now();
+
+const reservationPrioritaire =
+  Number.isFinite(dateHeureTrajet.getTime()) &&
+  heuresAvantTrajet >= 0 &&
+  heuresAvantTrajet < 4 * 60 * 60 * 1000;
+
+      if (reservationPrioritaire) {
       try {
         await envoyerEmailBrevo({
           destinataire: "contact@sudidfexecutivetransport.fr",
@@ -562,15 +575,14 @@ const detailsHtmlClient = construireDetailsHtml(
             </div>
           `,
           idempotencyKey: `${event.id}-alerte-prioritaire`,
-        });
-      } catch (emailAlerteError) {
-        console.error(
-          "Échec de l'alerte e-mail prioritaire à SUD IDF :",
-          emailAlerteError
-        );
-      }
-
-
+              });
+    } catch (emailAlerteError) {
+      console.error(
+        "Échec de l'alerte e-mail prioritaire à SUD IDF :",
+        emailAlerteError
+      );
+    }
+  }
 
       console.log(
         "✅ Notifications Brevo envoyées après paiement Stripe."
