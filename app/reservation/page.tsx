@@ -939,129 +939,72 @@ const trajetParisParis = departEstParis && arriveeEstParis;
        texteTrajet.includes("arenes romaines");
 
 const tarifsJour: Record<string, Record<string, number>> = {
-
   "Mercedes Classe E": {
-
-    parisParis: 80,
-
+    parisParis: 100,
     parisAsterix: 129,
-
-    parisOrly: 99,
-
-    parisCDG: 119,
-
-    cdgOrly: 149,
-
-    parisLeBourget: 119,
-
-    parisDisney: 149,
-
-    parisVersailles: 119,
-
-    parisBeauvais: 219,
-
+    parisOrly: 110,
+    parisCDG: 127,
+    cdgOrly: 152,
+    parisLeBourget: 127,
+    parisDisney: 152,
+    parisVersailles: 127,
+    parisBeauvais: 212,
     parisChantilly: 169,
-
   },
 
   "Mercedes Classe V": {
-
-    parisParis: 90,
-
+    parisParis: 110,
     parisAsterix: 169,
-
-    parisOrly: 139,
-
-    parisCDG: 159,
-
-    cdgOrly: 199,
-
-    parisLeBourget: 159,
-
-    parisDisney: 189,
-
-    parisVersailles: 159,
-
-    parisBeauvais: 269,
-
-    parisChantilly: 219,
-
+    parisOrly: 144,
+    parisCDG: 161,
+    cdgOrly: 195,
+    parisLeBourget: 161,
+    parisDisney: 186,
+    parisVersailles: 161,
+    parisBeauvais: 254,
+    parisChantilly: 212,
   },
 
+
   "Range Rover": {
-
-    parisParis: 110,
-
+    parisParis: 130,
     parisAsterix: 199,
-
     parisOrly: 169,
-
-    parisCDG: 189,
-
-    cdgOrly: 229,
-
-    parisLeBourget: 189,
-
-    parisDisney: 229,
-
-    parisVersailles: 189,
-
-    parisBeauvais: 319,
-
-    parisChantilly: 259,
-
+    parisCDG: 186,
+    cdgOrly: 220,
+    parisLeBourget: 186,
+    parisDisney: 220,
+    parisVersailles: 186,
+    parisBeauvais: 297,
+    parisChantilly: 246,
   },
 
   "Mercedes Classe S": {
-
-    parisParis: 130,
-
+    parisParis: 150,
     parisAsterix: 219,
-
-    parisOrly: 149,
-
+    parisOrly: 152,
     parisCDG: 169,
-
-    cdgOrly: 209,
-
-    parisLeBourget: 199,
-
-    parisDisney: 219,
-
+    cdgOrly: 203,
+    parisLeBourget: 195,
+    parisDisney: 212,
     parisVersailles: 169,
-
-    parisBeauvais: 299,
-
-    parisChantilly: 249,
-
+    parisBeauvais: 280,
+    parisChantilly: 237,
   },
 
   "Mercedes-Maybach Classe S": {
-
-    parisParis: 150,
-
+    parisParis: 170,
     parisAsterix: 269,
-
-    parisOrly: 219,
-
-    parisCDG: 249,
-
-    cdgOrly: 269,
-
-    parisLeBourget: 269,
-
-    parisDisney: 299,
-
-    parisVersailles: 249,
-
-    parisBeauvais: 369,
-
-    parisChantilly: 319,
-
+    parisOrly: 212,
+    parisCDG: 237,
+    cdgOrly: 254,
+    parisLeBourget: 254,
+    parisDisney: 280,
+    parisVersailles: 237,
+    parisBeauvais: 339,
+    parisChantilly: 297,
   },
-
 };
-
         const tarifsKmJour: Record<string, number> = {
 
           "Mercedes Classe E": 2.2,
