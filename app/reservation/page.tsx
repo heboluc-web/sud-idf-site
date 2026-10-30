@@ -42,7 +42,7 @@ export default function Reservation() {
 
     duree: "",
 
-    dureeMiseADispo: "2",
+    dureeMiseADispo: "3",
 
     dureeSeminaire: "4",
 
@@ -670,7 +670,7 @@ if (name === "depart") {
 
   const calculerMiseADispo = () => {
 
-    const heures = Math.max(2, parseInt(form.dureeMiseADispo || "2", 10));
+    const heures = Math.max(2, parseInt(form.dureeMiseADispo || "3", 10));
 
     const heureCourse = parseInt(form.heure.split(":")[0] || "12", 10);
 
@@ -2219,18 +2219,11 @@ amount: formDataObject.prix,
 
             >
 
-              <option value="2">Durée de mise à disposition : 2 h minimum</option>
-
-              <option value="3">3 heures</option>
-
+              <option value="3">Durée de mise à disposition : 3 h minimum</option>
               <option value="4">4 heures</option>
-
               <option value="5">5 heures</option>
-
               <option value="6">6 heures</option>
-
               <option value="7">7 heures</option>
-
               <option value="8">8 heures</option>
 
             </select>
