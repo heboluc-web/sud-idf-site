@@ -1,4 +1,3 @@
-
 "use client";
 
 import { Suspense, useEffect, useState } from "react";
@@ -8,6 +7,7 @@ type Reservation = {
   reference: string;
   type: string;
   statut: string;
+  statut_paiement: string | null;
   date_trajet: string | null;
   heure_trajet: string | null;
   depart: string | null;
@@ -107,7 +107,9 @@ function GestionReservation() {
       }
 
       setConfirmation(
-        "Votre demande a bien été transmise. Elle reste en attente de traitement par notre équipe."
+        estDevis
+          ? "Votre demande a bien été transmise. Elle reste en attente de traitement par notre équipe."
+          : "Votre demande concernant la réservation a bien été transmise. Elle reste en attente de traitement par notre équipe."
       );
       setMessage("");
     } catch (e) {
@@ -147,6 +149,17 @@ function GestionReservation() {
 
   if (!reservation) return null;
 
+  const estDevis = reservation.type === "devis";
+  const paiementConfirme = reservation.statut_paiement === "paye";
+  const statutLisible =
+    reservation.statut === "en_attente"
+      ? "En attente de traitement"
+      : reservation.statut === "confirmee" || reservation.statut === "confirmée"
+        ? "Confirmée"
+        : reservation.statut === "annulee" || reservation.statut === "annulée"
+          ? "Annulée"
+          : reservation.statut;
+
   return (
     <main className="min-h-screen bg-black px-4 py-10 text-white sm:py-14">
       <div className="mx-auto max-w-2xl overflow-hidden rounded-2xl border border-amber-500/60 bg-zinc-950 shadow-[0_0_35px_rgba(245,158,11,0.08)]">
@@ -162,19 +175,20 @@ function GestionReservation() {
           </p>
 
           <h1 className="mt-3 text-2xl font-bold sm:text-3xl">
-            Gestion de votre demande
+            {estDevis ? "Gestion de votre demande de devis" : "Gestion de votre réservation"}
           </h1>
 
           <p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-zinc-300">
-            Consultez les informations de votre dossier et transmettez-nous
-            une demande de modification ou d’annulation.
+            {estDevis
+              ? "Consultez les informations de votre demande de devis et transmettez-nous votre message."
+              : "Consultez les détails de votre réservation et transmettez-nous une demande de modification ou d’annulation."}
           </p>
         </header>
 
         <div className="p-5 sm:p-8">
           <section className="space-y-3 rounded-xl border border-amber-500/30 bg-black p-4 sm:p-5">
             <p className="mb-4 border-b border-amber-500/20 pb-3 text-sm font-semibold uppercase tracking-wider text-amber-400">
-              Informations du dossier
+              {estDevis ? "Informations de votre demande de devis" : "Détails de votre réservation"}
             </p>
 
             <p className="break-words">
@@ -187,8 +201,16 @@ function GestionReservation() {
             </p>
             <p>
               <strong className="text-amber-300">Statut :</strong>{" "}
-              {reservation.statut}
+              {statutLisible}
             </p>
+            {!estDevis && (
+              <p>
+                <strong className="text-amber-300">Paiement :</strong>{" "}
+                <span className={paiementConfirme ? "text-emerald-300" : "text-amber-200"}>
+                  {paiementConfirme ? "Paiement confirmé" : "Paiement non confirmé"}
+                </span>
+              </p>
+            )}
             <p>
               <strong className="text-amber-300">Date :</strong>{" "}
               {reservation.date_trajet || "Non renseignée"}
@@ -221,7 +243,7 @@ function GestionReservation() {
                 htmlFor="typeDemande"
                 className="mb-2 block font-semibold text-amber-300"
               >
-                Votre demande
+                {estDevis ? "Votre demande" : "Action souhaitée"}
               </label>
 
               <select
@@ -234,8 +256,8 @@ function GestionReservation() {
                 }
                 className={champ}
               >
-                <option value="modification">Demander une modification</option>
-                <option value="annulation">Demander une annulation</option>
+                <option value="modification">{estDevis ? "Demander une modification" : "Demander une modification de réservation"}</option>
+                <option value="annulation">{estDevis ? "Demander une annulation" : "Demander l’annulation de réservation"}</option>
               </select>
             </div>
 
@@ -288,7 +310,7 @@ function GestionReservation() {
               disabled={envoi}
               className="w-full rounded-lg border border-amber-400 bg-amber-400 px-5 py-3.5 font-bold text-black transition hover:bg-amber-300 focus:outline-none focus:ring-2 focus:ring-amber-300 focus:ring-offset-2 focus:ring-offset-black disabled:cursor-not-allowed disabled:opacity-60"
             >
-              {envoi ? "Envoi en cours..." : "Transmettre ma demande"}
+              {envoi ? "Envoi en cours..." : estDevis ? "Transmettre ma demande" : "Transmettre ma demande de réservation"}
             </button>
           </form>
 

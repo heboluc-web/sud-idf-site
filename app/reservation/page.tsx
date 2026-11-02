@@ -1822,17 +1822,17 @@ setFormError("");
       // On conserve les informations déjà présentes dans l'état du formulaire
 
       const reservationData = {
-
   ...formDataObject,
-
   ...form,
 
   name: formDataObject.nom,
+  phone: formDataObject.telephone,
+  amount: formDataObject.prix,
 
-phone: formDataObject.telephone,
-
-amount: formDataObject.prix,
-
+  date: form.date,
+  time: form.heure,
+  vehicle: form.vehicule,
+  passengers: form.passagers,
 };
 
       // Si aucun tarif TTC n'est disponible :

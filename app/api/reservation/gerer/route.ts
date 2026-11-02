@@ -517,66 +517,41 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
+   
+if (
+  typeDemande === "annulation" &&
+  reservation.statut_paiement !== "paye"
+) {
+  return NextResponse.json(
+    {
+      error:
+        "Cette réservation ne possède pas de paiement confirmé à rembourser.",
+    },
+    { status: 400 }
+  );
+}
 
-    
-    if (typeDemande === "annulation") {
-      if (reservation.statut_paiement !== "paye") {
-        return NextResponse.json(
-          {
-            error:
-              "Cette réservation ne possède pas de paiement confirmé à rembourser.",
-          },
-          { status: 400 }
-        );
-      }
-
-      try {
-        const resultat = await rembourserReservation(
-          reservation,
-          tauxRemboursement as 50 | 100
-        );
-
-        let notification = true;
-
-        try {
-          await notifierEntreprise({
-            reference: reservation.reference,
-            typeDemande,
-            message: `Annulation effectuée. Remboursement de ${resultat.montant.toFixed(2)} € (${resultat.pourcentage} %).`,
-          });
-        } catch (erreurNotification) {
-          notification = false;
-          console.error(
-            "Remboursement effectué, mais notification Brevo échouée :",
-            erreurNotification
-          );
-        }
-
-        return NextResponse.json({
-          success: true,
-          notification,
-          message: `Annulation effectuée. Remboursement de ${resultat.montant.toFixed(2)} € (${resultat.pourcentage} %).`,
-          remboursement: resultat,
-        });
-      } catch (erreur) {
-        console.error("Erreur remboursement annulation :", erreur);
-
-        return NextResponse.json(
-          {
-            error:
-              "Le remboursement n'a pas pu être confirmé. La réservation doit être vérifiée avant toute nouvelle tentative.",
-          },
-          { status: 500 }
-        );
-      }
-    }
+const messageDemande =
+  typeDemande === "annulation"
+    ? [
+        message || "Aucun motif complémentaire indiqué.",
+        "",
+        `Remboursement prévu : ${tauxRemboursement} %`,
+        `Montant estimé : ${
+          montantRemboursementPrevu !== null
+            ? montantRemboursementPrevu.toFixed(2) + " €"
+            : "à vérifier"
+        }`,
+        "Remboursement à effectuer manuellement par l'entreprise sur Stripe.",
+      ].join("\n")
+    : message;
 
     const { error } = await supabaseAdmin
       .from("demandes_reservation")
          .insert({
       reservation_id: reservation.id,
       type_demande: typeDemande,
-      message: message || null,
+      message: messageDemande || null,
       statut: "en_attente",
       nouvelle_date_trajet: nouvelleDateTrajet,
       nouvelle_heure_trajet: nouvelleHeureTrajet,
@@ -600,7 +575,7 @@ export async function POST(request: NextRequest) {
       await notifierEntreprise({
         reference: reservation.reference,
         typeDemande,
-        message,
+       message: messageDemande,
       });
     } catch (error) {
       console.error("Demande enregistrée, mais notification échouée :", error);
