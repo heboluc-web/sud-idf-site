@@ -121,7 +121,10 @@ export async function POST(request: NextRequest) {
 
     const date = typeof body.date === "string" ? body.date : "";
     const heure = typeof body.heure === "string" ? body.heure : "";
-    const dateHeureInitiale = dateHeureParisEnDate(String(reservation.date_trajet || ""), String(reservation.heure_trajet || ""));
+    const detailsInitials = (reservation.details || {}) as Record<string, unknown>;
+    const heureInitiale = reservation.heure_trajet || detailsInitials.heure_trajet || detailsInitials.heure || detailsInitials.time || "";
+    const dateInitiale = reservation.date_trajet || detailsInitials.date || "";
+    const dateHeureInitiale = dateHeureParisEnDate(String(dateInitiale), String(heureInitiale));
     const dateHeureActuelle = dateHeureParisEnDate(date, heure);
     if (!dateHeureInitiale || !dateHeureActuelle || dateHeureInitiale.getTime() - Date.now() < 4 * 60 * 60 * 1000) {
       return NextResponse.json({ error: "La modification doit être effectuée au moins 4 heures avant le départ initial." }, { status: 400 });
@@ -142,6 +145,19 @@ export async function POST(request: NextRequest) {
     const servicesAutorises = ["Transport standard", "Transfert aéroport", "Mise à disposition", "Séminaire"];
     if (!vehiculesAutorises.includes(vehicule) || !servicesAutorises.includes(service)) {
       return NextResponse.json({ error: "Le service ou le véhicule sélectionné n'est pas disponible pour une modification en ligne." }, { status: 400 });
+    }
+
+    // Capacités identiques au formulaire public de réservation.
+    const nombrePassagers = Number.parseInt(String(body.passagers ?? "1"), 10);
+    const nombreBagages = Number.parseInt(String(body.bagages ?? "0"), 10);
+    const maximumPassagers = vehicule === "Mercedes Classe V" ? 7
+      : ["Range Rover", "Mercedes Classe E", "Mercedes Classe S", "Mercedes-Maybach Classe S"].includes(vehicule) ? 3 : 10;
+    const maximumBagages = vehicule === "Range Rover"
+      || ["Mercedes Classe E", "Mercedes Classe S", "Mercedes-Maybach Classe S"].includes(vehicule) ? 3
+      : vehicule === "Mercedes Classe V" ? (nombrePassagers >= 4 ? 6 : 10) : 10;
+    if (!Number.isInteger(nombrePassagers) || nombrePassagers < 1 || nombrePassagers > maximumPassagers
+      || !Number.isInteger(nombreBagages) || nombreBagages < 0 || nombreBagages > maximumBagages) {
+      return NextResponse.json({ error: "Le nombre de passagers ou de bagages dépasse la capacité autorisée pour ce véhicule." }, { status: 400 });
     }
 
     let nouveauPrix = 0;
@@ -225,6 +241,8 @@ export async function POST(request: NextRequest) {
         returnDate, returnTime,
         dureeMiseADispo: body.dureeMiseADispo || null,
         dureeSeminaire: body.dureeSeminaire || null,
+        passagers: nombrePassagers,
+        bagages: nombreBagages,
         details_tarif: detailsTarif,
         distance,
         duree,

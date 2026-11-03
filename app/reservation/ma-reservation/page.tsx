@@ -2,11 +2,11 @@
 
 import { Suspense, useEffect, useMemo, useState, type FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
+import Script from "next/script";
 
 type Reservation = {
   id?: string;
   reference: string;
-  created_at?: string | null;
   type: string;
   statut: string;
   statut_paiement: string | null;
@@ -17,6 +17,8 @@ type Reservation = {
   arrivee: string | null;
   service: string | null;
   vehicule: string | null;
+  passagers?: string | number | null;
+  bagages?: string | number | null;
   details?: Record<string, unknown> | null;
 };
 
@@ -29,6 +31,21 @@ type Calcul = {
   distance?: string;
   duree?: string;
 };
+
+
+function maxPassagersPour(vehicule: string) {
+  if (vehicule === "Mercedes Classe V") return 7;
+  if (vehicule === "Range Rover") return 3;
+  if (["Mercedes Classe E", "Mercedes Classe S", "Mercedes-Maybach Classe S"].includes(vehicule)) return 3;
+  return 10;
+}
+
+function maxBagagesPour(passagers: number, vehicule: string) {
+  if (vehicule === "Range Rover") return 3;
+  if (["Mercedes Classe E", "Mercedes Classe S", "Mercedes-Maybach Classe S"].includes(vehicule)) return 3;
+  if (vehicule === "Mercedes Classe V") return passagers >= 4 ? 6 : 10;
+  return 10;
+}
 
 function GestionReservation() {
   const searchParams = useSearchParams();
@@ -43,6 +60,11 @@ function GestionReservation() {
   const [arrivee, setArrivee] = useState("");
   const [service, setService] = useState("Transport standard");
   const [vehicule, setVehicule] = useState("Mercedes Classe V");
+  const [passagers, setPassagers] = useState("1");
+  const [bagages, setBagages] = useState("0");
+  const [departSuggestions, setDepartSuggestions] = useState<any[]>([]);
+  const [arriveeSuggestions, setArriveeSuggestions] = useState<any[]>([]);
+  const [googlePret, setGooglePret] = useState(false);
   const [tripType, setTripType] = useState("simple");
   const [returnDate, setReturnDate] = useState("");
   const [returnTime, setReturnTime] = useState("");
@@ -54,25 +76,6 @@ function GestionReservation() {
   const [annulationEnCours, setAnnulationEnCours] = useState(false);
   const [motifAnnulation, setMotifAnnulation] = useState("");
   const retourPaiement = searchParams.get("modification");
-
-  function dateHeureLisible(valueDate: string | null | undefined, valueHeure?: string | null) {
-    if (!valueDate) return "Non renseignée";
-    const dateParts = valueDate.slice(0, 10).split("-");
-    const dateFr = dateParts.length === 3 ? `${dateParts[2]}/${dateParts[1]}/${dateParts[0]}` : valueDate;
-    const heureFr = valueHeure ? valueHeure.slice(0, 5) : "Non renseignée";
-    return `${dateFr} à ${heureFr}`;
-  }
-
-  function dateReservationLisible(value: string | null | undefined) {
-    if (!value) return "Non disponible";
-    const parsed = new Date(value);
-    if (Number.isNaN(parsed.getTime())) return "Non disponible";
-    return new Intl.DateTimeFormat("fr-FR", {
-      dateStyle: "long",
-      timeStyle: "short",
-      timeZone: "Europe/Paris",
-    }).format(parsed);
-  }
 
   const champ = "w-full rounded-lg border border-amber-500/50 bg-zinc-900 px-4 py-3 text-white outline-none transition placeholder:text-zinc-500 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20";
   const reservationAnnulee = reservation?.statut === "annulee" || reservation?.statut === "annulée";
@@ -89,16 +92,28 @@ function GestionReservation() {
         const r = resultat.reservation as Reservation;
         if (r.type !== "reservation") throw new Error("Cet espace est réservé aux réservations confirmées.");
         if (!actif) return;
-        setReservation(r);
+        const d = (r.details || {}) as Record<string, unknown>;
+        const heureEnregistree = r.heure_trajet || (typeof d.heure_trajet === "string" ? d.heure_trajet : typeof d.heure === "string" ? d.heure : typeof d.time === "string" ? d.time : null);
+        setReservation({ ...r, heure_trajet: heureEnregistree });
         if (retourPaiement === "success") setConfirmation("Votre paiement a été confirmé par Stripe. La modification est en cours de mise à jour de votre dossier.");
         if (retourPaiement === "cancelled") setConfirmation("Le paiement du supplément a été interrompu. Votre réservation initiale reste inchangée.");
-        const d = (r.details || {}) as Record<string, unknown>;
-        setDate(r.date_trajet || "");
-        setHeure(String(r.heure_trajet || d.heure_trajet || d.time || "").slice(0, 5));
+        setDate(r.date_trajet || (typeof d.date === "string" ? d.date : ""));
+        setHeure((heureEnregistree || "").slice(0, 5));
         setDepart(r.depart || "");
         setArrivee(r.arrivee || "");
         setService(r.service || "Transport standard");
-        setVehicule(r.vehicule || "Mercedes Classe V");
+        const vehiculeEnregistre = r.vehicule || "Mercedes Classe V";
+        const passagersEnregistres = Math.min(
+          Math.max(Number(r.passagers ?? d.passagers ?? 1) || 1, 1),
+          maxPassagersPour(vehiculeEnregistre)
+        );
+        const bagagesEnregistres = Math.min(
+          Math.max(Number(r.bagages ?? d.bagages ?? 0) || 0, 0),
+          maxBagagesPour(passagersEnregistres, vehiculeEnregistre)
+        );
+        setVehicule(vehiculeEnregistre);
+        setPassagers(String(passagersEnregistres));
+        setBagages(String(bagagesEnregistres));
         setTripType(d.tripType === "aller-retour" ? "aller-retour" : "simple");
         setReturnDate(typeof d.returnDate === "string" ? d.returnDate : "");
         setReturnTime(typeof d.returnTime === "string" ? d.returnTime : "");
@@ -114,10 +129,34 @@ function GestionReservation() {
     return () => { actif = false; };
   }, [token, retourPaiement]);
 
+  async function rechercherAdresse(value: string, field: "depart" | "arrivee") {
+    const texte = value.trim();
+    if (field === "depart") setDepartSuggestions([]); else setArriveeSuggestions([]);
+    if (texte.length < 2 || !googlePret || !(window as any).google?.maps?.importLibrary) return;
+    try {
+      const places = await (window as any).google.maps.importLibrary("places");
+      const { suggestions } = await places.AutocompleteSuggestion.fetchAutocompleteSuggestions({
+        input: texte, includedRegionCodes: ["fr"], language: "fr", region: "fr",
+      });
+      const resultats = (suggestions || []).filter((x: any) => x.placePrediction).slice(0, 5);
+      if (field === "depart") setDepartSuggestions(resultats); else setArriveeSuggestions(resultats);
+    } catch (error) { console.error("Google Places - gestion réservation :", error); }
+  }
+
+  async function choisirAdresse(suggestion: any, field: "depart" | "arrivee") {
+    try {
+      const place = suggestion.placePrediction.toPlace();
+      await place.fetchFields({ fields: ["formattedAddress", "displayName"] });
+      const adresse = place.formattedAddress || place.displayName || suggestion.placePrediction.text?.toString() || "";
+      if (field === "depart") { setDepart(adresse); setDepartSuggestions([]); }
+      else { setArrivee(adresse); setArriveeSuggestions([]); }
+    } catch (error) { console.error("Sélection adresse Google Places :", error); }
+  }
+
   const corpsModification = useMemo(() => ({
     ...(token ? { token } : {}), date, heure, depart, arrivee, service, vehicule,
-    tripType, returnDate, returnTime, dureeMiseADispo, dureeSeminaire,
-  }), [token, date, heure, depart, arrivee, service, vehicule, tripType, returnDate, returnTime, dureeMiseADispo, dureeSeminaire]);
+    tripType, returnDate, returnTime, dureeMiseADispo, dureeSeminaire, passagers, bagages,
+  }), [token, date, heure, depart, arrivee, service, vehicule, tripType, returnDate, returnTime, dureeMiseADispo, dureeSeminaire, passagers, bagages]);
 
   async function calculer(e: FormEvent<HTMLFormElement>) {
     e.preventDefault(); setErreur(""); setConfirmation(""); setCalcul(null); setConfirmationModification(false); setCalculEnCours(true);
@@ -139,7 +178,7 @@ function GestionReservation() {
       if (!response.ok) throw new Error(result.error || "La modification n'a pas pu être confirmée.");
       if (result.checkoutUrl) { window.location.assign(result.checkoutUrl); return; }
       setConfirmation(result.message || "Votre modification est confirmée.");
-      setReservation((r: Reservation | null) => r ? { ...r, date_trajet: date, heure_trajet: heure, depart, arrivee, service, vehicule, montant_ttc: result.montantFinalTTC } : r);
+      setReservation((r: Reservation | null) => r ? { ...r, date_trajet: date, heure_trajet: heure, depart, arrivee, service, vehicule, passagers, bagages, montant_ttc: result.montantFinalTTC } : r);
       setCalcul(null); setConfirmationModification(false);
     } catch (e) { setErreur(e instanceof Error ? e.message : "Erreur lors de la confirmation."); }
     finally { setCalculEnCours(false); }
@@ -163,6 +202,7 @@ function GestionReservation() {
 
   return (
     <main className="min-h-screen bg-black px-4 py-10 text-white sm:py-14">
+      <Script src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&loading=async&v=weekly`} strategy="afterInteractive" onLoad={() => setGooglePret(true)} />
       <div className="mx-auto max-w-2xl overflow-hidden rounded-2xl border border-amber-500/60 bg-zinc-950 shadow-[0_0_35px_rgba(245,158,11,0.08)]">
         <header className="border-b border-amber-500/30 px-5 py-8 text-center sm:px-8">
           <img src="/logo.png" alt="SUD IDF Executive Transport" className="mx-auto mb-5 h-auto w-32 object-contain" />
@@ -180,8 +220,9 @@ function GestionReservation() {
             <p><strong className="text-amber-300">Montant TTC :</strong> {Number(reservation.montant_ttc || 0).toFixed(2)} €</p>
             <p><strong className="text-amber-300">Départ :</strong> {reservation.depart || "Non renseigné"}</p>
             <p><strong className="text-amber-300">Arrivée :</strong> {reservation.arrivee || "Non renseignée"}</p>
-            <p><strong className="text-amber-300">Date et heure du départ :</strong> {dateHeureLisible(reservation.date_trajet, reservation.heure_trajet || (typeof reservation.details?.time === "string" ? reservation.details.time : null))}</p>
-            <p><strong className="text-amber-300">Date et heure de réservation :</strong> {dateReservationLisible(reservation.created_at)}</p>
+            <p><strong className="text-amber-300">Passagers :</strong> {reservation.passagers ?? (reservation.details?.passagers as string | number | undefined) ?? "—"}</p>
+            <p><strong className="text-amber-300">Bagages :</strong> {reservation.bagages ?? (reservation.details?.bagages as string | number | undefined) ?? "—"}</p>
+            <p><strong className="text-amber-300">Date et heure :</strong> {reservation.date_trajet || "—"} à {reservation.heure_trajet || "—"}</p>
           </section>
 
           {!reservationAnnulee && reservation.statut_paiement === "paye" && (
@@ -192,11 +233,15 @@ function GestionReservation() {
                 <label className="block text-sm text-amber-200">Date du départ<input required type="date" value={date} onChange={(e) => setDate(e.target.value)} className={`${champ} mt-2`} /></label>
                 <label className="block text-sm text-amber-200">Heure du départ<input required type="time" value={heure} onChange={(e) => setHeure(e.target.value)} className={`${champ} mt-2`} /></label>
               </div>
-             <label className="block text-sm text-amber-200">Adresse de départ<input maxLength={300} value={depart} onChange={(e) => setDepart(e.target.value)} required={service !== "Mise à disposition" && service !== "Séminaire"} className={`${champ} mt-2`} /></label>
-              <label className="block text-sm text-amber-200">Adresse d’arrivée<input maxLength={300} value={arrivee} onChange={(e) => setArrivee(e.target.value)} required={service !== "Mise à disposition" && service !== "Séminaire"} className={`${champ} mt-2`} /></label>
+              <div className="relative space-y-1"><label className="block text-sm text-amber-200">Adresse de départ<input maxLength={300} value={depart} onChange={(e) => { setDepart(e.target.value); void rechercherAdresse(e.target.value, "depart"); }} required={service !== "Mise à disposition" && service !== "Séminaire"} autoComplete="off" className={`${champ} mt-2`} />{departSuggestions.length > 0 && <div className="absolute z-30 mt-1 max-h-56 w-full overflow-y-auto rounded-lg border border-amber-500/60 bg-zinc-950 shadow-xl">{departSuggestions.map((item, index) => <button type="button" key={index} onClick={() => void choisirAdresse(item, "depart")} className="block w-full border-b border-zinc-800 px-4 py-3 text-left text-sm text-white hover:bg-amber-500/15">{item.placePrediction.text?.toString()}</button>)}</div>}</label></div>
+              <div className="relative space-y-1"><label className="block text-sm text-amber-200">Adresse d’arrivée<input maxLength={300} value={arrivee} onChange={(e) => { setArrivee(e.target.value); void rechercherAdresse(e.target.value, "arrivee"); }} required={service !== "Mise à disposition" && service !== "Séminaire"} autoComplete="off" className={`${champ} mt-2`} />{arriveeSuggestions.length > 0 && <div className="absolute z-30 mt-1 max-h-56 w-full overflow-y-auto rounded-lg border border-amber-500/60 bg-zinc-950 shadow-xl">{arriveeSuggestions.map((item, index) => <button type="button" key={index} onClick={() => void choisirAdresse(item, "arrivee")} className="block w-full border-b border-zinc-800 px-4 py-3 text-left text-sm text-white hover:bg-amber-500/15">{item.placePrediction.text?.toString()}</button>)}</div>}</label></div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <label className="block text-sm text-amber-200">Nombre de passagers<select required value={passagers} onChange={(e) => { const n = Number(e.target.value); setPassagers(String(n)); setBagages((ancien) => String(Math.min(Number(ancien || 0), maxBagagesPour(n, vehicule)))); }} className={`${champ} mt-2`}>{Array.from({ length: maxPassagersPour(vehicule) }, (_, i) => i + 1).map((n) => <option key={n} value={n}>{n} {n > 1 ? "passagers" : "passager"}</option>)}</select></label>
+                <label className="block text-sm text-amber-200">Nombre de bagages<select required value={bagages} onChange={(e) => setBagages(e.target.value)} className={`${champ} mt-2`}>{Array.from({ length: maxBagagesPour(Number(passagers || 1), vehicule) + 1 }, (_, i) => i).map((n) => <option key={n} value={n}>{n} {n > 1 ? "bagages" : "bagage"}</option>)}</select></label>
+              </div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="block text-sm text-amber-200">Type de prestation<select value={service} onChange={(e) => setService(e.target.value)} className={`${champ} mt-2`}><option>Transport standard</option><option>Transfert aéroport</option><option>Mise à disposition</option><option>Séminaire</option></select></label>
-                <label className="block text-sm text-amber-200">Véhicule<select value={vehicule} onChange={(e) => setVehicule(e.target.value)} className={`${champ} mt-2`}><option>Mercedes Classe E</option><option>Mercedes Classe V</option><option>Range Rover</option><option>Mercedes Classe S</option><option>Mercedes-Maybach Classe S</option></select></label>
+                <label className="block text-sm text-amber-200">Véhicule<select value={vehicule} onChange={(e) => { const v = e.target.value; const p = Math.min(Number(passagers || 1), maxPassagersPour(v)); setVehicule(v); setPassagers(String(p)); setBagages((ancien) => String(Math.min(Number(ancien || 0), maxBagagesPour(p, v)))); }} className={`${champ} mt-2`}><option>Mercedes Classe E</option><option>Mercedes Classe V</option><option>Range Rover</option><option>Mercedes Classe S</option><option>Mercedes-Maybach Classe S</option></select></label>
               </div>
               {service === "Mise à disposition" && <label className="block text-sm text-amber-200">Durée (heures)<select value={dureeMiseADispo} onChange={(e) => setDureeMiseADispo(e.target.value)} className={`${champ} mt-2`}>{[3,4,5,6,7,8].map((n) => <option key={n} value={n}>{n} heures</option>)}</select></label>}
               {service === "Séminaire" && <label className="block text-sm text-amber-200">Durée<select value={dureeSeminaire} onChange={(e) => setDureeSeminaire(e.target.value)} className={`${champ} mt-2`}><option value="4">4 heures</option><option value="8">8 heures</option></select></label>}
