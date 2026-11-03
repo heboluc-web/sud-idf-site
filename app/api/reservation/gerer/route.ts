@@ -1,3 +1,4 @@
+
 import { verifierSessionReservation } from "@/lib/reservation-access";
 import Stripe from "stripe";
 import { NextRequest, NextResponse } from "next/server";
@@ -36,7 +37,7 @@ async function trouverReservation(token: string) {
   const { data, error } = await supabaseAdmin
     .from("reservations")
     .select(
-      "id, reference, type, statut, statut_paiement, stripe_session_id, montant_ttc, date_trajet, heure_trajet, depart, arrivee, service, vehicule"
+      "id, reference, type, statut, statut_paiement, stripe_session_id, montant_ttc, created_at, date_trajet, heure_trajet, depart, arrivee, service, vehicule, passagers, bagages, email, details"
     )
     .eq("jeton_acces_hash", jetonHash)
     .maybeSingle();
