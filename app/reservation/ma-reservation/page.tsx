@@ -11,6 +11,7 @@ type Reservation = {
   statut: string;
   statut_paiement: string | null;
   montant_ttc?: number | string | null;
+  created_at?: string | null;
   date_trajet: string | null;
   heure_trajet: string | null;
   depart: string | null;
@@ -64,6 +65,8 @@ function GestionReservation() {
   const [bagages, setBagages] = useState("0");
   const [departSuggestions, setDepartSuggestions] = useState<any[]>([]);
   const [arriveeSuggestions, setArriveeSuggestions] = useState<any[]>([]);
+  const [departValide, setDepartValide] = useState(true);
+  const [arriveeValide, setArriveeValide] = useState(true);
   const [googlePret, setGooglePret] = useState(false);
   const [tripType, setTripType] = useState("simple");
   const [returnDate, setReturnDate] = useState("");
@@ -76,6 +79,14 @@ function GestionReservation() {
   const [annulationEnCours, setAnnulationEnCours] = useState(false);
   const [motifAnnulation, setMotifAnnulation] = useState("");
   const retourPaiement = searchParams.get("modification");
+
+  const aujourdHuiLocale = new Date(
+  Date.now() - new Date().getTimezoneOffset() * 60000
+).toISOString().slice(0, 10);
+
+const heureActuelleLocale = new Date(
+  Date.now() - new Date().getTimezoneOffset() * 60000
+).toISOString().slice(11, 16);
 
   const champ = "w-full rounded-lg border border-amber-500/50 bg-zinc-900 px-4 py-3 text-white outline-none transition placeholder:text-zinc-500 focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20";
   const reservationAnnulee = reservation?.statut === "annulee" || reservation?.statut === "annulée";
@@ -101,6 +112,9 @@ function GestionReservation() {
         setHeure((heureEnregistree || "").slice(0, 5));
         setDepart(r.depart || "");
         setArrivee(r.arrivee || "");
+        // Les adresses déjà enregistrées restent valides tant que le client ne les modifie pas.
+        setDepartValide(true);
+        setArriveeValide(true);
         setService(r.service || "Transport standard");
         const vehiculeEnregistre = r.vehicule || "Mercedes Classe V";
         const passagersEnregistres = Math.min(
@@ -144,14 +158,85 @@ function GestionReservation() {
   }
 
   async function choisirAdresse(suggestion: any, field: "depart" | "arrivee") {
-    try {
-      const place = suggestion.placePrediction.toPlace();
-      await place.fetchFields({ fields: ["formattedAddress", "displayName"] });
-      const adresse = place.formattedAddress || place.displayName || suggestion.placePrediction.text?.toString() || "";
-      if (field === "depart") { setDepart(adresse); setDepartSuggestions([]); }
-      else { setArrivee(adresse); setArriveeSuggestions([]); }
-    } catch (error) { console.error("Sélection adresse Google Places :", error); }
+  try {
+    const prediction = suggestion.placePrediction;
+    if (!prediction) return;
+
+    const place = prediction.toPlace();
+
+    await place.fetchFields({
+      fields: ["formattedAddress", "displayName", "types", "addressComponents"],
+    });
+
+    const adresse =
+      place.formattedAddress ||
+      place.displayName ||
+      prediction.text?.toString() ||
+      "";
+
+    const types: string[] = place.types || [];
+    const components = place.addressComponents || [];
+
+    const hasStreetNumber = components.some((component: any) =>
+      component.types?.includes("street_number")
+    );
+
+    const hasRoute = components.some((component: any) =>
+      component.types?.includes("route")
+    );
+
+    const lieuxPrecis = [
+      "street_address",
+      "premise",
+      "subpremise",
+      "airport",
+      "train_station",
+      "transit_station",
+      "subway_station",
+      "bus_station",
+      "lodging",
+      "point_of_interest",
+      "establishment",
+      "hospital",
+      "university",
+      "shopping_mall",
+      "tourist_attraction",
+      "park",
+      "restaurant",
+    ];
+
+    const adresseValide =
+      (hasStreetNumber && hasRoute) ||
+      types.some((type) => lieuxPrecis.includes(type));
+
+    if (!adresseValide) {
+      setErreur(
+        "Veuillez sélectionner une adresse précise (numéro et rue) ou un lieu identifié, comme un aéroport, une gare ou un hôtel."
+      );
+
+      setCalcul(null);
+      return;
+    }
+
+    setErreur("");
+
+    if (field === "depart") {
+      setDepart(adresse);
+      setDepartValide(true);
+      setDepartSuggestions([]);
+    } else {
+      setArrivee(adresse);
+      setArriveeValide(true);
+      setArriveeSuggestions([]);
+    }
+
+    setCalcul(null);
+
+  } catch (error) {
+    console.error("Sélection adresse Google Maps :", error);
+    setErreur("Impossible de vérifier cette adresse. Veuillez réessayer.");
   }
+}
 
   const corpsModification = useMemo(() => ({
     ...(token ? { token } : {}), date, heure, depart, arrivee, service, vehicule,
@@ -159,7 +244,12 @@ function GestionReservation() {
   }), [token, date, heure, depart, arrivee, service, vehicule, tripType, returnDate, returnTime, dureeMiseADispo, dureeSeminaire, passagers, bagages]);
 
   async function calculer(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault(); setErreur(""); setConfirmation(""); setCalcul(null); setConfirmationModification(false); setCalculEnCours(true);
+    e.preventDefault();
+    if (service !== "Mise à disposition" && service !== "Séminaire" && (!departValide || !arriveeValide)) {
+      setErreur("Veuillez sélectionner une adresse précise dans les suggestions Google Maps pour le départ et l’arrivée. Une ville ou un département seul ne suffit pas pour calculer la distance.");
+      return;
+    }
+    setErreur(""); setConfirmation(""); setCalcul(null); setConfirmationModification(false); setCalculEnCours(true);
     try {
       const response = await fetch("/api/reservation/tarif-modification", { method: "POST", credentials: "same-origin", headers: { "Content-Type": "application/json" }, body: JSON.stringify(corpsModification) });
       const result = await response.json();
@@ -222,7 +312,7 @@ function GestionReservation() {
             <p><strong className="text-amber-300">Arrivée :</strong> {reservation.arrivee || "Non renseignée"}</p>
             <p><strong className="text-amber-300">Passagers :</strong> {reservation.passagers ?? (reservation.details?.passagers as string | number | undefined) ?? "—"}</p>
             <p><strong className="text-amber-300">Bagages :</strong> {reservation.bagages ?? (reservation.details?.bagages as string | number | undefined) ?? "—"}</p>
-            <p><strong className="text-amber-300">Date et heure :</strong> {reservation.date_trajet || "—"} à {reservation.heure_trajet || "—"}</p>
+            <p><strong className="text-amber-300">VOTRE RÉSERVATION DU :</strong>{" "}{reservation.created_at && !Number.isNaN(new Date(reservation.created_at).getTime()) ? new Intl.DateTimeFormat("fr-FR", { dateStyle: "short", timeStyle: "short", timeZone: "Europe/Paris" }).format(new Date(reservation.created_at)) : "—"}</p>
           </section>
 
           {!reservationAnnulee && reservation.statut_paiement === "paye" && (
@@ -233,8 +323,8 @@ function GestionReservation() {
                 <label className="block text-sm text-amber-200">Date du départ<input required type="date" value={date} onChange={(e) => setDate(e.target.value)} className={`${champ} mt-2`} /></label>
                 <label className="block text-sm text-amber-200">Heure du départ<input required type="time" value={heure} onChange={(e) => setHeure(e.target.value)} className={`${champ} mt-2`} /></label>
               </div>
-              <div className="relative space-y-1"><label className="block text-sm text-amber-200">Adresse de départ<input maxLength={300} value={depart} onChange={(e) => { setDepart(e.target.value); void rechercherAdresse(e.target.value, "depart"); }} required={service !== "Mise à disposition" && service !== "Séminaire"} autoComplete="off" className={`${champ} mt-2`} />{departSuggestions.length > 0 && <div className="absolute z-30 mt-1 max-h-56 w-full overflow-y-auto rounded-lg border border-amber-500/60 bg-zinc-950 shadow-xl">{departSuggestions.map((item, index) => <button type="button" key={index} onClick={() => void choisirAdresse(item, "depart")} className="block w-full border-b border-zinc-800 px-4 py-3 text-left text-sm text-white hover:bg-amber-500/15">{item.placePrediction.text?.toString()}</button>)}</div>}</label></div>
-              <div className="relative space-y-1"><label className="block text-sm text-amber-200">Adresse d’arrivée<input maxLength={300} value={arrivee} onChange={(e) => { setArrivee(e.target.value); void rechercherAdresse(e.target.value, "arrivee"); }} required={service !== "Mise à disposition" && service !== "Séminaire"} autoComplete="off" className={`${champ} mt-2`} />{arriveeSuggestions.length > 0 && <div className="absolute z-30 mt-1 max-h-56 w-full overflow-y-auto rounded-lg border border-amber-500/60 bg-zinc-950 shadow-xl">{arriveeSuggestions.map((item, index) => <button type="button" key={index} onClick={() => void choisirAdresse(item, "arrivee")} className="block w-full border-b border-zinc-800 px-4 py-3 text-left text-sm text-white hover:bg-amber-500/15">{item.placePrediction.text?.toString()}</button>)}</div>}</label></div>
+              <div className="relative space-y-1"><label className="block text-sm text-amber-200">Adresse de départ<input maxLength={300} value={depart} onChange={(e) => { setDepart(e.target.value); setDepartValide(false); setCalcul(null); void rechercherAdresse(e.target.value, "depart"); }} required={service !== "Mise à disposition" && service !== "Séminaire"} autoComplete="off" className={`${champ} mt-2`} />{departSuggestions.length > 0 && <div className="absolute z-30 mt-1 max-h-56 w-full overflow-y-auto rounded-lg border border-amber-500/60 bg-zinc-950 shadow-xl">{departSuggestions.map((item, index) => <button type="button" key={index} onClick={() => void choisirAdresse(item, "depart")} className="block w-full border-b border-zinc-800 px-4 py-3 text-left text-sm text-white hover:bg-amber-500/15">{item.placePrediction.text?.toString()}</button>)}</div>}</label></div>
+              <div className="relative space-y-1"><label className="block text-sm text-amber-200">Adresse d’arrivée<input maxLength={300} value={arrivee} onChange={(e) => { setArrivee(e.target.value); setArriveeValide(false); setCalcul(null); void rechercherAdresse(e.target.value, "arrivee"); }} required={service !== "Mise à disposition" && service !== "Séminaire"} autoComplete="off" className={`${champ} mt-2`} />{arriveeSuggestions.length > 0 && <div className="absolute z-30 mt-1 max-h-56 w-full overflow-y-auto rounded-lg border border-amber-500/60 bg-zinc-950 shadow-xl">{arriveeSuggestions.map((item, index) => <button type="button" key={index} onClick={() => void choisirAdresse(item, "arrivee")} className="block w-full border-b border-zinc-800 px-4 py-3 text-left text-sm text-white hover:bg-amber-500/15">{item.placePrediction.text?.toString()}</button>)}</div>}</label></div>
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="block text-sm text-amber-200">Nombre de passagers<select required value={passagers} onChange={(e) => { const n = Number(e.target.value); setPassagers(String(n)); setBagages((ancien) => String(Math.min(Number(ancien || 0), maxBagagesPour(n, vehicule)))); }} className={`${champ} mt-2`}>{Array.from({ length: maxPassagersPour(vehicule) }, (_, i) => i + 1).map((n) => <option key={n} value={n}>{n} {n > 1 ? "passagers" : "passager"}</option>)}</select></label>
                 <label className="block text-sm text-amber-200">Nombre de bagages<select required value={bagages} onChange={(e) => setBagages(e.target.value)} className={`${champ} mt-2`}>{Array.from({ length: maxBagagesPour(Number(passagers || 1), vehicule) + 1 }, (_, i) => i).map((n) => <option key={n} value={n}>{n} {n > 1 ? "bagages" : "bagage"}</option>)}</select></label>
@@ -254,7 +344,7 @@ function GestionReservation() {
           {calcul && confirmationModification && <section className="space-y-3 rounded-xl border border-amber-400/50 bg-black p-5">
             <h2 className="font-bold text-amber-300">Récapitulatif de la modification</h2>
             {/* Détails du calcul conservés pour le suivi interne, non affichés au client */}
-            <div className="space-y-2 border-t border-amber-500/20 pt-3 text-sm"><p className="flex justify-between gap-3"><span>Tarif initial</span><strong>{calcul.ancienPrixTTC.toFixed(2)} €</strong></p><p className="flex justify-between gap-3"><span>Nouveau tarif calculé</span><strong>{calcul.nouveauPrixCalculeTTC.toFixed(2)} €</strong></p><p className="flex justify-between gap-3 text-amber-300"><span>Montant total conservé</span><strong>{calcul.montantFinalTTC.toFixed(2)} €</strong></p><p className="flex justify-between gap-3 text-lg font-bold text-amber-400"><span>Supplément à régler</span><strong>{calcul.supplementTTC.toFixed(2)} €</strong></p></div>
+            <div className="space-y-2 border-t border-amber-500/20 pt-3 text-sm"><p className="flex justify-between gap-3"><span>Tarif initial</span><strong>{calcul.ancienPrixTTC.toFixed(2)} €</strong></p>{tripType === "aller-retour" && (() => { const tarifRetour = calcul.detailsTarif?.match(/Retour\s*:\s*([0-9]+(?:[.,][0-9]+)?)\s*€\s*TTC/i)?.[1]; return tarifRetour ? <p className="flex justify-between gap-3"><span>Tarif du retour</span><strong>{Number(tarifRetour.replace(",", ".")).toFixed(2)} € TTC</strong></p> : null; })()}<p className="flex justify-between gap-3"><span>Nouveau tarif calculé</span><strong>{calcul.nouveauPrixCalculeTTC.toFixed(2)} €</strong></p><p className="flex justify-between gap-3 text-amber-300"><span>Montant total conservé</span><strong>{calcul.montantFinalTTC.toFixed(2)} €</strong></p><p className="flex justify-between gap-3 text-lg font-bold text-amber-400"><span>Supplément à régler</span><strong>{calcul.supplementTTC.toFixed(2)} €</strong></p></div>
             {calcul.supplementTTC === 0 && <p className="text-sm text-zinc-400">Aucun paiement supplémentaire ne sera demandé. Aucun remboursement ne sera effectué si le nouveau trajet est moins cher.</p>}
             <button type="button" onClick={() => void confirmerModification()} disabled={calculEnCours} className="w-full rounded-lg border border-amber-400 bg-amber-400 px-5 py-3.5 font-bold text-black hover:bg-amber-300 disabled:opacity-60">{calculEnCours ? "Confirmation..." : calcul.supplementTTC > 0 ? `Confirmer et payer ${calcul.supplementTTC.toFixed(2)} €` : "Confirmer ma modification"}</button>
             <button type="button" onClick={() => { setCalcul(null); setConfirmationModification(false); }} className="w-full rounded-lg border border-zinc-600 px-5 py-3 text-zinc-300 hover:border-amber-400">Revenir aux champs</button>
