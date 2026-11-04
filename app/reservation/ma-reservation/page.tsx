@@ -253,7 +253,7 @@ function GestionReservation() {
 
           {calcul && confirmationModification && <section className="space-y-3 rounded-xl border border-amber-400/50 bg-black p-5">
             <h2 className="font-bold text-amber-300">Récapitulatif de la modification</h2>
-            <p className="text-sm text-zinc-300">{calcul.detailsTarif}</p>
+            {/* Détails du calcul conservés pour le suivi interne, non affichés au client */}
             <div className="space-y-2 border-t border-amber-500/20 pt-3 text-sm"><p className="flex justify-between gap-3"><span>Tarif initial</span><strong>{calcul.ancienPrixTTC.toFixed(2)} €</strong></p><p className="flex justify-between gap-3"><span>Nouveau tarif calculé</span><strong>{calcul.nouveauPrixCalculeTTC.toFixed(2)} €</strong></p><p className="flex justify-between gap-3 text-amber-300"><span>Montant total conservé</span><strong>{calcul.montantFinalTTC.toFixed(2)} €</strong></p><p className="flex justify-between gap-3 text-lg font-bold text-amber-400"><span>Supplément à régler</span><strong>{calcul.supplementTTC.toFixed(2)} €</strong></p></div>
             {calcul.supplementTTC === 0 && <p className="text-sm text-zinc-400">Aucun paiement supplémentaire ne sera demandé. Aucun remboursement ne sera effectué si le nouveau trajet est moins cher.</p>}
             <button type="button" onClick={() => void confirmerModification()} disabled={calculEnCours} className="w-full rounded-lg border border-amber-400 bg-amber-400 px-5 py-3.5 font-bold text-black hover:bg-amber-300 disabled:opacity-60">{calculEnCours ? "Confirmation..." : calcul.supplementTTC > 0 ? `Confirmer et payer ${calcul.supplementTTC.toFixed(2)} €` : "Confirmer ma modification"}</button>
