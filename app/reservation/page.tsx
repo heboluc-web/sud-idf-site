@@ -1960,6 +1960,16 @@ setFormError("");
 
       <div className="max-w-3xl mx-auto bg-black/70 backdrop-blur-md p-8 rounded-2xl border border-amber-500/20 shadow-2xl shadow-amber-500/10">
 
+      <div className="flex justify-center mb-6">
+  <div className="w-72 h-32 bg-white p-1.5 overflow-hidden">
+    <img
+      src="/logo.png"
+      alt="SUD IDF Executive Transport"
+      className="w-full h-full object-fill"
+    />
+  </div>
+</div>
+
         <h1 className="text-4xl text-center mb-6">
 
           Réserver votre chauffeur
