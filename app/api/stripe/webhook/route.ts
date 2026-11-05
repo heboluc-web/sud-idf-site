@@ -34,6 +34,48 @@ function escapeHtml(value: unknown): string {
     .replace(/'/g, "&#039;");
 }
 
+function construireEnteteEmail(titre: string, sousTitre: string): string {
+  return `
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+      style="background:#111111;border-collapse:collapse;">
+      <tr>
+        <td align="center" style="padding:25px 15px;text-align:center;">
+
+          <table role="presentation" cellpadding="0" cellspacing="0"
+            style="border-collapse:collapse;margin:0 auto;">
+            <tr>
+              <td width="288" height="128"
+                style="width:288px;height:128px;background:#ffffff;
+                border:2px solid #ffffff;padding:0;">
+                <img
+                  src="https://www.sudidfexecutivetransport.fr/logo.png"
+                  alt="SUD IDF Executive Transport"
+                  width="288"
+                  height="128"
+                  style="display:block;width:288px;height:128px;
+                  object-fit:fill;border:0;"
+                />
+              </td>
+            </tr>
+          </table>
+
+          <h1 style="color:#D4AF37;font-family:Arial,Helvetica,sans-serif;
+            font-size:23px;margin:20px 0 8px;">
+            ${escapeHtml(titre)}
+          </h1>
+
+          <p style="color:#ffffff;font-family:Arial,Helvetica,sans-serif;
+            font-size:14px;margin:0;">
+            ${escapeHtml(sousTitre)}
+          </p>
+
+        </td>
+      </tr>
+    </table>
+  `;
+}
+
+
 function valeur(value: unknown): string {
   const texte = String(value ?? "").trim();
   return texte || "Non renseigné";
@@ -454,14 +496,10 @@ const detailsHtmlClient = construireDetailsHtml(
 
         htmlContent: `
           <div style="font-family:Arial,Helvetica,sans-serif;">
-            <div style="background:#111;padding:20px;margin-bottom:20px;">
-              <h1 style="color:#d4af37;margin:0;">
-                SUD IDF Executive Transport
-              </h1>
-              <p style="color:white;margin:8px 0 0;">
-                Nouvelle réservation payée
-              </p>
-            </div>
+           ${construireEnteteEmail(
+             "SUD IDF Executive Transport",
+             "Nouvelle réservation payée"
+          )}
 
             ${detailsHtmlEntreprise}
           </div>
@@ -483,16 +521,11 @@ const detailsHtmlClient = construireDetailsHtml(
           sujet: `✅ Confirmation de votre réservation - SUD IDF Executive Transport`,
 
           htmlContent: `
-            <div style="font-family:Arial,Helvetica,sans-serif;">
-              <div style="background:#111;padding:20px;margin-bottom:20px;">
-                <h1 style="color:#d4af37;margin:0;">
-                  SUD IDF Executive Transport
-                </h1>
-                <p style="color:white;margin:8px 0 0;">
-                  Confirmation de votre réservation
-                </p>
-              </div>
-
+            <div style="font-family:Arial,Helvetica,sans-serif;">      
+  ${construireEnteteEmail(
+    "SUD IDF Executive Transport",
+    "Confirmation de votre réservation"
+  )}
               <p>
                 Bonjour ${escapeHtml(nomClient)},
               </p>
@@ -564,12 +597,10 @@ const reservationPrioritaire =
           sujet: `🚨 NOUVELLE RÉSERVATION PAYÉE - ${nomClient}`,
           htmlContent: `
             <div style="font-family:Arial,Helvetica,sans-serif;color:#222;">
-              <div style="background:#111;padding:20px;text-align:center;">
-                <h1 style="color:#d4af37;margin:0;">
-                  SUD IDF Executive Transport
-                </h1>
-                <p style="color:white;">Nouvelle réservation payée</p>
-              </div>
+              ${construireEnteteEmail(
+  "SUD IDF Executive Transport",
+  "Nouvelle réservation payée"
+)}
               <div style="padding:20px;border:1px solid #d4af37;">
                 <h2 style="color:#b8860b;">🚨 Alerte prioritaire</h2>
                 <p>Un paiement Stripe vient d’être confirmé.</p>

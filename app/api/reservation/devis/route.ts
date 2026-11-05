@@ -256,65 +256,110 @@ export async function POST(req: Request) {
       nomDestinataire: nom,
       sujet: `Votre demande de devis ${reference} - SUD IDF Executive Transport`,
       html: `
-        <div style="font-family:Arial,sans-serif;color:#222;line-height:1.6;">
-          <h2 style="color:#b89b5e;">SUD IDF Executive Transport</h2>
+       
+<div style="margin:0;padding:30px 12px;background-color:#111111;font-family:Arial,Helvetica,sans-serif;color:#333333;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;background:#ffffff;border-collapse:collapse;">
+    <tr>
+      <td align="center" style="background:#111111;padding:28px 15px 24px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" style="margin:0 auto;border-collapse:collapse;">
+          <tr>
+            <td width="288" height="128" style="width:288px;height:128px;background:#ffffff;border:2px solid #ffffff;padding:0;">
+              <img
+                src="https://www.sudidfexecutivetransport.fr/logo.png"
+                alt="SUD IDF Executive Transport"
+                width="288"
+                height="128"
+                style="display:block;width:288px;height:128px;object-fit:fill;border:0;"
+              />
+            </td>
+          </tr>
+        </table>
+        <p style="color:#d4af37;font-size:12px;letter-spacing:2px;margin:16px 0 0;">
+          L’EXCELLENCE AU SERVICE DE VOS DÉPLACEMENTS
+        </p>
+      </td>
+    </tr>
 
-          <p>Bonjour ${escapeHtml(nom)},</p>
+    <tr>
+      <td style="padding:30px 28px 20px;">
+        <h1 style="font-size:22px;color:#b89b5e;margin:0 0 22px;text-align:center;">
+          Confirmation de votre demande de devis
+        </h1>
 
-          <p>
-            Nous vous remercions pour votre demande de devis.
-            Nous vous confirmons qu'elle a bien été prise en compte.
-          </p>
+        <p>Bonjour ${escapeHtml(nom)},</p>
 
-          <p>
-            <strong>Votre référence de demande : ${escapeHtml(reference)}</strong>
-          </p>
+        <p>
+          Nous vous remercions pour votre demande de devis.
+          Nous vous confirmons qu'elle a bien été prise en compte.
+        </p>
 
-          <p>
-            Votre demande est en cours de traitement. Une réponse personnalisée
-            vous sera adressée dans les plus brefs délais.
-          </p>
-
-          <div style="margin:25px 0;padding:20px;border:1px solid #b89b5e;border-radius:8px;">
-            <h3 style="margin-top:0;color:#b89b5e;">
-              Gérer votre demande
-            </h3>
-            <p>
-              Grâce à votre lien personnel, vous pourrez consulter les
-              informations de votre dossier et transmettre une demande de
-              modification ou d'annulation.
-            </p>
-            <p style="margin:25px 0;">
-              <a
-                href="${escapeHtml(lienGestion)}"
-                style="display:inline-block;padding:13px 20px;background:#111;color:#fff;text-decoration:none;border-radius:5px;font-weight:bold;"
-              >
-                Consulter et gérer ma demande
-              </a>
-            </p>
-            <p style="font-size:12px;color:#666;">
-              Conservez cet e-mail : ce lien est personnel. Ne le partagez pas.
-              Toute modification ou annulation reste soumise à confirmation
-              par notre équipe.
-            </p>
-          </div>
-
-          <p>
-            Si des informations complémentaires sont nécessaires, nous
-            reprendrons directement contact avec vous.
-          </p>
-
-          <p style="margin-top:25px;">Bien cordialement,</p>
-
-          <p style="margin-top:20px;">
-            <img
-              src="https://www.sudidfexecutivetransport.fr/signature-email.png"
-              alt="SUD IDF Executive Transport"
-              width="450"
-              style="display:block;width:450px;max-width:100%;height:auto;border:0;"
-            />
+        <div style="margin:24px 0;padding:17px;background:#f7f5f0;border-left:4px solid #b89b5e;">
+          <p style="margin:0;font-size:14px;color:#555555;">VOTRE RÉFÉRENCE DE DEMANDE</p>
+          <p style="margin:7px 0 0;font-size:20px;font-weight:bold;color:#111111;">
+            ${escapeHtml(reference)}
           </p>
         </div>
+
+        <p>
+          Votre demande est en cours de traitement. Une réponse personnalisée
+          vous sera adressée dans les meilleurs délais.
+        </p>
+
+        <div style="margin:28px 0;padding:22px;border:1px solid #b89b5e;">
+          <h2 style="margin:0 0 12px;color:#b89b5e;font-size:18px;">
+            Gérer votre demande
+          </h2>
+          <p style="font-size:14px;line-height:1.6;">
+            Grâce à votre lien personnel, vous pourrez consulter les
+            informations de votre dossier et transmettre une demande de
+            modification ou d'annulation.
+          </p>
+          <p style="text-align:center;margin:25px 0;">
+            <a
+              href="${escapeHtml(lienGestion)}"
+              style="display:inline-block;padding:14px 22px;background:#111111;color:#d4af37;text-decoration:none;font-weight:bold;border:1px solid #b89b5e;"
+            >
+              CONSULTER ET GÉRER MA DEMANDE
+            </a>
+          </p>
+          <p style="font-size:11px;color:#777777;line-height:1.5;">
+            Conservez cet e-mail : ce lien est personnel. Ne le partagez pas.
+            Toute modification ou annulation reste soumise à confirmation
+            par notre équipe.
+          </p>
+        </div>
+
+        <p>
+          Si des informations complémentaires sont nécessaires, nous
+          reprendrons directement contact avec vous.
+        </p>
+
+        <p style="margin-top:28px;">Bien cordialement,</p>
+
+        <p style="margin-top:20px;">
+          <img
+            src="https://www.sudidfexecutivetransport.fr/signature-email.png"
+            alt="SUD IDF Executive Transport"
+            width="450"
+            style="display:block;width:450px;max-width:100%;height:auto;border:0;"
+          />
+        </p>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="background:#111111;padding:18px;text-align:center;border-top:3px solid #b89b5e;">
+        <p style="margin:0;color:#d4af37;font-size:12px;">
+          SUD IDF EXECUTIVE TRANSPORT
+        </p>
+        <p style="margin:7px 0 0;color:#cccccc;font-size:11px;">
+          Transport privé haut de gamme
+        </p>
+      </td>
+    </tr>
+  </table>
+</div>
+
       `,
     });
 
