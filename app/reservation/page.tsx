@@ -1733,7 +1733,7 @@ ${
 
 ${form.tripType === "aller-retour" ? `🔁 Type : Aller-retour\n📅 Date retour : ${form.returnDate}\n⏰ Heure retour : ${form.returnTime}\n` : "🚘 Type : Aller simple\n"}💰 Tarif : ${form.prix}
 
-📋 Détail tarif : ${form.detailsPrix || "Aucun"}
+
 
 📝 Message :
 
