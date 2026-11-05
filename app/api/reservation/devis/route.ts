@@ -252,7 +252,6 @@ export async function POST(req: Request) {
               </tr>
               <tr>
                 <td style="padding:25px;">
-                  ${detailsHtml}
                   <div style="margin-top:25px;padding:18px;background:#111111;color:#ffffff;border-left:4px solid #d4af37;">
                     <strong>Cette demande de devis a été enregistrée depuis le site internet.</strong>
                   </div>
