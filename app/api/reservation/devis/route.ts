@@ -242,11 +242,24 @@ export async function POST(req: Request) {
       sujet: `📋 Demande de devis ${reference} - ${nom}`,
       html: `
         ${detailsHtml}
-        <div style="margin-top:25px;padding:15px;background:#111;color:#fff;">
-          <strong>
-            Cette demande de devis a été enregistrée depuis le site internet.
-          </strong>
-        </div>
+                 <div style="margin:0;padding:30px 12px;background:#111111;font-family:Arial,Helvetica,sans-serif;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:700px;margin:auto;background:#ffffff;border-collapse:collapse;">
+              <tr>
+                <td align="center" style="background:#111111;padding:25px;">
+                  <img src="https://www.sudidfexecutivetransport.fr/logo.png" alt="SUD IDF Executive Transport" width="288" height="128" style="display:block;width:288px;height:128px;object-fit:fill;border:2px solid #ffffff;">
+                  <p style="color:#d4af37;font-size:12px;letter-spacing:2px;margin:15px 0 0;">L'EXCELLENCE AU SERVICE DE VOS DÉPLACEMENTS</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="padding:25px;">
+                  ${detailsHtml}
+                  <div style="margin-top:25px;padding:18px;background:#111111;color:#ffffff;border-left:4px solid #d4af37;">
+                    <strong>Cette demande de devis a été enregistrée depuis le site internet.</strong>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </div>
       `,
     });
 
