@@ -64,37 +64,56 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
   return (
   <div className="min-h-screen bg-black text-white overflow-x-hidden scroll-smooth">
-    <div className="text-center mt-32 mb-16">
-  <img 
-    src="/logo.png"
-    alt="Logo"
-    className="w-28 mx-auto mb-6 animate-fade-in"
-  />
+   
+      <section className="relative isolate min-h-[750px] flex items-center justify-center px-6 py-16 overflow-hidden">
 
-  <p className="text-amber-400 uppercase tracking-[0.6em] text-xs md:text-sm mb-6">
-  DISPONIBILITÉ PRIORITAIRE SUR RÉSERVATION
-</p>
+        {/* IMAGE AVION + MERCEDES */}
+        <div
+  className="absolute inset-0 bg-black bg-no-repeat"
+  style={{
+    backgroundImage: "url('/images/accueil-avion-mercedes.png')",
+    backgroundSize: "cover",
+    backgroundPosition: "center center",
+  }}
+/>
+        {/* ASSOMBRISSEMENT POUR GARDER LES TEXTES LISIBLES */}
+        <div className="absolute inset-0 bg-black/45" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-black" />
 
+        {/* CONTENU D'ACCUEIL CONSERVÉ */}
+        <div className="relative z-10 text-center mt-32 mb-16">
 
-<h1 className="text-6xl md:text-8xl font-light text-amber-400 mb-4">
-  Chauffeur privé VTC
-</h1>
+          <img
+            src="/logo.png"
+            alt="Logo"
+            className="w-28 mx-auto mb-6 animate-fade-in"
+          />
 
-<p className="text-lg md:text-2xl text-white mb-6">
-  Planifiez vos transferts à l'avance pour garantir disponibilité et ponctualité.
-</p>
+          <p className="text-white font-bold uppercase tracking-[0.6em] text-xs md:text-sm mb-6">
+            DISPONIBILITÉ PRIORITAIRE SUR RÉSERVATION
+          </p>
 
-<p className="...">
-  VTC haut de gamme en Île-de-France
-</p>
+          <h1 className="text-6xl md:text-8xl font-light text-amber-400 mb-4">
+            Chauffeur privé VTC
+          </h1>
 
-<a
-  href="/reservation"
-  className="mt-6 inline-block bg-amber-500 text-black px-8 py-4 rounded-xl hover:bg-amber-400 transition"
->
-  Réserver maintenant
-</a>
-</div>
+          <p className="text-lg md:text-2xl text-white mb-6">
+            Planifiez vos transferts à l'avance pour garantir disponibilité et ponctualité.
+          </p>
+
+          <p className="text-white text-lg mb-6">
+            VTC haut de gamme en Île-de-France
+          </p>
+
+          <a
+            href="/reservation"
+            className="mt-6 inline-block bg-amber-500 text-black px-8 py-4 rounded-xl hover:bg-amber-400 transition"
+          >
+            Réserver maintenant
+          </a>
+
+        </div>
+      </section>
 
      {/* ================= NAVBAR ================= */}
 <nav className="fixed top-0 w-full bg-black/90 backdrop-blur-2xl border-b border-amber-500/20 z-50">
@@ -399,18 +418,48 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
       des entreprises et des clients les plus prestigieux.
     </p>
 
-          <div className="grid md:grid-cols-3 gap-16">
-            {[
-              ['Transferts Aéroports', 'Navette avec accueil personnalisé, gestion des bagages, suivi des vols et trains en temps réel.'],
-              ['Mise à disposition', 'Véhicule avec chauffeur dédié pour réunions, séminaires, conférences et événements.'],
-              ['Transport Business', 'Image premium, ponctualité, sécurité, confort, discrétion et confidentialité totale.']
-            ].map((item, index) => (
-              <div key={index} className="p-12 bg-black/70 backdrop-blur-xl rounded-3xl border border-amber-500/20 hover:-translate-y-4 hover:shadow-[0_0_60px_rgba(212,175,55,0.15)] transition-all duration-700">
-                <h3 className="text-xs mb-8 tracking-[0.4em] uppercase text-neutral-200 font-light">{item[0]}</h3>
-                <p className="text-neutral-500 text-sm leading-relaxed font-light">{item[1]}</p>
-              </div>
-            ))}
-          </div>
+         
+<div className="grid md:grid-cols-3 gap-16">
+
+  <a
+    href="/transfert-orly"
+    className="block p-12 bg-black/70 backdrop-blur-xl rounded-3xl border border-amber-500/20 hover:-translate-y-4 hover:border-amber-400 hover:shadow-[0_0_60px_rgba(212,175,55,0.15)] transition-all duration-700 cursor-pointer"
+  >
+    <h3 className="text-xs mb-8 tracking-[0.4em] uppercase text-neutral-200 font-light">
+      Transferts Aéroports
+    </h3>
+    <p className="text-neutral-500 text-sm leading-relaxed font-light">
+      Navette avec accueil personnalisé, gestion des bagages,
+      suivi des vols et trains en temps réel.
+    </p>
+  </a>
+
+  <a
+    href="/mise-a-disposition"
+    className="block p-12 bg-black/70 backdrop-blur-xl rounded-3xl border border-amber-500/20 hover:-translate-y-4 hover:border-amber-400 hover:shadow-[0_0_60px_rgba(212,175,55,0.15)] transition-all duration-700 cursor-pointer"
+  >
+    <h3 className="text-xs mb-8 tracking-[0.4em] uppercase text-neutral-200 font-light">
+      Mise à disposition
+    </h3>
+    <p className="text-neutral-500 text-sm leading-relaxed font-light">
+      Véhicule avec chauffeur dédié pour réunions,
+      séminaires, conférences et événements.
+    </p>
+  </a>
+
+  <a
+    href="/chauffeur-business"
+    className="block p-12 bg-black/70 backdrop-blur-xl rounded-3xl border border-amber-500/20 hover:-translate-y-4 hover:border-amber-400 hover:shadow-[0_0_60px_rgba(212,175,55,0.15)] transition-all duration-700 cursor-pointer"
+  >
+    <h3 className="text-xs mb-8 tracking-[0.4em] uppercase text-neutral-200 font-light">
+      Transport Business
+    </h3>
+    <p className="text-neutral-500 text-sm leading-relaxed font-light">
+      Image premium, ponctualité, sécurité, confort,
+      discrétion et confidentialité totale.
+    </p>
+  </a>
+</div>
         </div>
       </section>
 
