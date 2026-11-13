@@ -44,10 +44,85 @@ const prestations = [
   },
 ];
 
+const destinations = [
+  {
+    titre: "Essonne",
+    description: "Transferts depuis Orly vers les communes de l'Essonne.",
+    href: "/chauffeur-prive-essonne",
+    image: "/images/essonne-chauffeur.png",
+    alt: "Véhicule de chauffeur privé en Essonne",
+  },
+  {
+    titre: "Corbeil-Essonnes",
+    description: "Votre liaison entre Orly et Corbeil-Essonnes.",
+    href: "/chauffeur-prive-corbeil-essonnes",
+    image: "/images/corbeil-essonnes-transfert-orly.png",
+    alt: "Berline avec chauffeur pour un transfert entre Orly et Corbeil-Essonnes",
+  },
+  {
+    titre: "Évry-Courcouronnes",
+    description: "Transport privé entre l'aéroport et Évry.",
+    href: "/chauffeur-prive-evry",
+    image: "/images/evry-courcouronnes-hero-v2.png",
+    alt: "Chauffeur privé à Évry-Courcouronnes",
+  },
+  {
+    titre: "Melun",
+    description: "Transferts aéroportuaires vers Melun et ses environs.",
+    href: "/chauffeur-prive-melun",
+    image: "/images/melun-seine-hero.png",
+    alt: "Véhicule premium sur les bords de Seine à Melun",
+  },
+  {
+    titre: "Fontainebleau",
+    description: "Votre chauffeur privé entre Orly et Fontainebleau.",
+    href: "/chauffeur-prive-fontainebleau",
+    image: "/images/fontainebleau-chateau-hero.png",
+    alt: "Chauffeur privé devant le château de Fontainebleau",
+  },
+  {
+    titre: "Paris",
+    description: "Transferts privés entre Orly et la capitale.",
+    href: "/chauffeur-prive-paris",
+    image: "/images/paris-seine-hero.png",
+    alt: "Berline avec chauffeur dans Paris",
+  },
+];
+
+const autresServices = [
+  {
+    titre: "Transfert CDG",
+    description: "Service premium vers Roissy Charles-de-Gaulle.",
+    href: "/transfert-cdg",
+    image: "/images/cdg-hero-premium.png",
+    alt: "Véhicule premium pour un transfert vers CDG",
+  },
+  {
+    titre: "Chauffeur privé Essonne",
+    description: "Chauffeur privé premium dans toute l’Essonne.",
+    href: "/chauffeur-prive-essonne",
+    image: "/images/essonne-hero.png",
+    alt: "Véhicule de chauffeur privé en Essonne",
+  },
+  {
+    titre: "Chauffeur business",
+    description: "Transport exécutif pour professionnels et entreprises.",
+    href: "/chauffeur-business",
+    image: "/images/mise-a-disposition-congres.png",
+    alt: "Transport exécutif pour un événement professionnel",
+  },
+  {
+    titre: "Réserver un chauffeur",
+    description: "Réservation rapide de votre transfert Orly premium.",
+    href: "/reservation",
+    image: "/images/orly-accueil.png",
+    alt: "Accueil d'un voyageur par un chauffeur privé à l'aéroport",
+  },
+];
+
 export default function TransfertOrly() {
   return (
     <main className="min-h-screen bg-black text-white">
-
       {/* HERO */}
       <section className="relative min-h-[580px] flex items-center overflow-hidden">
         <Image
@@ -196,90 +271,57 @@ export default function TransfertOrly() {
         </div>
       </section>
 
+      {/* DESTINATIONS DESSERVIES DEPUIS ORLY */}
+      <section className="border-t border-amber-500/20 bg-black">
+        <div className="max-w-7xl mx-auto px-6 py-16">
+          <p className="text-amber-400 text-center uppercase tracking-[0.35em] text-sm mb-4">
+            Nos destinations
+          </p>
 
-{/* DESTINATIONS DESSERVIES DEPUIS ORLY */}
-<section className="border-t border-amber-500/20 bg-black">
-  <div className="max-w-7xl mx-auto px-6 py-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-6">
+            Votre chauffeur privé depuis Orly
+          </h2>
 
-    <p className="text-amber-400 text-center uppercase tracking-[0.35em] text-sm mb-4">
-      Nos destinations
-    </p>
+          <p className="text-gray-400 text-center max-w-3xl mx-auto mb-12 leading-relaxed">
+            Depuis l'aéroport de Paris-Orly, SUD IDF Executive Transport
+            assure vos déplacements vers les principales villes de
+            l'Essonne, de la Seine-et-Marne, Paris et toute l'Île-de-France.
+          </p>
 
-    <h2 className="text-3xl md:text-4xl font-bold text-center mb-6">
-      Votre chauffeur privé depuis Orly
-    </h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {destinations.map((destination) => (
+              <a
+                key={destination.titre}
+                href={destination.href}
+                className="group overflow-hidden rounded-2xl border border-amber-500/30 bg-neutral-950 hover:border-amber-400 transition"
+              >
+                <div className="relative h-52 overflow-hidden">
+                  <Image
+                    src={destination.image}
+                    alt={destination.alt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                </div>
 
-    <p className="text-gray-400 text-center max-w-3xl mx-auto mb-12 leading-relaxed">
-      Depuis l'aéroport de Paris-Orly, SUD IDF Executive Transport
-      assure vos déplacements vers les principales villes de
-      l'Essonne, de la Seine-et-Marne, Paris et toute l'Île-de-France.
-    </p>
-
-    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-
-      <a href="/chauffeur-prive-essonne"
-        className="border border-amber-500/30 rounded-2xl p-6 bg-neutral-950 hover:border-amber-400 transition">
-        <h3 className="text-amber-400 text-lg font-semibold mb-2">
-          Essonne
-        </h3>
-        <p className="text-gray-400 text-sm">
-          Transferts depuis Orly vers les communes de l'Essonne.
-        </p>
-      </a>
-
-      <a href="/chauffeur-prive-corbeil-essonnes"
-        className="border border-amber-500/30 rounded-2xl p-6 bg-neutral-950 hover:border-amber-400 transition">
-        <h3 className="text-amber-400 text-lg font-semibold mb-2">
-          Corbeil-Essonnes
-        </h3>
-        <p className="text-gray-400 text-sm">
-          Votre liaison entre Orly et Corbeil-Essonnes.
-        </p>
-      </a>
-
-      <a href="/chauffeur-prive-evry"
-        className="border border-amber-500/30 rounded-2xl p-6 bg-neutral-950 hover:border-amber-400 transition">
-        <h3 className="text-amber-400 text-lg font-semibold mb-2">
-          Évry-Courcouronnes
-        </h3>
-        <p className="text-gray-400 text-sm">
-          Transport privé entre l'aéroport et Évry.
-        </p>
-      </a>
-
-      <a href="/chauffeur-prive-melun"
-        className="border border-amber-500/30 rounded-2xl p-6 bg-neutral-950 hover:border-amber-400 transition">
-        <h3 className="text-amber-400 text-lg font-semibold mb-2">
-          Melun
-        </h3>
-        <p className="text-gray-400 text-sm">
-          Transferts aéroportuaires vers Melun et ses environs.
-        </p>
-      </a>
-
-      <a href="/chauffeur-prive-fontainebleau"
-        className="border border-amber-500/30 rounded-2xl p-6 bg-neutral-950 hover:border-amber-400 transition">
-        <h3 className="text-amber-400 text-lg font-semibold mb-2">
-          Fontainebleau
-        </h3>
-        <p className="text-gray-400 text-sm">
-          Votre chauffeur privé entre Orly et Fontainebleau.
-        </p>
-      </a>
-
-      <a href="/chauffeur-prive-paris"
-        className="border border-amber-500/30 rounded-2xl p-6 bg-neutral-950 hover:border-amber-400 transition">
-        <h3 className="text-amber-400 text-lg font-semibold mb-2">
-          Paris
-        </h3>
-        <p className="text-gray-400 text-sm">
-          Transferts privés entre Orly et la capitale.
-        </p>
-      </a>
-
-    </div>
-  </div>
-</section>
+                <div className="p-6">
+                  <h3 className="text-amber-400 text-lg font-semibold mb-2">
+                    {destination.titre}
+                  </h3>
+                  <p className="text-gray-400 text-sm leading-relaxed">
+                    {destination.description}
+                  </p>
+                  <span className="mt-4 inline-block text-sm text-amber-400 font-semibold">
+                    Découvrir →
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* MAILLAGE SEO EXISTANT */}
       <section className="border-t border-amber-500/20 bg-neutral-950">
@@ -288,54 +330,36 @@ export default function TransfertOrly() {
             Découvrez nos autres services
           </h2>
 
-          <div className="grid md:grid-cols-2 gap-5">
-            <a
-              href="/transfert-cdg"
-              className="border border-amber-500/40 rounded-2xl p-7 hover:border-amber-400 transition"
-            >
-              <h3 className="text-xl text-amber-400 mb-3">
-                Transfert CDG
-              </h3>
-              <p className="text-gray-400">
-                Service premium vers Roissy Charles-de-Gaulle.
-              </p>
-            </a>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {autresServices.map((service) => (
+              <a
+                key={service.titre}
+                href={service.href}
+                className="group overflow-hidden rounded-2xl border border-amber-500/40 bg-black hover:border-amber-400 transition"
+              >
+                <div className="relative h-48 overflow-hidden">
+                  <Image
+                    src={service.image}
+                    alt={service.alt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    className="object-cover transition duration-700 group-hover:scale-105"
+                  />
+                </div>
 
-            <a
-              href="/chauffeur-prive-essonne"
-              className="border border-amber-500/40 rounded-2xl p-7 hover:border-amber-400 transition"
-            >
-              <h3 className="text-xl text-amber-400 mb-3">
-                Chauffeur privé Essonne
-              </h3>
-              <p className="text-gray-400">
-                Chauffeur privé premium dans toute l’Essonne.
-              </p>
-            </a>
-
-            <a
-              href="/chauffeur-business"
-              className="border border-amber-500/40 rounded-2xl p-7 hover:border-amber-400 transition"
-            >
-              <h3 className="text-xl text-amber-400 mb-3">
-                Chauffeur business
-              </h3>
-              <p className="text-gray-400">
-                Transport exécutif pour professionnels et entreprises.
-              </p>
-            </a>
-
-            <a
-              href="/reservation"
-              className="border border-amber-500/40 rounded-2xl p-7 hover:border-amber-400 transition"
-            >
-              <h3 className="text-xl text-amber-400 mb-3">
-                Réserver un chauffeur
-              </h3>
-              <p className="text-gray-400">
-                Réservation rapide de votre transfert Orly premium.
-              </p>
-            </a>
+                <div className="p-6">
+                  <h3 className="text-lg text-amber-400 mb-3 font-semibold">
+                    {service.titre}
+                  </h3>
+                  <p className="text-gray-400 text-sm leading-relaxed">
+                    {service.description}
+                  </p>
+                  <span className="mt-4 inline-block text-sm text-amber-400 font-semibold">
+                    Découvrir →
+                  </span>
+                </div>
+              </a>
+            ))}
           </div>
         </div>
       </section>
@@ -357,7 +381,6 @@ export default function TransfertOrly() {
           Réserver maintenant
         </a>
       </section>
-
     </main>
   );
 }
