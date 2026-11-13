@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata = {
   title: "Chauffeur VTC Disneyland Paris | Transfert Premium",
@@ -54,36 +55,58 @@ export default function ChauffeurVtcDisneylandParis() {
       </nav>
 
 
-      {/* ================= HERO ================= */}
-      <section className="relative pt-44 pb-32 px-6 overflow-hidden">
+      
+{/* ================= HERO ================= */}
+<section className="relative isolate flex min-h-[680px] h-[82vh] max-h-[950px] w-full items-center overflow-hidden">
+  <Image
+    src="/images/disneyland-paris-hero.png"
+    alt="Mercedes Classe V noire devant le château de Disneyland Paris"
+    fill
+    priority
+    sizes="100vw"
+    className="object-cover object-center"
+  />
 
-        <div className="absolute inset-0 bg-gradient-to-b from-amber-500/10 via-black to-black pointer-events-none" />
+  <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/45 to-black/10" />
+  <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-black/20" />
 
-        <div className="relative max-w-5xl mx-auto text-center">
+  <div className="relative z-10 mx-auto w-full max-w-7xl px-6 md:px-12">
+    <div className="max-w-3xl">
+      <p className="mb-6 text-xs font-semibold uppercase tracking-[0.4em] text-amber-400 md:text-sm">
+        SUD IDF EXECUTIVE TRANSPORT
+      </p>
 
-          <p className="text-amber-400 uppercase tracking-[0.45em] text-xs md:text-sm mb-8">
-            CHAUFFEUR PRIVÉ · DISNEYLAND PARIS
-          </p>
+      <h1 className="text-4xl font-light leading-tight text-white md:text-6xl lg:text-7xl">
+        Chauffeur privé
+        <span className="mt-2 block font-semibold text-amber-400">
+          Disneyland Paris
+        </span>
+      </h1>
 
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-light tracking-wide text-white mb-8">
-            Chauffeur VTC Disneyland Paris
-          </h1>
+      <p className="mt-8 max-w-2xl text-base leading-8 text-neutral-100 md:text-xl">
+        Rejoignez Disneyland Paris dans un véhicule haut de gamme avec un
+        chauffeur professionnel. Transferts depuis Paris, les aéroports,
+        les gares, les hôtels et toute l’Île-de-France.
+      </p>
 
-          <p className="text-lg md:text-xl text-neutral-300 max-w-3xl mx-auto leading-8 mb-12">
-            Profitez d’un transfert privé et confortable vers Disneyland Paris
-            avec un chauffeur professionnel au départ de Paris et de toute
-            l’Île-de-France.
-          </p>
+      <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+        <Link
+          href="/reservation"
+          className="rounded-md border border-amber-400 bg-amber-400 px-8 py-4 text-center text-sm font-semibold text-black transition hover:bg-transparent hover:text-amber-400"
+        >
+          Réserver votre chauffeur
+        </Link>
 
-          <Link
-            href="/reservation"
-            className="inline-block bg-amber-500 text-black px-10 py-5 rounded-full tracking-[0.3em] text-xs uppercase hover:bg-amber-400 transition-all duration-500"
-          >
-            Réserver votre chauffeur
-          </Link>
-
-        </div>
-      </section>
+        <Link
+          href="/contact"
+          className="rounded-md border border-white/70 bg-black/20 px-8 py-4 text-center text-sm font-semibold text-white transition hover:border-amber-400 hover:text-amber-400"
+        >
+          Nous contacter
+        </Link>
+      </div>
+    </div>
+  </div>
+</section>
 
 
       {/* ================= INTRODUCTION ================= */}
@@ -125,92 +148,85 @@ export default function ChauffeurVtcDisneylandParis() {
       </section>
 
 
-    {/* ================= SERVICES ================= */}
-<section className="py-32 px-6 bg-black border-t border-amber-500/10">
+    
+{/* ================= SERVICES ================= */}
+<section className="border-t border-amber-500/10 bg-black px-6 py-28">
+  <div className="mx-auto max-w-7xl">
+    <div className="mx-auto mb-16 max-w-3xl text-center">
+      <p className="text-xs uppercase tracking-[0.4em] text-amber-400">
+        Nos prestations
+      </p>
 
-  <div className="max-w-7xl mx-auto">
+      <h2 className="mt-5 text-3xl font-light text-white md:text-5xl">
+        Votre chauffeur pour chaque étape de votre séjour
+      </h2>
 
-    <h2 className="text-3xl md:text-4xl text-amber-400 tracking-[0.35em] uppercase font-light mb-16 text-center">
-      Transferts vers Disneyland Paris
-    </h2>
+      <p className="mt-6 text-base leading-8 text-neutral-400">
+        Depuis Paris, les aéroports ou les gares, profitez d'une prise en
+        charge personnalisée vers Disneyland Paris et les hôtels du secteur
+        de Val d'Europe.
+      </p>
+    </div>
 
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+    <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+      {[
+        {
+          title: "Paris → Disneyland Paris",
+          description:
+            "Une Mercedes Classe S pour rejoindre le parc depuis Paris dans un cadre confortable et raffiné.",
+          image: "/images/disneyland-paris-transfert-paris.png",
+          alt: "Mercedes Classe S à Paris avec la tour Eiffel en arrière-plan",
+        },
+        {
+          title: "Aéroports → Disneyland",
+          description:
+            "Votre transfert depuis Orly, Roissy Charles-de-Gaulle ou Beauvais avec un véhicule premium.",
+          image: "/images/disneyland-paris-aeroports.png",
+          alt: "Range Rover noir devant le terminal de l'aéroport CDG",
+        },
+        {
+          title: "Gare de Marne-la-Vallée",
+          description:
+            "Une prise en charge organisée à la gare TGV de Marne-la-Vallée–Chessy pour rejoindre votre destination.",
+          image: "/images/disneyland-paris-gare.png",
+          alt: "Mercedes Classe V devant la gare de Marne-la-Vallée Chessy",
+        },
+        {
+          title: "Hôtels Disneyland Paris",
+          description:
+            "Un service de chauffeur privé pour vos arrivées et départs des hôtels de Disneyland Paris.",
+          image: "/images/disneyland-paris-hotels.png",
+          alt: "Berline de prestige devant le Disneyland Hotel",
+        },
+      ].map((service) => (
+        <article
+          key={service.title}
+          className="group overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 transition duration-300 hover:-translate-y-1 hover:border-amber-400/60"
+        >
+          <div className="relative aspect-[4/3] overflow-hidden">
+            <Image
+              src={service.image}
+              alt={service.alt}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+              className="object-cover transition duration-700 group-hover:scale-105"
+            />
+          </div>
 
-      <div className="bg-neutral-950 border border-amber-500/20 rounded-3xl p-8 transition-all duration-300 hover:-translate-y-2 hover:border-amber-400 hover:shadow-[0_12px_35px_rgba(245,158,11,0.15)] cursor-pointer">
-        <h3 className="text-xl text-amber-400 mb-5">
-          Paris → Disneyland Paris
-        </h3>
+          <div className="p-6">
+            <h3 className="text-xl font-semibold text-amber-400">
+              {service.title}
+            </h3>
 
-        <p className="text-neutral-400 leading-7">
-          Départ depuis Paris avec une prise en charge privée et un
-          trajet confortable jusqu’à Disneyland Paris.
-        </p>
-      </div>
-
-
-      <div className="bg-neutral-950 border border-amber-500/20 rounded-3xl p-8 transition-all duration-300 hover:-translate-y-2 hover:border-amber-400 hover:shadow-[0_12px_35px_rgba(245,158,11,0.15)] cursor-pointer">
-        <h3 className="text-xl text-amber-400 mb-5">
-          Aéroports → Disneyland Paris
-        </h3>
-
-        <p className="text-neutral-400 leading-7">
-          Transferts privés depuis Orly, Roissy Charles-de-Gaulle et
-          l’aéroport de Beauvais vers Disneyland Paris.
-        </p>
-      </div>
-
-
-      <div className="bg-neutral-950 border border-amber-500/20 rounded-3xl p-8 transition-all duration-300 hover:-translate-y-2 hover:border-amber-400 hover:shadow-[0_12px_35px_rgba(245,158,11,0.15)] cursor-pointer">
-        <h3 className="text-xl text-amber-400 mb-5">
-          Gares → Disneyland Paris
-        </h3>
-
-        <p className="text-neutral-400 leading-7">
-          Prise en charge depuis les principales gares de Paris et
-          d’Île-de-France pour rejoindre votre hôtel ou Disneyland Paris.
-        </p>
-      </div>
-
-
-      <div className="bg-neutral-950 border border-amber-500/20 rounded-3xl p-8 transition-all duration-300 hover:-translate-y-2 hover:border-amber-400 hover:shadow-[0_12px_35px_rgba(245,158,11,0.15)] cursor-pointer">
-        <h3 className="text-xl text-amber-400 mb-5">
-          Hôtels Disneyland Paris
-        </h3>
-
-        <p className="text-neutral-400 leading-7">
-          Transport privé vers les hôtels situés autour de Disneyland
-          Paris et du secteur de Val d’Europe.
-        </p>
-      </div>
-
-
-      <div className="bg-neutral-950 border border-amber-500/20 rounded-3xl p-8 transition-all duration-300 hover:-translate-y-2 hover:border-amber-400 hover:shadow-[0_12px_35px_rgba(245,158,11,0.15)] cursor-pointer">
-        <h3 className="text-xl text-amber-400 mb-5">
-          Familles et groupes
-        </h3>
-
-        <p className="text-neutral-400 leading-7">
-          Une solution de transport confortable pour les familles et
-          les groupes, selon le nombre de passagers et de bagages.
-        </p>
-      </div>
-
-
-      <div className="bg-neutral-950 border border-amber-500/20 rounded-3xl p-8 transition-all duration-300 hover:-translate-y-2 hover:border-amber-400 hover:shadow-[0_12px_35px_rgba(245,158,11,0.15)] cursor-pointer">
-        <h3 className="text-xl text-amber-400 mb-5">
-          Service VIP
-        </h3>
-
-        <p className="text-neutral-400 leading-7">
-          Une prestation personnalisée pour les clients recherchant
-          davantage de confort, de discrétion et de flexibilité.
-        </p>
-      </div>
-
+            <p className="mt-4 text-sm leading-7 text-neutral-400">
+              {service.description}
+            </p>
+          </div>
+        </article>
+      ))}
     </div>
   </div>
 </section>
-
 
       {/* ================= EXPERIENCE ================= */}
       <section className="py-32 px-6 bg-neutral-950 border-t border-amber-500/10">
@@ -347,42 +363,64 @@ export default function ChauffeurVtcDisneylandParis() {
           </div>
 
 
-          <div className="grid md:grid-cols-2 gap-6 mt-12">
+          
+<div className="grid md:grid-cols-2 gap-8 mt-12">
 
-            <Link
-              href="/transfert-orly"
-              className="border border-amber-500/20 rounded-2xl p-7 hover:border-amber-400 transition bg-neutral-950"
-            >
-              <h3 className="text-lg text-amber-400 mb-3">
-                Transfert depuis Orly
-              </h3>
+  <Link
+    href="/transfert-orly"
+    className="group overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 transition hover:border-amber-400"
+  >
+    <div className="relative h-64 overflow-hidden">
+      <Image
+        src="/images/orly-hero.png"
+        alt="Véhicule premium pour un transfert vers Orly"
+        fill
+        sizes="(max-width: 768px) 100vw, 50vw"
+        className="object-cover transition duration-700 group-hover:scale-105"
+      />
+    </div>
 
-              <p className="text-neutral-500">
-                Chauffeur privé pour vos déplacements depuis ou vers l’aéroport
-                Paris-Orly.
-              </p>
-            </Link>
+    <div className="p-7">
+      <h3 className="text-lg text-amber-400 mb-3">
+        Transfert depuis Orly
+      </h3>
 
+      <p className="text-neutral-400 leading-7">
+        Chauffeur privé pour vos déplacements depuis ou vers l’aéroport
+        Paris-Orly.
+      </p>
+    </div>
+  </Link>
 
-            <Link
-              href="/transfert-cdg"
-              className="border border-amber-500/20 rounded-2xl p-7 hover:border-amber-400 transition bg-neutral-950"
-            >
-              <h3 className="text-lg text-amber-400 mb-3">
-                Transfert depuis CDG
-              </h3>
+  <Link
+    href="/transfert-cdg"
+    className="group overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 transition hover:border-amber-400"
+  >
+    <div className="relative h-64 overflow-hidden">
+      <Image
+        src="/images/cdg-range-rover.png"
+        alt="Véhicule premium pour un transfert vers CDG"
+        fill
+        sizes="(max-width: 768px) 100vw, 50vw"
+        className="object-cover transition duration-700 group-hover:scale-105"
+      />
+    </div>
 
-              <p className="text-neutral-500">
-                Service chauffeur premium depuis ou vers Roissy
-                Charles-de-Gaulle.
-              </p>
-            </Link>
+    <div className="p-7">
+      <h3 className="text-lg text-amber-400 mb-3">
+        Transfert depuis CDG
+      </h3>
 
+      <p className="text-neutral-400 leading-7">
+        Service chauffeur premium depuis ou vers Roissy
+        Charles-de-Gaulle.
+      </p>
+    </div>
+  </Link>
+
+</div>
           </div>
-
-        </div>
       </section>
-
 
       {/* ================= FAQ ================= */}
       <section className="py-32 px-6 bg-neutral-950 border-t border-amber-500/10">
