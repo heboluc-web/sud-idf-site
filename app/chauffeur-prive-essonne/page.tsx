@@ -336,20 +336,21 @@ export default function ChauffeurPriveEssonne() {
           <div className="flex flex-wrap justify-center gap-3">
 
             {[
-              "Corbeil-Essonnes",
-              "Évry-Courcouronnes",
-              "Essonne (91)",
-              "Seine-et-Marne (77)",
-              "Paris",
-              "Aéroport Orly",
-              "Aéroport CDG",
-            ].map((place) => (
-              <span
+              ["Corbeil-Essonnes", "/chauffeur-prive-corbeil-essonnes"],
+              ["Évry-Courcouronnes", "/chauffeur-prive-evry"],
+              ["Essonne (91)", "/chauffeur-prive-essonne"],
+              ["Seine-et-Marne (77)", "/chauffeur-prive-seine-et-marne"],
+              ["Paris", "/chauffeur-prive-paris"],
+              ["Aéroport Orly", "/chauffeur-prive-orly"],
+              ["Aéroport CDG", "/chauffeur-prive-cdg"],
+            ].map(([place, href]) => (
+              <a
                 key={place}
-                className="border border-amber-500/30 rounded-full px-5 py-3 text-amber-300 text-sm"
+                href={href}
+                className="border border-amber-500/30 rounded-full px-5 py-3 text-amber-300 text-sm transition hover:border-amber-400 hover:text-amber-400"
               >
                 {place}
-              </span>
+              </a>
             ))}
 
           </div>
@@ -419,6 +420,41 @@ export default function ChauffeurPriveEssonne() {
         </div>
       </section>
 
+    
+
+      <section aria-label="Nos services en Essonne et aux alentours" className="border-t border-amber-500/20 bg-zinc-950 px-6 py-16 md:py-20">
+        <div className="mx-auto max-w-6xl">
+          <p className="mb-4 text-center text-xs font-semibold uppercase tracking-[0.3em] text-amber-400">SUD IDF Executive Transport</p>
+          <h2 className="mx-auto mb-5 max-w-3xl text-center text-2xl font-semibold text-white md:text-3xl">Nos services en Essonne et aux alentours</h2>
+          <p className="mx-auto mb-9 max-w-3xl text-center text-sm leading-7 text-zinc-300 md:text-base">Depuis l’Essonne, rejoignez les aéroports, Paris et les principales destinations d’Île-de-France.</p>
+          <nav aria-label="Liens vers nos autres services" className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <a href="/chauffeur-prive-corbeil-essonnes" className="group rounded-xl border border-amber-500/30 bg-zinc-900/70 px-5 py-4 text-sm font-medium text-zinc-100 transition hover:border-amber-400 hover:bg-zinc-800">
+              <span className="flex items-center justify-between gap-3"><span>Chauffeur privé à Corbeil-Essonnes</span><span className="text-amber-400 transition group-hover:translate-x-1">→</span></span>
+            </a>
+            <a href="/chauffeur-prive-evry" className="group rounded-xl border border-amber-500/30 bg-zinc-900/70 px-5 py-4 text-sm font-medium text-zinc-100 transition hover:border-amber-400 hover:bg-zinc-800">
+              <span className="flex items-center justify-between gap-3"><span>Chauffeur privé à Évry</span><span className="text-amber-400 transition group-hover:translate-x-1">→</span></span>
+            </a>
+            <a href="/chauffeur-prive-melun" className="group rounded-xl border border-amber-500/30 bg-zinc-900/70 px-5 py-4 text-sm font-medium text-zinc-100 transition hover:border-amber-400 hover:bg-zinc-800">
+              <span className="flex items-center justify-between gap-3"><span>Chauffeur privé à Melun</span><span className="text-amber-400 transition group-hover:translate-x-1">→</span></span>
+            </a>
+            <a href="/chauffeur-prive-fontainebleau" className="group rounded-xl border border-amber-500/30 bg-zinc-900/70 px-5 py-4 text-sm font-medium text-zinc-100 transition hover:border-amber-400 hover:bg-zinc-800">
+              <span className="flex items-center justify-between gap-3"><span>Chauffeur privé à Fontainebleau</span><span className="text-amber-400 transition group-hover:translate-x-1">→</span></span>
+            </a>
+            <a href="/chauffeur-prive-seine-et-marne" className="group rounded-xl border border-amber-500/30 bg-zinc-900/70 px-5 py-4 text-sm font-medium text-zinc-100 transition hover:border-amber-400 hover:bg-zinc-800">
+              <span className="flex items-center justify-between gap-3"><span>Chauffeur privé en Seine-et-Marne</span><span className="text-amber-400 transition group-hover:translate-x-1">→</span></span>
+            </a>
+            <a href="/transfert-orly" className="group rounded-xl border border-amber-500/30 bg-zinc-900/70 px-5 py-4 text-sm font-medium text-zinc-100 transition hover:border-amber-400 hover:bg-zinc-800">
+              <span className="flex items-center justify-between gap-3"><span>Transfert Orly</span><span className="text-amber-400 transition group-hover:translate-x-1">→</span></span>
+            </a>
+            <a href="/transfert-cdg" className="group rounded-xl border border-amber-500/30 bg-zinc-900/70 px-5 py-4 text-sm font-medium text-zinc-100 transition hover:border-amber-400 hover:bg-zinc-800">
+              <span className="flex items-center justify-between gap-3"><span>Transfert CDG</span><span className="text-amber-400 transition group-hover:translate-x-1">→</span></span>
+            </a>
+            <a href="/chauffeur-business" className="group rounded-xl border border-amber-500/30 bg-zinc-900/70 px-5 py-4 text-sm font-medium text-zinc-100 transition hover:border-amber-400 hover:bg-zinc-800">
+              <span className="flex items-center justify-between gap-3"><span>Chauffeur business</span><span className="text-amber-400 transition group-hover:translate-x-1">→</span></span>
+            </a>
+          </nav>
+        </div>
+      </section>
     </main>
   );
 }

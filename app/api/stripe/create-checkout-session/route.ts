@@ -8,22 +8,31 @@ export async function POST(req: Request) {
     const data = await req.json();
 
     const {
-      amount,
-      name,
-      email,
-      phone,
-      service,
-      date,
-      time,
-      depart,
-      arrivee,
-      vehicle,
-      passengers,
-      tripType,
-      returnDate,
-      returnTime,
-      bagages,
-    } = data;
+  amount,
+  name,
+  email,
+  phone,
+  service,
+  date,
+  time,
+  depart,
+  arrivee,
+  vehicle,
+  passengers,
+  tripType,
+  returnDate,
+  returnTime,
+  bagages,
+  numeroVol,
+  numeroVolRetour,
+  numeroTrain,
+  numeroTrainRetour,
+  greeter,
+  greeterTripType,
+  prixVtcTTC,
+  prixGreeterTTC,
+  booking_kind,
+} = data;
 
     // ==============================
     // VALIDATION DES INFORMATIONS
@@ -50,6 +59,9 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+
+    // Les numéros de vol et de train sont facultatifs.
+    // Ils sont conservés dans les métadonnées Stripe lorsqu'ils sont renseignés.
 
     // ==============================
     // VALIDATION DU MONTANT
@@ -182,9 +194,23 @@ const origin =
         tripType: String(tripType || "aller-simple"),
         returnDate: String(returnDate || ""),
         returnTime: String(returnTime || ""),
+        numeroVol: String(numeroVol || ""),
+        numeroVolRetour: String(numeroVolRetour || ""),
+        numeroTrain: String(numeroTrain || ""),
+        numeroTrainRetour: String(numeroTrainRetour || ""),
         
         // Montant réellement utilisé par Stripe
         amount: String(amountNumber.toFixed(2)),
+        greeter: String(greeter || "non"),
+greeterTripType: String(greeterTripType || "simple"),
+prixVtcTTC: String(prixVtcTTC ?? ""),
+prixGreeterTTC: String(prixGreeterTTC ?? ""),
+booking_kind: String(
+  booking_kind ||
+    (greeter === "oui"
+      ? "greeter_avec_vtc"
+      : "reservation_vtc")
+),
       },
 
       success_url:

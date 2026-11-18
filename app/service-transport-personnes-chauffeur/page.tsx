@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title:
@@ -68,10 +69,19 @@ export default function ServiceTransportPersonnesChauffeur() {
         </div>
       </nav>
 
-      <section className="relative overflow-hidden border-b border-amber-500/20 px-6 py-28 md:py-36">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.12),transparent_55%)]" />
+      <section className="relative isolate flex min-h-[660px] items-center overflow-hidden border-b border-amber-500/20 px-6 py-28 md:py-36">
+        <Image
+          src="/images/place-vendome-flotte-sud-idf.png"
+          alt="Véhicules premium SUD IDF Executive Transport à Paris"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/25" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.10),transparent_55%)]" />
 
-        <div className="relative mx-auto max-w-5xl text-center">
+        <div className="relative mx-auto w-full max-w-5xl text-center">
           <p className="mb-6 text-xs uppercase tracking-[0.5em] text-amber-400">
             Transport · Confort · Discrétion
           </p>
@@ -80,7 +90,7 @@ export default function ServiceTransportPersonnesChauffeur() {
             Service de transport de personnes avec chauffeur
           </h1>
 
-          <p className="mx-auto mt-8 max-w-3xl text-base leading-8 text-neutral-400 md:text-lg">
+          <p className="mx-auto mt-8 max-w-3xl text-base leading-8 text-neutral-100 md:text-lg">
             Un service de transport privé avec chauffeur VTC pour vos
             déplacements à Paris et en Île-de-France. Confort, ponctualité,
             discrétion et accompagnement personnalisé.
@@ -96,7 +106,7 @@ export default function ServiceTransportPersonnesChauffeur() {
 
             <a
               href="/contact"
-              className="rounded-full border border-amber-500/40 px-8 py-4 text-sm tracking-[0.18em] text-amber-400 transition hover:border-amber-400"
+              className="rounded-full border border-amber-500/50 bg-black/25 px-8 py-4 text-sm tracking-[0.18em] text-amber-400 transition hover:border-amber-400"
             >
               DEMANDER UN DEVIS
             </a>
@@ -130,40 +140,70 @@ export default function ServiceTransportPersonnesChauffeur() {
               [
                 "Déplacements privés",
                 "Un chauffeur privé pour vos trajets personnels, avec prise en charge à l’adresse de votre choix.",
+                "/images/accueil-avion-mercedes.png",
+                "Véhicule premium pour un déplacement privé",
               ],
               [
                 "Déplacements professionnels",
                 "Une solution adaptée aux rendez-vous, réunions, déplacements d’affaires et événements professionnels.",
+                "/images/corbeil-essonnes-business.png",
+                "Véhicule avec chauffeur pour les déplacements professionnels",
               ],
               [
                 "Transferts aéroports",
                 "Prise en charge vers et depuis les principaux aéroports de Paris et d’Île-de-France, notamment Orly et CDG.",
+                "/images/cdg-hero-premium.png",
+                "Transfert aéroport en véhicule premium",
               ],
               [
                 "Transferts gares",
                 "Transport porte-à-porte depuis les principales gares parisiennes et franciliennes.",
+                "/images/paris-seine-hero.png",
+                "Transport privé dans Paris",
               ],
               [
                 "Événements",
                 "Transport de personnes pour mariages, séminaires, réceptions et événements privés ou professionnels.",
+                "/images/mariage-classe-v-fleurs.png",
+                "Mercedes Classe V décorée pour un événement",
               ],
               [
                 "Service VIP",
                 "Une prestation discrète et personnalisée pour les clients recherchant confort et qualité de service.",
+                "/images/place-vendome-flotte-sud-idf.png",
+                "Flotte de véhicules premium à Paris",
               ],
-            ].map(([title, text]) => (
-              <div
+            ].map(([title, text, image, alt]) => (
+              <a
                 key={title}
-                className="rounded-3xl border border-amber-500/20 bg-neutral-950 p-8 transition hover:-translate-y-1 hover:border-amber-400/50"
+                href="/reservation"
+                aria-label={`${title} — réserver un chauffeur`}
+                className="group block overflow-hidden rounded-3xl border border-amber-500/20 bg-neutral-950 transition duration-300 hover:-translate-y-1 hover:border-amber-400/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-400"
               >
-                <h3 className="text-lg tracking-[0.12em] text-amber-400">
-                  {title}
-                </h3>
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <Image
+                    src={image}
+                    alt={alt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent" />
+                </div>
 
-                <p className="mt-5 text-sm leading-7 text-neutral-400">
-                  {text}
-                </p>
-              </div>
+                <div className="p-8">
+                  <h3 className="text-lg tracking-[0.12em] text-amber-400">
+                    {title}
+                  </h3>
+
+                  <p className="mt-5 text-sm leading-7 text-neutral-400">
+                    {text}
+                  </p>
+                  <span className="mt-6 inline-block text-xs font-semibold uppercase tracking-[0.18em] text-amber-400 transition group-hover:text-amber-300">
+                    Réserver ce service →
+                  </span>
+                </div>
+              </a>
             ))}
           </div>
         </div>
@@ -201,20 +241,33 @@ export default function ServiceTransportPersonnesChauffeur() {
             </p>
           </div>
 
-          <div className="rounded-3xl border border-amber-500/20 bg-black p-10">
-            <h3 className="text-xl tracking-[0.14em] text-amber-400">
-              Les avantages
-            </h3>
+          <div className="overflow-hidden rounded-3xl border border-amber-500/20 bg-black">
+            <div className="relative h-56">
+              <Image
+                src="/images/place-vendome-flotte-sud-idf.png"
+                alt="Flotte de véhicules premium SUD IDF Executive Transport"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+            </div>
 
-            <ul className="mt-7 space-y-5 text-sm leading-7 text-neutral-400">
-              <li>✓ Chauffeur professionnel et ponctuel</li>
-              <li>✓ Véhicule premium et confortable</li>
-              <li>✓ Prise en charge à l’adresse de votre choix</li>
-              <li>✓ Service adapté aux particuliers et entreprises</li>
-              <li>✓ Trajets ponctuels ou prestations sur plusieurs heures</li>
-              <li>✓ Service discret et personnalisé</li>
-              <li>✓ Réservation préalable pour préparer chaque trajet</li>
-            </ul>
+            <div className="p-10">
+              <h3 className="text-xl tracking-[0.14em] text-amber-400">
+                Les avantages
+              </h3>
+
+              <ul className="mt-7 space-y-5 text-sm leading-7 text-neutral-300">
+                <li>✓ Chauffeur professionnel et ponctuel</li>
+                <li>✓ Véhicule premium et confortable</li>
+                <li>✓ Prise en charge à l’adresse de votre choix</li>
+                <li>✓ Service adapté aux particuliers et entreprises</li>
+                <li>✓ Trajets ponctuels ou prestations sur plusieurs heures</li>
+                <li>✓ Service discret et personnalisé</li>
+                <li>✓ Réservation préalable pour préparer chaque trajet</li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>

@@ -364,22 +364,23 @@ export default function ChauffeurPriveCorbeil() {
 
           <div className="flex flex-wrap justify-center gap-3">
             {[
-              "Corbeil-Essonnes",
-              "Évry-Courcouronnes",
-              "Essonne",
-              "Melun",
-              "Seine-et-Marne",
-              "Paris",
-              "Orly",
-              "Roissy CDG",
-              "Île-de-France",
-            ].map((place) => (
-              <span
+              { place: "Corbeil-Essonnes", href: "/chauffeur-prive-corbeil-essonnes" },
+              { place: "Évry-Courcouronnes", href: "/chauffeur-prive-evry" },
+              { place: "Essonne", href: "/chauffeur-prive-essonne" },
+              { place: "Melun", href: "/chauffeur-prive-melun" },
+              { place: "Seine-et-Marne", href: "/chauffeur-prive-seine-et-marne" },
+              { place: "Paris", href: "/chauffeur-prive-paris" },
+              { place: "Orly", href: "/chauffeur-prive-orly" },
+              { place: "Roissy CDG", href: "/chauffeur-prive-cdg" },
+              { place: "Île-de-France", href: "/chauffeur-prive" },
+            ].map(({ place, href }) => (
+              <a
                 key={place}
-                className="border border-amber-500/30 bg-black px-5 py-3 rounded-full text-gray-300"
+                href={href}
+                className="border border-amber-500/30 bg-black px-5 py-3 rounded-full text-gray-300 transition hover:border-amber-400 hover:text-amber-400"
               >
                 {place}
-              </span>
+              </a>
             ))}
           </div>
 
@@ -480,6 +481,22 @@ export default function ChauffeurPriveCorbeil() {
         </div>
       </section>
 
-    </main>
+          <section className="border-t border-amber-500/20 bg-zinc-950 px-6 py-16">
+        <div className="mx-auto max-w-6xl">
+          <p className="text-center text-xs font-semibold uppercase tracking-[0.3em] text-amber-400">SUD IDF Executive Transport</p>
+          <h2 className="mt-3 text-center text-2xl font-semibold text-white">Votre chauffeur privé autour de Corbeil-Essonnes</h2>
+          <p className="mx-auto mt-4 max-w-3xl text-center leading-7 text-zinc-400">Depuis Corbeil-Essonnes, nous organisons également vos déplacements dans les principales villes de l’Essonne et de Seine-et-Marne, ainsi que vos transferts vers les aéroports et vos trajets professionnels.</p>
+          <nav className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <a href="/chauffeur-prive-essonne" className="rounded-xl border border-amber-500/30 bg-zinc-900 px-5 py-4 text-sm text-zinc-100 transition hover:border-amber-400">Chauffeur privé en Essonne <span className="float-right text-amber-400">→</span></a>
+            <a href="/chauffeur-prive-evry" className="rounded-xl border border-amber-500/30 bg-zinc-900 px-5 py-4 text-sm text-zinc-100 transition hover:border-amber-400">Chauffeur privé à Évry <span className="float-right text-amber-400">→</span></a>
+            <a href="/chauffeur-prive-melun" className="rounded-xl border border-amber-500/30 bg-zinc-900 px-5 py-4 text-sm text-zinc-100 transition hover:border-amber-400">Chauffeur privé à Melun <span className="float-right text-amber-400">→</span></a>
+            <a href="/chauffeur-prive-seine-et-marne" className="rounded-xl border border-amber-500/30 bg-zinc-900 px-5 py-4 text-sm text-zinc-100 transition hover:border-amber-400">Chauffeur privé en Seine-et-Marne <span className="float-right text-amber-400">→</span></a>
+            <a href="/transfert-orly" className="rounded-xl border border-amber-500/30 bg-zinc-900 px-5 py-4 text-sm text-zinc-100 transition hover:border-amber-400">Transfert vers l’aéroport d’Orly <span className="float-right text-amber-400">→</span></a>
+            <a href="/transfert-cdg" className="rounded-xl border border-amber-500/30 bg-zinc-900 px-5 py-4 text-sm text-zinc-100 transition hover:border-amber-400">Transfert vers l’aéroport CDG <span className="float-right text-amber-400">→</span></a>
+          </nav>
+        </div>
+      </section>
+
+</main>
   );
 }

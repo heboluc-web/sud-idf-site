@@ -22,6 +22,22 @@ export default function Reservation() {
 
     service: "",
 
+    greeter: "non",
+
+    greeterTripType: "simple",
+    departIsAirport: false,
+arriveeIsAirport: false,
+departIsStation: false,
+arriveeIsStation: false,
+
+    numeroVol: "",
+
+    numeroVolRetour: "",
+
+    numeroTrain: "",
+
+    numeroTrainRetour: "",
+
     depart: "",
 
     arrivee: "",
@@ -109,6 +125,40 @@ if (name === "depart") {
         prix: "",
 
         detailsPrix: "",
+
+        tarification: "",
+
+      }));
+
+      return;
+
+    }
+
+    if (name === "service") {
+
+      tarifRequestIdRef.current += 1;
+
+      setForm((prev) => ({
+
+        ...prev,
+
+        service: value,
+
+        numeroVol: "",
+
+        numeroVolRetour: "",
+
+        numeroTrain: "",
+
+        numeroTrainRetour: "",
+
+        prix: "",
+
+        detailsPrix: "",
+
+        distance: "",
+
+        duree: "",
 
         tarification: "",
 
@@ -428,6 +478,33 @@ if (name === "depart") {
 
       const types: string[] = place.types || [];
 
+const nomLieu = (
+  place.displayName ||
+  place.formattedAddress ||
+  prediction.text?.toString() ||
+  ""
+).toLowerCase();
+
+const estCDG =
+  nomLieu.includes("cdg") ||
+  nomLieu.includes("charles-de-gaulle") ||
+  nomLieu.includes("charles de gaulle") ||
+  nomLieu.includes("roissy");
+
+const estOrly =
+  nomLieu.includes("orly");
+
+const isAirport =
+  estCDG ||
+  estOrly ||
+  types.includes("airport");
+
+const isTrainStation =
+  !isAirport &&
+  (
+    types.includes("train_station") ||
+    types.includes("transit_station")
+  );
       const components = place.addressComponents || [];
 
       const hasStreetNumber = components.some((component: any) =>
@@ -495,6 +572,9 @@ if (name === "depart") {
         ...prev,
 
         [field]: address,
+        [field === "depart" ? "departIsAirport" : "arriveeIsAirport"]: isAirport,
+
+[field === "depart" ? "departIsStation" : "arriveeIsStation"]: isTrainStation,
 
         distance: "",
 
@@ -762,6 +842,30 @@ const trajetParisParis = departEstParis && arriveeEstParis;
 
         // CDG : Terminal 1/T1, Terminal 2A/T2A ... Terminal 2G/T2G, Terminal 3/T3.
 
+        const contientTerminalCDG =
+
+          /\bterminal\s*(1|2\s*[a-g]|3)\b/.test(texteTrajet) ||
+
+          /\bt(1|2\s*[a-g]|3)\b/.test(texteTrajet);
+
+        const contientZoneCDG =
+
+          texteTrajet.includes("roissy") ||
+
+          texteTrajet.includes("le mesnil-amelot") ||
+
+          texteTrajet.includes("le mesnil amelot") ||
+
+          texteTrajet.includes("tremblay-en-france") ||
+
+          texteTrajet.includes("tremblay en france") ||
+
+          texteTrajet.includes("95700") ||
+
+          texteTrajet.includes("93290") ||
+
+          texteTrajet.includes("77990");
+
         const contientCDG =
 
           texteTrajet.includes("cdg") ||
@@ -770,49 +874,15 @@ const trajetParisParis = departEstParis && arriveeEstParis;
 
           texteTrajet.includes("charles-de-gaulle") ||
 
-          texteTrajet.includes("roissy") ||
+          texteTrajet.includes("aeroport paris-charles") ||
 
-          texteTrajet.includes("terminal 1") ||
+          texteTrajet.includes("aéroport paris-charles") ||
 
-          /\bt1\b/.test(texteTrajet) ||
+          texteTrajet.includes("paris charles de gaulle") ||
 
-          texteTrajet.includes("terminal 2a") ||
+          contientZoneCDG ||
 
-          /\bt2a\b/.test(texteTrajet) ||
-
-          texteTrajet.includes("terminal 2b") ||
-
-          /\bt2b\b/.test(texteTrajet) ||
-
-          texteTrajet.includes("terminal 2c") ||
-
-          /\bt2c\b/.test(texteTrajet) ||
-
-          texteTrajet.includes("terminal 2d") ||
-
-          /\bt2d\b/.test(texteTrajet) ||
-
-          texteTrajet.includes("terminal 2e") ||
-
-          /\bt2e\b/.test(texteTrajet) ||
-
-          texteTrajet.includes("terminal 2f") ||
-
-          /\bt2f\b/.test(texteTrajet) ||
-
-          texteTrajet.includes("terminal 2g") ||
-
-          /\bt2g\b/.test(texteTrajet) ||
-
-          texteTrajet.includes("terminal 3") ||
-
-          /\bt3\b/.test(texteTrajet) ||
-
-          texteTrajet.includes("le mesnil-amelot") ||
-
-          texteTrajet.includes("le mesnil amelot") ||
-
-          texteTrajet.includes("77990");
+          (contientTerminalCDG && contientZoneCDG);
 
         // Orly : aéroport + terminaux en toutes lettres et appellations courtes.
 
@@ -1183,11 +1253,15 @@ if (trajetParisParisApplicable) {
 
   detailsPrix = `${
 
-    form.service === "Transport standard"
+    form.service === "Transfert gare"
 
-      ? "Transport standard régional"
+      ? "Transfert standard / ville"
 
-      : "Transport régional"
+      : form.service === "Transport standard"
+
+        ? "Transport standard régional"
+
+        : "Transport régional"
 
   } — ${distanceKm.toFixed(1)} km × ${tarifKm.toFixed(2).replace(".", ",")} €/km${
 
@@ -1225,7 +1299,7 @@ if (trajetParisParisApplicable) {
 
   if (
 
-    form.service !== "Transport standard" ||
+    (form.service !== "Transport standard" && form.service !== "Transfert gare") ||
 
     trajetParisParisApplicable
 
@@ -1446,21 +1520,40 @@ if (
 
     }
 
-    const service = new google.maps.DistanceMatrixService();
+   const service = new google.maps.DistanceMatrixService();
 
-    service.getDistanceMatrix(
+const estAdresseCDG = (adresse: string) => {
+  const texte = adresse.toLowerCase();
+  return (
+    texte.includes("cdg") ||
+    texte.includes("charles-de-gaulle") ||
+    texte.includes("charles de gaulle") ||
+    (texte.includes("roissy") && form.departIsAirport) ||
+    (texte.includes("roissy") && form.arriveeIsAirport) ||
+    (texte.includes("tremblay-en-france") && (form.departIsAirport || form.arriveeIsAirport)) ||
+    (texte.includes("tremblay en france") && (form.departIsAirport || form.arriveeIsAirport)) ||
+    (texte.includes("mesnil-amelot") && (form.departIsAirport || form.arriveeIsAirport))
+  );
+};
 
-      {
+const adresseCDGUnique =
+  "Aéroport Paris-Charles de Gaulle, 95700 Roissy-en-France, France";
 
-        origins: [form.depart],
+const departPourCalcul = estAdresseCDG(form.depart)
+  ? adresseCDGUnique
+  : form.depart;
 
-        destinations: [form.arrivee],
+const arriveePourCalcul = estAdresseCDG(form.arrivee)
+  ? adresseCDGUnique
+  : form.arrivee;
 
-        travelMode: google.maps.TravelMode.DRIVING,
-
-        unitSystem: google.maps.UnitSystem.METRIC,
-
-      },
+service.getDistanceMatrix(
+  {
+    origins: [departPourCalcul],
+    destinations: [arriveePourCalcul],
+    travelMode: google.maps.TravelMode.DRIVING,
+    unitSystem: google.maps.UnitSystem.METRIC,
+  },
 
       (response: any, status: any) => {
 
@@ -1500,8 +1593,8 @@ if (
         // avec l'heure de retour et les mêmes règles tarifaires que l'aller.
         service.getDistanceMatrix(
           {
-            origins: [form.arrivee],
-            destinations: [form.depart],
+           origins: [arriveePourCalcul],
+destinations: [departPourCalcul],
             travelMode: google.maps.TravelMode.DRIVING,
             unitSystem: google.maps.UnitSystem.METRIC,
           },
@@ -1731,9 +1824,7 @@ ${
 
 ⏰ Heure aller : ${form.heure}
 
-${form.tripType === "aller-retour" ? `🔁 Type : Aller-retour\n📅 Date retour : ${form.returnDate}\n⏰ Heure retour : ${form.returnTime}\n` : "🚘 Type : Aller simple\n"}💰 Tarif : ${form.prix}
-
-
+${form.service === "Transfert aéroport" ? `✈️ Numéro de vol aller : ${form.numeroVol}\n` : ""}${form.service === "Transfert gare" ? `🚆 Numéro de train aller : ${form.numeroTrain}\n` : ""}${form.tripType === "aller-retour" ? `🔁 Type : Aller-retour\n📅 Date retour : ${form.returnDate}\n⏰ Heure retour : ${form.returnTime}\n${form.service === "Transfert aéroport" ? `✈️ Numéro de vol retour : ${form.numeroVolRetour}\n` : ""}${form.service === "Transfert gare" ? `🚆 Numéro de train retour : ${form.numeroTrainRetour}\n` : ""}` : "🚘 Type : Aller simple\n"}💰 Tarif : ${form.prix}
 
 📝 Message :
 
@@ -1772,6 +1863,46 @@ ${form.message || "Aucun"}`;
     const handleStripeCheckout = async (e: React.FormEvent<HTMLFormElement>) => {
 
     e.preventDefault();
+    // Vérification du suivi obligatoire pour le service Greeter
+if (form.greeter === "oui") {
+  if (form.departIsAirport || form.arriveeIsAirport) {
+    if (!form.numeroVol.trim()) {
+      setFormError("⚠️ Merci de renseigner le numéro de vol pour le service Greeter.");
+
+document.getElementById("numeroVol")?.scrollIntoView({
+  behavior: "smooth",
+  block: "center",
+});
+
+document.getElementById("numeroVol")?.focus();
+
+return;
+    }
+
+    if (
+      form.greeterTripType === "aller-retour" &&
+      !form.numeroVolRetour.trim()
+    ) {
+      setFormError("⚠️ Merci de renseigner le numéro de vol retour pour le service Greeter.");
+      return;
+    }
+  }
+
+  if (form.departIsStation || form.arriveeIsStation) {
+    if (!form.numeroTrain.trim()) {
+      setFormError("⚠️ Merci de renseigner le numéro de train pour le service Greeter.");
+      return;
+    }
+
+    if (
+      form.greeterTripType === "aller-retour" &&
+      !form.numeroTrainRetour.trim()
+    ) {
+      setFormError("⚠️ Merci de renseigner le numéro de train retour pour le service Greeter.");
+      return;
+    }
+  }
+}
 
     if (form.tripType === "aller-retour") {
       if (!form.returnDate || !form.returnTime) {
@@ -1821,13 +1952,29 @@ setFormError("");
 
       // On conserve les informations déjà présentes dans l'état du formulaire
 
-      const reservationData = {
+      const prixTotalFinal =
+  prixTotalTTC > 0
+    ? `${prixTotalTTC} € TTC`
+    : form.prix;
+
+const reservationData = {
   ...formDataObject,
   ...form,
 
   name: formDataObject.nom,
   phone: formDataObject.telephone,
-  amount: formDataObject.prix,
+
+  // Montant final transmis à Stripe
+  prix: prixTotalFinal,
+  amount: prixTotalFinal,
+
+  // Détail des prestations pour le suivi de la réservation
+  prixVtcTTC: prixVtcTTC,
+  prixGreeterTTC: prixGreeterTTC,
+  booking_kind:
+    form.greeter === "oui"
+      ? "greeter_avec_vtc"
+      : "reservation_vtc",
 
   date: form.date,
   time: form.heure,
@@ -1946,9 +2093,54 @@ setFormError("");
 
   };
 
+
+  // ==========================================
+  // CALCUL DU TOTAL VTC + GREETER (TTC)
+  // ==========================================
+
+  const prixVtcTTC = Number(
+    String(form.prix || "")
+      .replace(",", ".")
+      .replace(/[^\d.]/g, "")
+  );
+
+  const nombrePassagers = Number(form.passagers || 0);
+
+  const prixGreeterUnitaire =
+    nombrePassagers >= 1 && nombrePassagers <= 4
+      ? 280
+      : nombrePassagers > 4
+        ? 280 + (nombrePassagers - 4) * 80
+        : 0;
+
+  const prixGreeterTTC =
+    form.greeter === "oui"
+      ? form.greeterTripType === "aller-retour"
+        ? Math.max(0, prixGreeterUnitaire * 2 - 20)
+        : prixGreeterUnitaire
+      : 0;
+
+  const prixTotalTTC =
+    Number.isFinite(prixVtcTTC) && prixVtcTTC > 0
+      ? prixVtcTTC + prixGreeterTTC
+      : 0;
+
+
   return (
 
-    <main className="min-h-screen bg-black text-white px-6 py-20">
+    
+<main
+  className="min-h-screen text-white px-6 py-20"
+  style={{
+    backgroundImage:
+     "linear-gradient(rgba(0,0,0,0.40), rgba(0,0,0,0.55)), url('/images/accueil-avion-mercedes.png')",
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundAttachment: "fixed",
+    backgroundRepeat: "no-repeat",
+  }}
+>
+
 
       <Script
 
@@ -1958,29 +2150,26 @@ setFormError("");
 
       />
 
-      <div className="max-w-3xl mx-auto bg-black/70 backdrop-blur-md p-8 rounded-2xl border border-amber-500/20 shadow-2xl shadow-amber-500/10">
-
-      <div className="flex justify-center mb-6">
-  <div className="w-72 h-32 bg-white p-1.5 overflow-hidden">
+<div className="max-w-6xl mx-auto bg-black/45 p-6 md:p-8 rounded-2xl border border-amber-500/20 shadow-2xl shadow-amber-500/10">
+      <section
+  className="relative isolate mb-10 flex min-h-[220px] flex-col items-center justify-center overflow-hidden rounded-2xl border border-amber-500/40 px-6 py-10 text-center shadow-xl shadow-amber-500/10"
+>
+  <div className="relative z-10 w-72 h-32 bg-white p-1.5 overflow-hidden">
     <img
       src="/logo.png"
       alt="SUD IDF Executive Transport"
       className="w-full h-full object-fill"
     />
   </div>
-</div>
 
-        <h1 className="text-4xl text-center mb-6">
+  <h1 className="relative z-10 mt-5 text-3xl font-semibold text-white drop-shadow-lg sm:text-4xl">
+    Réserver votre chauffeur
+  </h1>
 
-          Réserver votre chauffeur
-
-        </h1>
-
-        <p className="text-center text-gray-400 mb-12">
-
-          Remplissez le formulaire, nous vous répondrons rapidement
-
-        </p>
+  <p className="relative z-10 mt-3 max-w-xl text-sm text-gray-100 drop-shadow-md sm:text-base">
+    Remplissez le formulaire, nous vous répondrons rapidement
+  </p>
+</section>
 
         <form
 
@@ -2033,6 +2222,9 @@ setFormError("");
 
           <input type="hidden" name="tarification" value={form.tarification} />
 
+          <section className="space-y-4 rounded-2xl border border-amber-500/20 bg-neutral-950/60 p-5">
+            <h2 className="text-lg font-semibold text-amber-400">Vos coordonnées</h2>
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <input
 
             name="nom"
@@ -2083,6 +2275,13 @@ setFormError("");
 
           />
 
+            </div>
+          </section>
+
+          <div className="grid grid-cols-1 items-start gap-6 lg:grid-cols-2">
+            <section className="space-y-4 rounded-2xl border border-amber-500/20 bg-neutral-950/60 p-5">
+              <h2 className="text-lg font-semibold text-amber-400">Votre prestation</h2>
+              <div className="space-y-4">
           <select
 
             name="vehicule"
@@ -2195,11 +2394,13 @@ setFormError("");
 
           >
 
-            <option value="">Type de transport</option>
+            <option value="">Type de service</option>
 
-            <option>Transport standard</option>
+            <option value="Transport standard">Transfert standard / Transfert ville</option>
 
             <option>Transfert aéroport</option>
+
+            <option>Transfert gare</option>
 
             <option>Mise à disposition</option>
 
@@ -2209,9 +2410,143 @@ setFormError("");
 
             <option>Longue distance</option>
 
-            <option>Séminaire</option>
+            <option value="Séminaire">Séminaire / Conférence / Congrès / Événement</option>
 
           </select>
+          
+          
+          {/* OPTION SERVICE GREETER */}
+          <div className="rounded-xl border border-amber-500/30 bg-neutral-900 p-4 space-y-3">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <p className="font-semibold text-amber-400">
+                Service Greeter
+              </p>
+              <a
+                href="/service-greeter"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-amber-400 underline hover:text-amber-300"
+              >
+                Découvrir le service Greeter →
+              </a>
+            </div>
+
+            <p className="text-sm text-gray-300">
+              Souhaitez-vous bénéficier d'un accueil personnalisé à votre arrivée ?
+            </p>
+
+            <div className="flex flex-wrap gap-6 text-white">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="greeter"
+                  value="non"
+                  checked={form.greeter === "non"}
+                  onChange={handleChange}
+                />
+                Non
+              </label>
+
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="radio"
+                  name="greeter"
+                  value="oui"
+                  checked={form.greeter === "oui"}
+                  onChange={handleChange}
+                />
+                Oui
+              </label>
+            </div>
+
+                        {form.greeter === "oui" && (
+              <div className="space-y-3 border-t border-amber-500/20 pt-3">
+                <p className="text-sm font-semibold text-amber-400">
+                  Type de prestation Greeter
+                </p>
+                <div className="flex flex-wrap gap-6 text-white">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="greeterTripType"
+                      value="simple"
+                      checked={form.greeterTripType === "simple"}
+                      onChange={handleChange}
+                    />
+                    Aller simple
+                  </label>
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      name="greeterTripType"
+                      value="aller-retour"
+                      checked={form.greeterTripType === "aller-retour"}
+                      onChange={handleChange}
+                    />
+                    Aller-retour
+                  </label>
+                </div>
+              </div>
+            )}
+
+          </div>
+
+          {(form.departIsAirport || form.arriveeIsAirport) && (
+            <div className="space-y-3 rounded-xl border border-amber-500/20 bg-neutral-900 p-4">
+              <p className="font-semibold text-amber-400">Suivi du vol</p>
+              <input
+  name="numeroVol"
+  id="numeroVol"
+  value={form.numeroVol}
+  onChange={handleChange}
+  placeholder="Numéro de vol aller"
+  className={`w-full p-3 bg-neutral-950 rounded-xl border ${
+    formError?.includes("numéro de vol")
+      ? "border-red-500"
+      : "border-amber-500/20"
+  }`}
+/>
+
+{formError?.includes("numéro de vol") && (
+  <p className="mt-2 text-sm text-red-400">
+    ⚠️ Merci de renseigner le numéro de vol pour le service Greeter.
+  </p>
+)}
+             {(form.tripType === "aller-retour" ||
+  (form.greeter === "oui" && form.greeterTripType === "aller-retour")) && (
+                <input
+                  name="numeroVolRetour"
+                  value={form.numeroVolRetour}
+                  onChange={handleChange}
+                  placeholder="Numéro de vol retour"
+                  className="w-full p-3 bg-neutral-950 rounded-xl border border-amber-500/20"
+                />
+              )}
+            </div>
+          )}
+
+          {(form.departIsStation || form.arriveeIsStation) && (
+            <div className="space-y-3 rounded-xl border border-amber-500/20 bg-neutral-900 p-4">
+              <p className="font-semibold text-amber-400">Suivi du train</p>
+              <input
+                name="numeroTrain"
+                value={form.numeroTrain}
+                onChange={handleChange}
+                placeholder="Numéro de train aller"
+                className="w-full p-3 bg-neutral-950 rounded-xl border border-amber-500/20"
+              />
+              {(form.tripType === "aller-retour" ||
+  (form.greeter === "oui" && form.greeterTripType === "aller-retour")) && (
+                <input
+                  name="numeroTrainRetour"
+                  value={form.numeroTrainRetour}
+                  onChange={handleChange}
+                  placeholder="Numéro de train retour"
+                  className="w-full p-3 bg-neutral-950 rounded-xl border border-amber-500/20"
+                />
+              )}
+            </div>
+          )}
 
           {form.service === "Mise à disposition" && (
 
@@ -2256,14 +2591,20 @@ setFormError("");
 
             >
 
-              <option value="4">Séminaire : 4 heures / 100 km — 350 € TTC</option>
+              <option value="4">Séminaire : 4 heures / 100 km</option>
 
-              <option value="8">Séminaire : 8 heures / 200 km — 680 € TTC</option>
+              <option value="8">Séminaire : 8 heures / 200 km</option>
 
             </select>
 
           )}
 
+              </div>
+            </section>
+
+            <section className="space-y-4 rounded-2xl border border-amber-500/20 bg-neutral-950/60 p-5">
+              <h2 className="text-lg font-semibold text-amber-400">Votre trajet</h2>
+              <div className="space-y-4">
           {!["Mise à disposition", "Mariage", "VIP", "Longue distance", "Séminaire"].includes(form.service) && (
 
             <>
@@ -2452,7 +2793,8 @@ setFormError("");
                 Aller-retour
               </label>
             </div>
-            {form.tripType === "aller-retour" && (
+            {(form.tripType === "aller-retour" ||
+  (form.greeter === "oui" && form.greeterTripType === "aller-retour")) && (
               <div className="space-y-2">
                 <p className="text-sm text-gray-300">Informations du retour</p>
                 <div className="flex gap-4">
@@ -2462,6 +2804,10 @@ setFormError("");
                 <p className="text-xs text-gray-400">La remise de 10 € TTC s’appliquera uniquement si l’aller-retour est sélectionné.</p>
               </div>
             )}
+          </div>
+
+              </div>
+            </section>
           </div>
 
           <textarea
@@ -2479,43 +2825,62 @@ setFormError("");
           />
 
           {(form.prix || form.tarification) && (
+  <div className="rounded-2xl border border-amber-500/30 bg-neutral-950 p-5">
 
-            <div className="rounded-2xl border border-amber-500/30 bg-neutral-950 p-5 text-center">
+    {form.tarification ? (
+      <>
+        <p className="text-gray-400 text-sm text-center">
+          Tarification
+        </p>
 
-              {form.tarification ? (
+        <p className="text-yellow-400 text-3xl font-bold mt-2 text-center">
+          {form.tarification}
+        </p>
+      </>
+    ) : (
+      <>
+        {form.greeter === "oui" && prixGreeterTTC > 0 ? (
+          <div className="space-y-3 mb-4">
 
-                <>
-
-                  <p className="text-gray-400 text-sm">Tarification</p>
-
-                  <p className="text-yellow-400 text-3xl font-bold mt-2">
-
-                    {form.tarification}
-
-                  </p>
-
-                </>
-
-              ) : (
-
-                <>
-
-                  <p className="text-gray-400 text-sm">Tarif</p>
-
-                  <p className="text-yellow-400 text-4xl font-bold mt-1">
-
-                    {form.prix}
-
-                  </p>
-
-                </>
-
-              )}
-
+            <div className="flex justify-between items-center gap-3">
+              <span className="text-gray-300">
+                Service de transport privé
+              </span>
+              <span className="text-white font-semibold">
+                {prixVtcTTC} € TTC
+              </span>
             </div>
 
-          )}
+            <div className="flex justify-between items-center gap-3">
+              <span className="text-gray-300">
+                Service Greeter
+              </span>
+              <span className="text-white font-semibold">
+                {prixGreeterTTC} € TTC
+              </span>
+            </div>
 
+            <div className="border-t border-amber-500/30 pt-3" />
+          </div>
+        ) : null}
+
+        <p className="text-gray-400 text-sm text-center">
+          {form.greeter === "oui"
+            ? "TOTAL VTC + GREETER"
+            : "Tarif"}
+        </p>
+
+        <p className="text-yellow-400 text-4xl font-bold mt-1 text-center">
+          {prixTotalTTC > 0
+            ? `${prixTotalTTC} € TTC`
+            : form.prix}
+        </p>
+
+      </>
+    )}
+
+  </div>
+)}
           <button
 
             type="submit"

@@ -87,112 +87,187 @@ function construireDetailsHtml(
   sessionId: string,
   pourClient: boolean = false
 ): string {
-  const champsConnus: Record<string, string> = {
-    name: "Nom",
-    email: "E-mail",
-    phone: "Téléphone",
-    service: "Service",
-    depart: "Départ",
-    arrivee: "Arrivée",
-    date: "Date",
-    time: "Heure",
-    vehicle: "Véhicule",
-    passengers: "Nombre de passagers",
-    bagages: "Bagages",
-  };
+  const estGreeter =
+  metadata.booking_kind === "greeter_autonome" ||
+  (
+    metadata.booking_kind !== "greeter_avec_vtc" &&
+    String(metadata.service || "").toLowerCase().includes("greeter")
+  );
 
-  const champsAffiches = new Set<string>();
+const estGreeterAvecVTC =
+  metadata.booking_kind === "greeter_avec_vtc";
+
+  const montant = escapeHtml(amountTotal);
+
+  const ligne = (label: string, value: unknown) => `
+    <tr>
+      <td style="padding:11px 13px;border:1px solid #ded6c3;background:#f7f5ef;color:#292929;font-weight:bold;width:42%;">
+        ${escapeHtml(label)}
+      </td>
+      <td style="padding:11px 13px;border:1px solid #ded6c3;color:#292929;">
+        ${escapeHtml(valeur(value))}
+      </td>
+    </tr>
+  `;
+
+  const section = (titre: string) => `
+    <tr>
+      <td colspan="2" style="padding:12px 14px;background:#171717;color:#d4af37;font-weight:bold;letter-spacing:0.5px;border:1px solid #171717;">
+        ${escapeHtml(titre)}
+      </td>
+    </tr>
+  `;
 
   let lignes = "";
 
-  for (const [cle, libelle] of Object.entries(champsConnus)) {
-    if (cle === "email") {
-      continue;
-    }
+  if (estGreeterAvecVTC) {
+  lignes += section("INFORMATIONS CLIENT");
+  lignes += ligne("Nom", metadata.name);
+  lignes += ligne("Téléphone", metadata.phone);
+  lignes += ligne("E-mail", metadata.email);
 
-    champsAffiches.add(cle);
+  lignes += section("PRESTATION VTC");
+  lignes += ligne("Service", metadata.service);
+  lignes += ligne("Départ", metadata.depart);
+  lignes += ligne("Arrivée", metadata.arrivee);
+  lignes += ligne("Date", metadata.date);
+  lignes += ligne("Heure", metadata.time);
+  lignes += ligne("Véhicule", metadata.vehicle);
+  lignes += ligne("Nombre de passagers", metadata.passengers);
+  lignes += ligne("Bagages", metadata.bagages);
+  lignes += ligne(
+    "Type de trajet VTC",
+    metadata.tripType === "aller-retour" ? "Aller-retour" : "Aller simple"
+  );
 
-    lignes += `
-      <tr>
-        <td style="padding:10px;border:1px solid #ddd;background:#f7f7f7;font-weight:bold;">
-          ${escapeHtml(libelle)}
-        </td>
-        <td style="padding:10px;border:1px solid #ddd;">
-          ${escapeHtml(valeur(metadata[cle]))}
-        </td>
-      </tr>
-    `;
+  if (metadata.tripType === "aller-retour") {
+    lignes += ligne("Date du retour", metadata.returnDate);
+    lignes += ligne("Heure du retour", metadata.returnTime);
   }
 
-  // Ajout des éventuels champs supplémentaires présents dans Stripe
-  for (const [cle, value] of Object.entries(metadata)) {
-    const cleNormalisee = cle.toLowerCase();
+  lignes += section("OPTION GREETER");
+  lignes += ligne("Service Greeter", "Oui");
+  lignes += ligne(
+    "Type de prestation Greeter",
+    metadata.greeterTripType === "aller-retour"
+      ? "Aller-retour"
+      : "Aller simple"
+  );
 
-    if (
-      pourClient &&
-      (
-        cleNormalisee.includes("distance") ||
-        cleNormalisee.includes("kilometre") ||
-        cleNormalisee.includes("kilomètre") ||
-        cleNormalisee.includes("tarif") ||
-        cleNormalisee.includes("montant") ||
-        cleNormalisee.includes("price") ||
-        cleNormalisee.includes("amount") ||
-        cleNormalisee === "km"
-      )
-    ) {
-      continue;
+  lignes += ligne("Numéro de vol aller", metadata.numeroVol);
+  lignes += ligne("Numéro de vol retour", metadata.numeroVolRetour);
+  lignes += ligne("Numéro de train aller", metadata.numeroTrain);
+  lignes += ligne("Numéro de train retour", metadata.numeroTrainRetour);
+
+} else if (estGreeter) {
+    lignes += section("INFORMATIONS CLIENT");
+    lignes += ligne("Nom", metadata.name);
+    lignes += ligne("Téléphone", metadata.phone);
+    lignes += ligne("E-mail", metadata.email);
+    lignes += ligne(
+      "Lieu de prestation",
+      metadata.greeter_location_type === "aeroport"
+        ? "Aéroport"
+        : metadata.greeter_location_type === "gare"
+          ? "Gare"
+          : metadata.greeter_location_type
+    );
+    lignes += ligne(
+      "Type de trajet",
+      metadata.tripType === "aller-retour" ? "Aller-retour" : "Aller simple"
+    );
+
+    lignes += section("TRAJET ALLER");
+    lignes += ligne("Nombre de passagers", metadata.passengers);
+    lignes += ligne("Bagages", metadata.baggageCount);
+    lignes += ligne("Lieu d'arrivée", metadata.arrivalLocation);
+
+    if (metadata.greeter_location_type === "aeroport") {
+      lignes += ligne("Terminal", metadata.arrivalTerminal);
     }
 
-    if (champsAffiches.has(cle)) {
-      continue;
+    lignes += ligne("Compagnie aérienne ou ferroviaire", metadata.arrivalCarrier);
+    lignes += ligne("Numéro de vol ou de train", metadata.arrivalNumber);
+    lignes += ligne("Date d'arrivée", metadata.arrivalDate);
+    lignes += ligne("Heure d'arrivée", metadata.arrivalTime);
+
+    if (metadata.tripType === "aller-retour") {
+      lignes += section("TRAJET RETOUR");
+      lignes += ligne("Nombre de passagers au retour", metadata.returnPassengers);
+      lignes += ligne("Bagages du retour", metadata.returnBaggageCount);
+      lignes += ligne("Lieu de départ du retour", metadata.returnDepartureLocation);
+      lignes += ligne("Compagnie du retour", metadata.returnCarrier);
+      lignes += ligne("Numéro du vol ou train retour", metadata.returnNumber);
+      lignes += ligne("Date du retour", metadata.returnDepartureDate);
+      lignes += ligne("Heure du retour", metadata.returnDepartureTime);
+    }
+  } else {
+    const champsConnus: Record<string, string> = {
+      name: "Nom",
+      phone: "Téléphone",
+      service: "Service",
+      depart: "Départ",
+      arrivee: "Arrivée",
+      date: "Date",
+      time: "Heure",
+      vehicle: "Véhicule",
+      passengers: "Nombre de passagers",
+      bagages: "Bagages",
+    };
+
+    for (const [cle, libelle] of Object.entries(champsConnus)) {
+      lignes += ligne(libelle, metadata[cle]);
     }
 
-    if (
-      cle === "amount" ||
-      cle === "amountTotal" ||
-      cle === "payment_status" ||
-      cle === "stripe_session"
-    ) {
-      continue;
-    }
+    const champsAffiches = new Set(Object.keys(champsConnus));
 
-    lignes += `
-      <tr>
-        <td style="padding:10px;border:1px solid #ddd;background:#f7f7f7;font-weight:bold;">
-          ${escapeHtml(cle)}
-        </td>
-        <td style="padding:10px;border:1px solid #ddd;">
-          ${escapeHtml(valeur(value))}
-        </td>
-      </tr>
-    `;
+    for (const [cle, value] of Object.entries(metadata)) {
+      const cleNormalisee = cle.toLowerCase();
+
+      if (
+        pourClient &&
+        (
+          cleNormalisee.includes("distance") ||
+          cleNormalisee.includes("kilometre") ||
+          cleNormalisee.includes("kilomètre") ||
+          cleNormalisee.includes("tarif") ||
+          cleNormalisee.includes("montant") ||
+          cleNormalisee.includes("price") ||
+          cleNormalisee.includes("amount") ||
+          cleNormalisee === "km"
+        )
+      ) {
+        continue;
+      }
+
+      if (
+        champsAffiches.has(cle) ||
+        ["booking_kind", "email", "amount", "amountTotal", "payment_status", "stripe_session"].includes(cle)
+      ) {
+        continue;
+      }
+
+      lignes += ligne(cle, value);
+    }
   }
+
+  lignes += section("RÉCAPITULATIF DU PAIEMENT");
+  lignes += ligne("Montant TTC", montant);
 
   lignes += `
     <tr>
-      <td style="padding:10px;border:1px solid #ddd;background:#f7f7f7;font-weight:bold;">
-        Montant TTC
-      </td>
-      <td style="padding:10px;border:1px solid #ddd;font-weight:bold;">
-        ${escapeHtml(amountTotal)}
-      </td>
-    </tr>
-
-    <tr>
-      <td style="padding:10px;border:1px solid #ddd;background:#f7f7f7;font-weight:bold;">
+      <td style="padding:11px 13px;border:1px solid #ded6c3;background:#f7f5ef;color:#292929;font-weight:bold;">
         Statut du paiement
       </td>
-      <td style="padding:10px;border:1px solid #ddd;color:#16803c;font-weight:bold;">
+      <td style="padding:11px 13px;border:1px solid #ded6c3;color:#16803c;font-weight:bold;">
         PAIEMENT CONFIRMÉ
       </td>
     </tr>
-
     <tr>
-      <td style="padding:10px;border:1px solid #ddd;background:#f7f7f7;font-weight:bold;">
-        Session Stripe
+      <td style="padding:11px 13px;border:1px solid #ded6c3;background:#f7f5ef;color:#292929;font-weight:bold;">
+        Référence Stripe
       </td>
-      <td style="padding:10px;border:1px solid #ddd;">
+      <td style="padding:11px 13px;border:1px solid #ded6c3;color:#292929;word-break:break-all;">
         ${escapeHtml(sessionId)}
       </td>
     </tr>
@@ -200,7 +275,7 @@ function construireDetailsHtml(
 
   return `
     <div style="font-family:Arial,Helvetica,sans-serif;color:#222;line-height:1.5;">
-      <h2 style="margin-bottom:8px;color:#111;">
+      <h2 style="margin-bottom:8px;color:#171717;">
         Réservation confirmée
       </h2>
 
@@ -415,23 +490,24 @@ let referenceReservation = reservationExistante?.reference || "";
               telephone: metadata.phone || null,
               service: metadata.service || null,
               vehicule: metadata.vehicle || null,
-              passagers: metadata.passengers || null,
-              bagages: metadata.bagages || null,
-              depart: metadata.depart || null,
-              arrivee: metadata.arrivee || null,
-              date_trajet: metadata.date || null,
-              heure_trajet: metadata.time || null,
+passagers: metadata.passengers || null,
+bagages: metadata.baggageCount || metadata.bagages || null,
+depart: metadata.depart || metadata.arrivalLocation || null,
+arrivee: metadata.arrivee || metadata.arrivalLocation || null,
+date_trajet: metadata.date || metadata.arrivalDate || null,
+heure_trajet: metadata.time || metadata.arrivalTime || null,
               montant_ttc:
                 typeof session.amount_total === "number"
                   ? session.amount_total / 100
                   : null,
-              details: {
-                ...metadata,
-                tripType: metadata.tripType || null,
-                returnDate: metadata.returnDate || null,
-                returnTime: metadata.returnTime || null,
-                stripe_session_id: session.id,
-              },
+             details: {
+  ...metadata,
+  booking_kind: metadata.booking_kind || "reservation_vtc",
+  tripType: metadata.tripType || null,
+  returnDate: metadata.returnDate || metadata.returnDepartureDate || null,
+  returnTime: metadata.returnTime || metadata.returnDepartureTime || null,
+  stripe_session_id: session.id,
+},
               jeton_acces_hash: hasherJeton(jetonAcces),
             })
             .select("id, reference")
@@ -572,8 +648,13 @@ const detailsHtmlClient = construireDetailsHtml(
       
       // 3. ALERTE E-MAIL PRIORITAIRE : prise en charge dans moins de 4 heures
 
-const dateReservation = String(metadata.date ?? "").trim();
-const heureReservation = String(metadata.time ?? "").trim();
+const dateReservation = String(
+  metadata.date || metadata.arrivalDate || ""
+).trim();
+
+const heureReservation = String(
+  metadata.time || metadata.arrivalTime || ""
+).trim();
 
 const dateHeureTrajet = new Date(
   `${dateReservation}T${heureReservation}:00+01:00`
@@ -606,9 +687,9 @@ const reservationPrioritaire =
                 <p>Un paiement Stripe vient d’être confirmé.</p>
                 <p><strong>Client :</strong> ${escapeHtml(nomClient)}</p>
                 <p><strong>Montant payé :</strong> ${escapeHtml(String(amountTotal))}</p>
-                <p><strong>Départ :</strong> ${escapeHtml(String(metadata.depart || "Non renseigné"))}</p>
-                <p><strong>Date :</strong> ${escapeHtml(String(metadata.date || "Non renseignée"))}</p>
-                <p><strong>Heure :</strong> ${escapeHtml(String(metadata.time || "Non renseignée"))}</p>
+                <p><strong>Lieu de prise en charge :</strong> ${escapeHtml(String(metadata.depart || metadata.arrivalLocation || "Non renseigné"))}</p>
+<p><strong>Date :</strong> ${escapeHtml(String(metadata.date || metadata.arrivalDate || "Non renseignée"))}</p>
+<p><strong>Heure :</strong> ${escapeHtml(String(metadata.time || metadata.arrivalTime || "Non renseignée"))}</p>
               </div>
             </div>
           `,

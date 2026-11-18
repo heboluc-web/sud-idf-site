@@ -523,6 +523,41 @@ export default function TransfertCDG() {
         </div>
       </section>
 
+    
+
+      <section aria-label="Découvrez nos autres solutions de transport" className="border-t border-amber-500/20 bg-zinc-950 px-6 py-16 md:py-20">
+        <div className="mx-auto max-w-6xl">
+          <p className="mb-4 text-center text-xs font-semibold uppercase tracking-[0.3em] text-amber-400">SUD IDF Executive Transport</p>
+          <h2 className="mx-auto mb-5 max-w-3xl text-center text-2xl font-semibold text-white md:text-3xl">Découvrez nos autres solutions de transport</h2>
+          <p className="mx-auto mb-9 max-w-3xl text-center text-sm leading-7 text-zinc-300 md:text-base">Pour vos déplacements depuis CDG, retrouvez également nos services et destinations en Île-de-France.</p>
+          <nav aria-label="Liens vers nos autres services" className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <a href="/chauffeur-aeroport-cdg" className="group rounded-xl border border-amber-500/30 bg-zinc-900/70 px-5 py-4 text-sm font-medium text-zinc-100 transition hover:border-amber-400 hover:bg-zinc-800">
+              <span className="flex items-center justify-between gap-3"><span>Chauffeur aéroport CDG</span><span className="text-amber-400 transition group-hover:translate-x-1">→</span></span>
+            </a>
+            <a href="/chauffeur-prive-cdg" className="group rounded-xl border border-amber-500/30 bg-zinc-900/70 px-5 py-4 text-sm font-medium text-zinc-100 transition hover:border-amber-400 hover:bg-zinc-800">
+              <span className="flex items-center justify-between gap-3"><span>Chauffeur privé à CDG</span><span className="text-amber-400 transition group-hover:translate-x-1">→</span></span>
+            </a>
+            <a href="/transfert-orly" className="group rounded-xl border border-amber-500/30 bg-zinc-900/70 px-5 py-4 text-sm font-medium text-zinc-100 transition hover:border-amber-400 hover:bg-zinc-800">
+              <span className="flex items-center justify-between gap-3"><span>Transfert Orly</span><span className="text-amber-400 transition group-hover:translate-x-1">→</span></span>
+            </a>
+            <a href="/chauffeur-prive-paris" className="group rounded-xl border border-amber-500/30 bg-zinc-900/70 px-5 py-4 text-sm font-medium text-zinc-100 transition hover:border-amber-400 hover:bg-zinc-800">
+              <span className="flex items-center justify-between gap-3"><span>Chauffeur privé à Paris</span><span className="text-amber-400 transition group-hover:translate-x-1">→</span></span>
+            </a>
+            <a href="/chauffeur-prive-essonne" className="group rounded-xl border border-amber-500/30 bg-zinc-900/70 px-5 py-4 text-sm font-medium text-zinc-100 transition hover:border-amber-400 hover:bg-zinc-800">
+              <span className="flex items-center justify-between gap-3"><span>Chauffeur privé en Essonne</span><span className="text-amber-400 transition group-hover:translate-x-1">→</span></span>
+            </a>
+            <a href="/chauffeur-business" className="group rounded-xl border border-amber-500/30 bg-zinc-900/70 px-5 py-4 text-sm font-medium text-zinc-100 transition hover:border-amber-400 hover:bg-zinc-800">
+              <span className="flex items-center justify-between gap-3"><span>Chauffeur business</span><span className="text-amber-400 transition group-hover:translate-x-1">→</span></span>
+            </a>
+            <a href="/chauffeur-prive-gare" className="group rounded-xl border border-amber-500/30 bg-zinc-900/70 px-5 py-4 text-sm font-medium text-zinc-100 transition hover:border-amber-400 hover:bg-zinc-800">
+              <span className="flex items-center justify-between gap-3"><span>Chauffeur privé depuis les gares</span><span className="text-amber-400 transition group-hover:translate-x-1">→</span></span>
+            </a>
+            <a href="/transport-vip" className="group rounded-xl border border-amber-500/30 bg-zinc-900/70 px-5 py-4 text-sm font-medium text-zinc-100 transition hover:border-amber-400 hover:bg-zinc-800">
+              <span className="flex items-center justify-between gap-3"><span>Transport VIP</span><span className="text-amber-400 transition group-hover:translate-x-1">→</span></span>
+            </a>
+          </nav>
+        </div>
+      </section>
     </main>
   );
 }

@@ -419,46 +419,64 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
     </p>
 
          
-<div className="grid md:grid-cols-3 gap-16">
+<div className="grid md:grid-cols-2 xl:grid-cols-4 gap-8 lg:gap-8">
 
-  <a
-    href="/transfert-orly"
-    className="block p-12 bg-black/70 backdrop-blur-xl rounded-3xl border border-amber-500/20 hover:-translate-y-4 hover:border-amber-400 hover:shadow-[0_0_60px_rgba(212,175,55,0.15)] transition-all duration-700 cursor-pointer"
-  >
-    <h3 className="text-xs mb-8 tracking-[0.4em] uppercase text-neutral-200 font-light">
-      Transferts Aéroports
-    </h3>
-    <p className="text-neutral-500 text-sm leading-relaxed font-light">
-      Navette avec accueil personnalisé, gestion des bagages,
-      suivi des vols et trains en temps réel.
-    </p>
+  {/* 1. GREETER */}
+  <a href="/service-greeter" className="group block overflow-hidden rounded-3xl border border-amber-500/25 bg-black text-left transition-all duration-500 hover:-translate-y-2 hover:border-amber-400 hover:shadow-[0_20px_60px_rgba(212,175,55,0.16)]">
+    <div className="relative h-64 overflow-hidden">
+      <img src="/images/greeter-accueil-aeroport.png" alt="Service GREETER - Accueil personnalisé des voyageurs" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+      <span className="absolute bottom-5 left-6 text-xs uppercase tracking-[0.3em] text-amber-300">Aéroports · Gares</span>
+    </div>
+    <div className="p-8">
+      <h3 className="mb-4 text-sm uppercase tracking-[0.3em] text-white">Service GREETER</h3>
+      <p className="text-sm leading-7 text-neutral-400">Accueil personnalisé, accompagnement des voyageurs et coordination avec votre chauffeur privé.</p>
+      <span className="mt-6 inline-flex gap-2 text-xs uppercase tracking-[0.2em] text-amber-400">Découvrir le service →</span>
+    </div>
   </a>
 
-  <a
-    href="/mise-a-disposition"
-    className="block p-12 bg-black/70 backdrop-blur-xl rounded-3xl border border-amber-500/20 hover:-translate-y-4 hover:border-amber-400 hover:shadow-[0_0_60px_rgba(212,175,55,0.15)] transition-all duration-700 cursor-pointer"
-  >
-    <h3 className="text-xs mb-8 tracking-[0.4em] uppercase text-neutral-200 font-light">
-      Mise à disposition
-    </h3>
-    <p className="text-neutral-500 text-sm leading-relaxed font-light">
-      Véhicule avec chauffeur dédié pour réunions,
-      séminaires, conférences et événements.
-    </p>
+  {/* 2. TRANSFERTS AÉROPORTS */}
+  <a href="/transfert-orly" className="group block overflow-hidden rounded-3xl border border-amber-500/25 bg-black text-left transition-all duration-500 hover:-translate-y-2 hover:border-amber-400 hover:shadow-[0_20px_60px_rgba(212,175,55,0.16)]">
+    <div className="relative h-64 overflow-hidden">
+      <img src="/images/accueil-avion-mercedes.png" alt="Mercedes avec chauffeur pour les transferts aéroports" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+      <span className="absolute bottom-5 left-6 text-xs uppercase tracking-[0.3em] text-amber-300">Orly · CDG · Gares</span>
+    </div>
+    <div className="p-8">
+      <h3 className="mb-4 text-sm uppercase tracking-[0.3em] text-white">Transferts aéroports</h3>
+      <p className="text-sm leading-7 text-neutral-400">Navette avec accueil personnalisé, gestion des bagages et suivi des vols et trains.</p>
+      <span className="mt-6 inline-flex gap-2 text-xs uppercase tracking-[0.2em] text-amber-400">Découvrir le service →</span>
+    </div>
   </a>
 
-  <a
-    href="/chauffeur-business"
-    className="block p-12 bg-black/70 backdrop-blur-xl rounded-3xl border border-amber-500/20 hover:-translate-y-4 hover:border-amber-400 hover:shadow-[0_0_60px_rgba(212,175,55,0.15)] transition-all duration-700 cursor-pointer"
-  >
-    <h3 className="text-xs mb-8 tracking-[0.4em] uppercase text-neutral-200 font-light">
-      Transport Business
-    </h3>
-    <p className="text-neutral-500 text-sm leading-relaxed font-light">
-      Image premium, ponctualité, sécurité, confort,
-      discrétion et confidentialité totale.
-    </p>
+  {/* 3. MISE À DISPOSITION */}
+  <a href="/mise-a-disposition" className="group block overflow-hidden rounded-3xl border border-amber-500/25 bg-black text-left transition-all duration-500 hover:-translate-y-2 hover:border-amber-400 hover:shadow-[0_20px_60px_rgba(212,175,55,0.16)]">
+    <div className="relative h-64 overflow-hidden">
+      <img src="/images/mise-a-disposition-hero.png" alt="Véhicule premium avec chauffeur en mise à disposition" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+      <span className="absolute bottom-5 left-6 text-xs uppercase tracking-[0.3em] text-amber-300">À l’heure · À la journée</span>
+    </div>
+    <div className="p-8">
+      <h3 className="mb-4 text-sm uppercase tracking-[0.3em] text-white">Mise à disposition</h3>
+      <p className="text-sm leading-7 text-neutral-400">Un chauffeur dédié pour vos réunions, séminaires, rendez-vous et événements.</p>
+      <span className="mt-6 inline-flex gap-2 text-xs uppercase tracking-[0.2em] text-amber-400">Découvrir le service →</span>
+    </div>
   </a>
+
+  {/* 4. TRANSPORT BUSINESS */}
+  <a href="/chauffeur-business" className="group block overflow-hidden rounded-3xl border border-amber-500/25 bg-black text-left transition-all duration-500 hover:-translate-y-2 hover:border-amber-400 hover:shadow-[0_20px_60px_rgba(212,175,55,0.16)]">
+    <div className="relative h-64 overflow-hidden">
+      <img src="/images/corbeil-essonnes-business.png" alt="Transport business avec véhicule haut de gamme" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/10 to-transparent" />
+      <span className="absolute bottom-5 left-6 text-xs uppercase tracking-[0.3em] text-amber-300">Entreprises · Dirigeants</span>
+    </div>
+    <div className="p-8">
+      <h3 className="mb-4 text-sm uppercase tracking-[0.3em] text-white">Transport business</h3>
+      <p className="text-sm leading-7 text-neutral-400">Une prestation exécutive alliant ponctualité, confort, discrétion et confidentialité.</p>
+      <span className="mt-6 inline-flex gap-2 text-xs uppercase tracking-[0.2em] text-amber-400">Découvrir le service →</span>
+    </div>
+  </a>
+
 </div>
         </div>
       </section>
@@ -471,208 +489,388 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
       Nos services de chauffeur privé
     </h2>
 
-    <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+    <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-7">
 
       <a
-        href="/chauffeur-prive"
-        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
-      >
+        href="/chauffeur-prive-essonne"
+        className="group block overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 hover:border-amber-400 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(212,175,55,0.12)] transition-all duration-500"
+      ><div className="relative h-48 md:h-52 overflow-hidden">
+          <img
+            src="/images/corbeil-essonnes-hero-premium.png"
+            alt="Chauffeur privé premium en Essonne"
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+        </div>
+        <div className="p-6">
         <h3 className="text-xl text-amber-400 mb-3">Chauffeur privé</h3>
         <p className="text-gray-400">
           Service premium en Île-de-France pour particuliers et professionnels.
         </p>
+        </div>
       </a>
 
       <a
         href="/chauffeur-prive-paris"
-        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
-      >
+        className="group block overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 hover:border-amber-400 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(212,175,55,0.12)] transition-all duration-500"
+      ><div className="relative h-48 md:h-52 overflow-hidden">
+          <img
+            src="/images/paris-seine-hero.png"
+            alt="Chauffeur privé à Paris"
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+        </div>
+        <div className="p-6">
         <h3 className="text-xl text-amber-400 mb-3">Chauffeur privé Paris</h3>
         <p className="text-gray-400">
           Service premium à Paris et en Île-de-France.
         </p>
+        </div>
       </a>
 
       <a
         href="/chauffeur-prive-orly"
-        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
-      >
+        className="group block overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 hover:border-amber-400 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(212,175,55,0.12)] transition-all duration-500"
+      ><div className="relative h-48 md:h-52 overflow-hidden">
+          <img
+            src="/images/accueil-avion-mercedes.png"
+            alt="Transfert chauffeur privé à l’aéroport d’Orly"
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+        </div>
+        <div className="p-6">
         <h3 className="text-xl text-amber-400 mb-3">Chauffeur privé Orly</h3>
         <p className="text-gray-400">
           Transport premium vers l’aéroport d’Orly.
         </p>
+        </div>
       </a>
 
       <a
         href="/chauffeur-prive-cdg"
-        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
-      >
+        className="group block overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 hover:border-amber-400 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(212,175,55,0.12)] transition-all duration-500"
+      ><div className="relative h-48 md:h-52 overflow-hidden">
+          <img
+            src="/images/cdg-hero-premium.png"
+            alt="Transfert chauffeur privé à Roissy CDG"
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+        </div>
+        <div className="p-6">
         <h3 className="text-xl text-amber-400 mb-3">Chauffeur privé CDG</h3>
         <p className="text-gray-400">
           Chauffeur haut de gamme vers Roissy CDG.
         </p>
+        </div>
       </a>
 
       <a
         href="/chauffeur-aeroport-beauvais"
-        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
-      >
+        className="group block overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 hover:border-amber-400 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(212,175,55,0.12)] transition-all duration-500"
+      ><div className="relative h-48 md:h-52 overflow-hidden">
+          <img
+            src="/images/beauvais-hero.png"
+            alt="Chauffeur privé à l’aéroport de Beauvais"
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+        </div>
+        <div className="p-6">
         <h3 className="text-xl text-amber-400 mb-3">
           Chauffeur VTC Beauvais
         </h3>
         <p className="text-gray-400">
           Transfert privé vers et depuis l’aéroport de Beauvais BVA.
         </p>
+        </div>
       </a>
 
       <a
         href="/transport-vip"
-        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
-      >
+        className="group block overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 hover:border-amber-400 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(212,175,55,0.12)] transition-all duration-500"
+      ><div className="relative h-48 md:h-52 overflow-hidden">
+          <img
+            src="/images/place-vendome-flotte-sud-idf.png"
+            alt="Transport VIP et flotte haut de gamme"
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+        </div>
+        <div className="p-6">
         <h3 className="text-xl text-amber-400 mb-3">Transport VIP</h3>
         <p className="text-gray-400">
           Déplacements exécutifs et clientèle premium.
         </p>
+        </div>
       </a>
 
       <a
         href="/chauffeur-business"
-        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
-      >
+        className="group block overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 hover:border-amber-400 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(212,175,55,0.12)] transition-all duration-500"
+      ><div className="relative h-48 md:h-52 overflow-hidden">
+          <img
+            src="/images/corbeil-essonnes-business.png"
+            alt="Transport business avec chauffeur"
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+        </div>
+        <div className="p-6">
         <h3 className="text-xl text-amber-400 mb-3">Chauffeur business</h3>
         <p className="text-gray-400">
           Service professionnel pour entreprises.
         </p>
+        </div>
       </a>
 
       <a
         href="/chauffeur-vtc-disneyland-paris"
-        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
-      >
+        className="group block overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 hover:border-amber-400 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(212,175,55,0.12)] transition-all duration-500"
+      ><div className="relative h-48 md:h-52 overflow-hidden">
+          <img
+            src="/images/disneyland-paris-hero.png"
+            alt="Transfert chauffeur privé à Disneyland Paris"
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+        </div>
+        <div className="p-6">
         <h3 className="text-xl text-amber-400 mb-3">
           Chauffeur VTC Disneyland Paris
         </h3>
         <p className="text-gray-400">
           Transfert privé premium vers Disneyland Paris.
         </p>
+        </div>
       </a>
 
       <a
         href="/chauffeur-vtc-versailles"
-        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
-      >
+        className="group block overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 hover:border-amber-400 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(212,175,55,0.12)] transition-all duration-500"
+      ><div className="relative h-48 md:h-52 overflow-hidden">
+          <img
+            src="/images/vaux-le-vicomte-classe-v.png"
+            alt="Véhicule avec chauffeur devant un château en Île-de-France"
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+        </div>
+        <div className="p-6">
         <h3 className="text-xl text-amber-400 mb-3">
           Chauffeur VTC Versailles
         </h3>
         <p className="text-gray-400">
           Transfert privé premium vers Versailles.
         </p>
+        </div>
       </a>
 
       <a
         href="/chauffeur-vtc-parc-asterix"
-        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
-      >
+        className="group block overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 hover:border-amber-400 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(212,175,55,0.12)] transition-all duration-500"
+      ><div className="relative h-48 md:h-52 overflow-hidden">
+          <img
+            src="/images/parc-asterix-hero.png"
+            alt="Chauffeur privé pour le Parc Astérix"
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+        </div>
+        <div className="p-6">
         <h3 className="text-xl text-amber-400 mb-3">
           Chauffeur VTC Parc Astérix
         </h3>
         <p className="text-gray-400">
           Transport privé vers le Parc Astérix.
         </p>
+        </div>
       </a>
 
       <a
         href="/chauffeur-vtc-mariage"
-        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
-      >
+        className="group block overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 hover:border-amber-400 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(212,175,55,0.12)] transition-all duration-500"
+      ><div className="relative h-48 md:h-52 overflow-hidden">
+          <img
+            src="/images/mariage-range-rover-noir-fleurs.png"
+            alt="Range Rover décoré pour un mariage"
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+        </div>
+        <div className="p-6">
         <h3 className="text-xl text-amber-400 mb-3">
           Chauffeur VTC Mariage
         </h3>
         <p className="text-gray-400">
           Transport premium pour mariés, invités et événements.
         </p>
+        </div>
       </a>
 
       <a
         href="/voiture-mariage-chauffeur"
-        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
-      >
+        className="group block overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 hover:border-amber-400 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(212,175,55,0.12)] transition-all duration-500"
+      ><div className="relative h-48 md:h-52 overflow-hidden">
+          <img
+            src="/images/mariage-classe-v-fleurs.png"
+            alt="Mercedes Classe V décorée pour un mariage"
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+        </div>
+        <div className="p-6">
         <h3 className="text-xl text-amber-400 mb-3">
           Voiture de mariage
         </h3>
         <p className="text-gray-400">
           Voiture avec chauffeur pour votre mariage.
         </p>
+        </div>
       </a>
 
       <a
         href="/chauffeur-prive-mise-a-disposition"
-        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
-      >
+        className="group block overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 hover:border-amber-400 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(212,175,55,0.12)] transition-all duration-500"
+      ><div className="relative h-48 md:h-52 overflow-hidden">
+          <img
+            src="/images/mise-a-disposition-hero.png"
+            alt="Mise à disposition avec chauffeur privé"
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+        </div>
+        <div className="p-6">
         <h3 className="text-xl text-amber-400 mb-3">
           Mise à disposition
         </h3>
         <p className="text-gray-400">
           Chauffeur privé à l’heure pour vos déplacements et événements.
         </p>
+        </div>
       </a>
 
       <a
         href="/transport-longue-distance"
-        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
-      >
+        className="group block overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 hover:border-amber-400 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(212,175,55,0.12)] transition-all duration-500"
+      ><div className="relative h-48 md:h-52 overflow-hidden">
+          <img
+            src="/images/melun-bords-de-seine.png"
+            alt="Transport longue distance avec chauffeur"
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+        </div>
+        <div className="p-6">
         <h3 className="text-xl text-amber-400 mb-3">
           Transport longue distance
         </h3>
         <p className="text-gray-400">
           Transport privé avec chauffeur sur longue distance.
         </p>
+        </div>
       </a>
 
       <a
         href="/service-transport-personnes-chauffeur"
-        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
-      >
+        className="group block overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 hover:border-amber-400 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(212,175,55,0.12)] transition-all duration-500"
+      ><div className="relative h-48 md:h-52 overflow-hidden">
+          <img
+            src="/images/corbeil-essonnes-transfert-orly.png"
+            alt="Transport privé avec chauffeur"
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+        </div>
+        <div className="p-6">
         <h3 className="text-xl text-amber-400 mb-3">
           Service de transport de personnes
         </h3>
         <p className="text-gray-400">
           Service de transport de personnes avec chauffeur privé.
         </p>
+        </div>
       </a>
 
       <a
         href="/chauffeur-prive-gare"
-        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
-      >
+        className="group block overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 hover:border-amber-400 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(212,175,55,0.12)] transition-all duration-500"
+      ><div className="relative h-48 md:h-52 overflow-hidden">
+          <img
+            src="/images/gare-de-lyon-hero.png"
+            alt="Transfert avec chauffeur depuis une gare"
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+        </div>
+        <div className="p-6">
         <h3 className="text-xl text-amber-400 mb-3">
           Chauffeur privé gare
         </h3>
         <p className="text-gray-400">
           Transferts privés depuis et vers les gares.
         </p>
+        </div>
       </a>
 
       <a
         href="/chauffeur-prive-port"
-        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
-      >
+        className="group block overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 hover:border-amber-400 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(212,175,55,0.12)] transition-all duration-500"
+      ><div className="relative h-48 md:h-52 overflow-hidden">
+          <img
+            src="/images/port-croisiere-hero.png"
+            alt="Transfert chauffeur privé vers un port de croisière"
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+        </div>
+        <div className="p-6">
         <h3 className="text-xl text-amber-400 mb-3">
           Chauffeur privé port
         </h3>
         <p className="text-gray-400">
           Transport privé vers les ports et terminaux.
         </p>
+        </div>
       </a>
 
       <a
         href="/vtc-essonne"
-        className="border border-amber-500/20 rounded-2xl p-6 hover:border-amber-400 transition bg-neutral-950"
-      >
+        className="group block overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 hover:border-amber-400 hover:-translate-y-1 hover:shadow-[0_18px_50px_rgba(212,175,55,0.12)] transition-all duration-500"
+      ><div className="relative h-48 md:h-52 overflow-hidden">
+          <img
+            src="/images/seine-et-marne-hero.png"
+            alt="Chauffeur privé en Essonne et Île-de-France"
+            loading="lazy"
+            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+        </div>
+        <div className="p-6">
         <h3 className="text-xl text-amber-400 mb-3">VTC Essonne</h3>
         <p className="text-gray-400">
           Chauffeur privé premium en Essonne.
         </p>
+        </div>
       </a>
 
     </div>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Chauffeur VTC Parc Astérix | Transfert Privé Premium",
@@ -45,38 +46,24 @@ export default function ChauffeurVtcParcAsterix() {
         </div>
       </nav>
 
-      <section className="relative overflow-hidden border-b border-amber-500/20 px-6 py-28 md:py-36">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.12),transparent_55%)]" />
-
-        <div className="relative mx-auto max-w-5xl text-center">
-          <p className="mb-6 text-xs tracking-[0.5em] text-amber-400 uppercase">
-            Transport privé premium
-          </p>
-
-          <h1 className="text-4xl font-light tracking-[0.18em] text-white md:text-6xl">
-            Chauffeur VTC Parc Astérix
-          </h1>
-
-          <p className="mx-auto mt-8 max-w-3xl text-base leading-8 text-neutral-400 md:text-lg">
-            Profitez d’un transfert privé confortable et ponctuel vers le Parc
-            Astérix depuis Paris, les aéroports ou l’Île-de-France, avec un
-            chauffeur professionnel à votre service.
-          </p>
-
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a
-              href="/reservation"
-              className="rounded-full border border-amber-400 bg-amber-400 px-8 py-4 text-sm font-medium tracking-[0.18em] text-black transition hover:bg-transparent hover:text-amber-400"
-            >
-              RÉSERVER UN TRANSFERT
-            </a>
-
-            <a
-              href="/contact"
-              className="rounded-full border border-amber-500/40 px-8 py-4 text-sm tracking-[0.18em] text-amber-400 transition hover:border-amber-400"
-            >
-              NOUS CONTACTER
-            </a>
+      <section className="relative isolate min-h-[640px] overflow-hidden border-b border-amber-500/20 bg-black px-6 py-20 md:flex md:items-center md:py-24">
+        <div className="absolute inset-y-0 right-0 w-full md:w-[68%]">
+          <Image src="/images/parc-asterix-hero.png" alt="Véhicule avec chauffeur devant le Parc Astérix" fill priority sizes="(max-width: 768px) 100vw, 68vw" className="object-cover object-center" />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/65 to-transparent" />
+        <div className="relative z-10 mx-auto w-full max-w-7xl">
+          <div className="max-w-xl py-8 text-center md:text-left">
+            <p className="mb-6 text-xs font-medium uppercase tracking-[0.32em] text-amber-300 md:text-sm md:tracking-[0.38em]">Transport privé · Parc Astérix · Confort</p>
+            <h1 className="text-4xl font-light leading-[1.08] tracking-[0.02em] text-white sm:text-5xl md:text-6xl">
+              Chauffeur VTC<span className="block font-serif italic text-amber-400">Parc Astérix</span>
+            </h1>
+            <p className="mt-6 max-w-xl text-base leading-7 text-neutral-100 md:text-lg md:leading-8">
+              Profitez d’un transfert privé confortable et ponctuel vers le Parc Astérix depuis Paris, les aéroports ou l’Île-de-France, avec un chauffeur professionnel à votre service.
+            </p>
+            <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row md:items-start">
+              <a href="/reservation" className="inline-flex min-w-[220px] items-center justify-center rounded-full border border-amber-400 bg-gradient-to-b from-amber-300 to-amber-500 px-7 py-4 text-sm font-semibold tracking-[0.12em] text-black transition hover:from-amber-200 hover:to-amber-400">RÉSERVER UN TRANSFERT <span className="ml-3" aria-hidden="true">›</span></a>
+              <a href="/contact" className="inline-flex min-w-[200px] items-center justify-center rounded-full border border-amber-400 px-7 py-4 text-sm tracking-[0.12em] text-white transition hover:bg-amber-400 hover:text-black">NOUS CONTACTER <span className="ml-3" aria-hidden="true">›</span></a>
+            </div>
           </div>
         </div>
       </section>
@@ -98,40 +85,24 @@ export default function ChauffeurVtcParcAsterix() {
 
           <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {[
-              [
-                "Paris → Parc Astérix",
-                "Transfert privé direct depuis Paris et sa proche région, avec prise en charge à l’adresse de votre choix.",
-              ],
-              [
-                "Aéroports → Parc Astérix",
-                "Transfert depuis Roissy-CDG, Orly ou Beauvais vers le Parc Astérix, avec un trajet organisé selon votre arrivée.",
-              ],
-              [
-                "Gares → Parc Astérix",
-                "Prise en charge depuis les principales gares parisiennes et franciliennes pour rejoindre le parc confortablement.",
-              ],
-              [
-                "Familles et groupes",
-                "La Mercedes Classe V permet d’accueillir jusqu’à 6 passagers et leurs bagages dans un espace confortable.",
-              ],
-              [
-                "Journée sur place",
-                "Possibilité d’organiser une prestation avec mise à disposition pour accompagner votre programme de la journée.",
-              ],
-              [
-                "Service VIP",
-                "Un accompagnement discret et personnalisé pour les clients recherchant confort, ponctualité et sérénité.",
-              ],
-            ].map(([title, text]) => (
-              <div
-                key={title}
-                className="rounded-3xl border border-amber-500/20 bg-neutral-950 p-8 transition hover:-translate-y-1 hover:border-amber-400/50"
-              >
-                <h3 className="text-lg tracking-[0.12em] text-amber-400">
-                  {title}
-                </h3>
-                <p className="mt-5 text-sm leading-7 text-neutral-400">{text}</p>
-              </div>
+              { title: "Paris → Parc Astérix", text: "Transfert privé direct depuis Paris et sa proche région, avec prise en charge à l’adresse de votre choix.", image: "/images/parc-asterix-paris.png", alt: "Voiture avec chauffeur pour un transfert de Paris au Parc Astérix", href: "/reservation" },
+              { title: "Aéroports → Parc Astérix", text: "Transfert depuis Roissy-CDG, Orly ou Beauvais vers le Parc Astérix, avec un trajet organisé selon votre arrivée.", image: "/images/parc-asterix-aeroports.png", alt: "Accueil avec chauffeur à l’aéroport pour rejoindre le Parc Astérix", href: "/transfert-cdg" },
+              { title: "Gares → Parc Astérix", text: "Prise en charge depuis les principales gares parisiennes et franciliennes pour rejoindre le parc confortablement.", image: "/images/parc-asterix-gares.png", alt: "Véhicule de chauffeur privé devant une gare parisienne", href: "/reservation" },
+              { title: "Familles et groupes", text: "La Mercedes Classe V permet d’accueillir jusqu’à 6 passagers et leurs bagages dans un espace confortable.", image: "/images/parc-asterix-familles.png", alt: "Mercedes Classe V pour le transport des familles vers le Parc Astérix", href: "/reservation" },
+              { title: "Journée sur place", text: "Possibilité d’organiser une prestation avec mise à disposition pour accompagner votre programme de la journée.", image: "/images/parc-asterix-journee.png", alt: "Véhicule premium en attente pendant une journée au Parc Astérix", href: "/mise-a-disposition" },
+              { title: "Service VIP", text: "Un accompagnement discret et personnalisé pour les clients recherchant confort, ponctualité et sérénité.", image: "/images/parc-asterix-vip.png", alt: "Véhicule haut de gamme avec chauffeur pour un transfert VIP", href: "/reservation" },
+            ].map((card) => (
+              <a key={card.title} href={card.href} className="group block overflow-hidden rounded-3xl border border-amber-500/25 bg-neutral-950 transition duration-300 hover:-translate-y-1 hover:border-amber-400/70">
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <Image src={card.image} alt={card.alt} fill sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw" className="object-cover transition duration-700 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent" />
+                </div>
+                <div className="p-7">
+                  <h3 className="text-lg tracking-[0.12em] text-amber-400">{card.title}</h3>
+                  <p className="mt-4 text-sm leading-7 text-neutral-400">{card.text}</p>
+                  <span className="mt-5 inline-flex items-center text-xs font-semibold tracking-[0.16em] text-amber-300">EN SAVOIR PLUS <span className="ml-2 transition group-hover:translate-x-1">›</span></span>
+                </div>
+              </a>
             ))}
           </div>
         </div>
@@ -161,7 +132,11 @@ export default function ChauffeurVtcParcAsterix() {
             </p>
           </div>
 
-          <div className="rounded-3xl border border-amber-500/20 bg-black p-10">
+          <div className="relative isolate overflow-hidden rounded-3xl border border-amber-500/30 bg-black p-10 shadow-2xl">
+            <div className="absolute inset-0 -z-20">
+              <Image src="/images/parc-asterix-avantages.png" alt="Ambiance du Parc Astérix avec véhicule de chauffeur privé" fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-cover" />
+            </div>
+            <div className="absolute inset-0 -z-10 bg-black/65" />
             <h3 className="text-xl tracking-[0.14em] text-amber-400">
               Pourquoi choisir un chauffeur VTC ?
             </h3>

@@ -19,36 +19,42 @@ const services = [
     text: "Enchaînez vos rendez-vous à Paris et en Île-de-France avec un chauffeur dédié et un véhicule disponible selon votre agenda.",
     image: "/images/mise-a-disposition-reunions.png",
     alt: "Mercedes-Maybach noire devant un lieu de réunions professionnelles",
+    href: "/reservation",
   },
   {
     title: "Séminaires et conférences",
     text: "Organisation des déplacements des participants, transferts entre hôtels et lieux d’événements et accompagnement pendant la journée.",
     image: "/images/mise-a-disposition-congres.png",
     alt: "Mercedes Classe S devant un centre de conférences",
+    href: "/reservation",
   },
   {
     title: "Événements privés",
     text: "Un chauffeur à vos côtés pour vos soirées, réceptions, visites et événements nécessitant plusieurs déplacements.",
     image: "/images/mise-a-disposition-fashion-week.png",
     alt: "Mercedes Classe E lors d'un événement de mode à Paris",
+    href: "/reservation",
   },
   {
     title: "Déplacements VIP",
     text: "Un service discret et personnalisé pour les dirigeants, invités et clients recherchant confort et tranquillité.",
     image: "/images/mise-a-disposition-hero.png",
     alt: "Flotte de véhicules de prestige devant un hôtel parisien",
+    href: "/reservation",
   },
   {
     title: "Start-up et networking",
     text: "Accompagnez vos rendez-vous, rencontres professionnelles et événements de networking avec un chauffeur dédié.",
     image: "/images/mise-a-disposition-startup.png",
     alt: "Range Rover noir devant un lieu de networking professionnel",
+    href: "/reservation",
   },
   {
     title: "Transferts combinés",
     text: "Associez votre mise à disposition à des transferts depuis les aéroports, les gares ou d’autres destinations franciliennes.",
     image: "/images/mise-a-disposition-hero.png",
     alt: "Véhicules premium de la flotte SUD IDF Executive Transport",
+    href: "/reservation",
   },
 ];
 
@@ -206,9 +212,11 @@ export default function ChauffeurPriveMiseADisposition() {
 
           <div className="mt-16 grid gap-7 md:grid-cols-2 lg:grid-cols-3">
             {services.map((service) => (
-              <article
+              <a
                 key={service.title}
-                className="group overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 transition duration-300 hover:-translate-y-1 hover:border-amber-400/60"
+                href={service.href}
+                aria-label={`${service.title} — réserver un chauffeur`}
+                className="group block overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 transition duration-300 hover:-translate-y-1 hover:border-amber-400/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-400"
               >
                 <div className="relative aspect-[16/10] overflow-hidden">
                   <Image
@@ -229,8 +237,11 @@ export default function ChauffeurPriveMiseADisposition() {
                   <p className="mt-5 text-sm leading-7 text-neutral-400">
                     {service.text}
                   </p>
+                  <span className="mt-5 inline-block text-xs font-semibold uppercase tracking-[0.18em] text-amber-400 transition group-hover:text-amber-300">
+                    Réserver ce service →
+                  </span>
                 </div>
-              </article>
+              </a>
             ))}
           </div>
         </div>

@@ -42,3 +42,37 @@ next-env.d.ts
 
 .vercel
 .env*.local
+# Archives et sauvegardes locales
+*.zip
+*.bak
+*.old
+*.save
+*.backup
+*.ts.sauvegarde
+*.tsx.sauvegarde
+
+# Copies et dossiers de travail
+/app - Copie/
+/app (2)/
+/app-audit-actuel.zip
+/app-maillage-seo-corrige.zip
+/app-sauvegarde-14-11-2026.zip
+/app.zip
+/.zip
+
+# Fichiers de recherche et notes internes
+/calcul-tarifs.txt
+/recherche-tarifs-horaires.txt
+/suite-tarifs.txt
+/tatus
+/status
+# Toutes les sauvegardes locales
+*sauvegarde*
+# Archives et sauvegardes locales
+*.zip
+*.bak
+*tatus
+# Fichiers de sauvegarde du projet
+**/*sauvegarde*
+**/*backup*
+**/* - sauvegarde*

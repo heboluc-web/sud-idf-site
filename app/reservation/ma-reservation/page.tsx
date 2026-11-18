@@ -293,50 +293,104 @@ const heureActuelleLocale = new Date(
   return (
     <main className="min-h-screen bg-black px-4 py-10 text-white sm:py-14">
       <Script src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&loading=async&v=weekly`} strategy="afterInteractive" onLoad={() => setGooglePret(true)} />
-      <div className="mx-auto max-w-2xl overflow-hidden rounded-2xl border border-amber-500/60 bg-zinc-950 shadow-[0_0_35px_rgba(245,158,11,0.08)]">
-        <header className="border-b border-amber-500/30 px-5 py-8 text-center sm:px-8">
-          <img src="/logo.png" alt="SUD IDF Executive Transport" className="mx-auto mb-5 h-auto w-32 object-contain" />
-          <p className="text-xs font-semibold uppercase tracking-[0.25em] text-amber-400">SUD IDF Executive Transport</p>
-          <h1 className="mt-3 text-2xl font-bold sm:text-3xl">Gestion de votre réservation</h1>
-          <p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-zinc-300">Modifiez directement les informations de votre prestation ou procédez à son annulation.</p>
+      <div className="mx-auto max-w-6xl overflow-hidden rounded-2xl border border-amber-500/60 bg-zinc-950 shadow-[0_0_35px_rgba(245,158,11,0.08)]">
+        <header
+          className="relative isolate mb-2 flex min-h-[280px] flex-col items-center justify-center overflow-hidden rounded-2xl border border-amber-500/40 px-6 py-9 text-center shadow-xl shadow-amber-500/10"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(0,0,0,0.42), rgba(0,0,0,0.72)), url('/images/cdg-hero-premium.png')",
+            backgroundSize: "cover",
+            backgroundPosition: "center 58%",
+          }}
+        >
+          <div className="relative z-10 mb-5 h-32 w-72 max-w-full overflow-hidden bg-white p-1.5">
+            <img
+              src="/logo.png"
+              alt="SUD IDF Executive Transport"
+              className="h-full w-full object-fill"
+            />
+          </div>
+          <p className="relative z-10 text-xs font-semibold uppercase tracking-[0.25em] text-amber-300 drop-shadow">SUD IDF Executive Transport</p>
+          <h1 className="relative z-10 mt-3 text-2xl font-bold text-white drop-shadow-lg sm:text-3xl">Gestion de votre réservation</h1>
+          <p className="relative z-10 mx-auto mt-3 max-w-lg text-sm leading-6 text-zinc-100 drop-shadow">Modifiez directement les informations de votre prestation ou procédez à son annulation.</p>
         </header>
 
         <div className="space-y-7 p-5 sm:p-8">
-          <section className="space-y-2 rounded-xl border border-amber-500/30 bg-black p-4 sm:p-5">
-            <p className="mb-3 border-b border-amber-500/20 pb-3 text-sm font-semibold uppercase tracking-wider text-amber-400">VOTRE RÉSERVATION DU {reservation.created_at && !Number.isNaN(new Date(reservation.created_at).getTime()) ? (() => { const d = new Date(reservation.created_at); return `${new Intl.DateTimeFormat("fr-FR", { dateStyle: "short", timeZone: "Europe/Paris" }).format(d)} À ${new Intl.DateTimeFormat("fr-FR", { timeStyle: "short", timeZone: "Europe/Paris" }).format(d)}`; })() : "—"}</p>
-            <p><strong className="text-amber-300">Référence :</strong> {reservation.reference}</p>
-            <p><strong className="text-amber-300">Statut :</strong> {statutLisible}</p>
-            <p><strong className="text-amber-300">Paiement :</strong> {reservation.statut_paiement === "paye" ? "Paiement confirmé" : "Paiement non confirmé"}</p>
-            <p><strong className="text-amber-300">Montant TTC :</strong> {Number(reservation.montant_ttc || 0).toFixed(2)} €</p>
-            <p><strong className="text-amber-300">Départ :</strong> {reservation.depart || "Non renseigné"}</p>
-            <p><strong className="text-amber-300">Arrivée :</strong> {reservation.arrivee || "Non renseignée"}</p>
-            <p><strong className="text-amber-300">Passagers :</strong> {reservation.passagers ?? (reservation.details?.passagers as string | number | undefined) ?? "—"}</p>
-            <p><strong className="text-amber-300">Bagages :</strong> {reservation.bagages ?? (reservation.details?.bagages as string | number | undefined) ?? "—"}</p>
-            <p><strong className="text-amber-300">Date et heure de prise en charge :</strong>{" "}{reservation.date_trajet ? new Intl.DateTimeFormat("fr-FR", { dateStyle: "short", timeZone: "Europe/Paris" }).format(new Date(`${reservation.date_trajet}T12:00:00`)) : "—"} à {reservation.heure_trajet ? reservation.heure_trajet.slice(0, 5) : "—"}</p>
+          <section className="rounded-xl border border-amber-500/30 bg-black p-4 sm:p-5">
+            <p className="mb-4 border-b border-amber-500/20 pb-3 text-sm font-semibold uppercase tracking-wider text-amber-400">VOTRE RÉSERVATION DU {reservation.created_at && !Number.isNaN(new Date(reservation.created_at).getTime()) ? (() => { const d = new Date(reservation.created_at); return `${new Intl.DateTimeFormat("fr-FR", { dateStyle: "short", timeZone: "Europe/Paris" }).format(d)} À ${new Intl.DateTimeFormat("fr-FR", { timeStyle: "short", timeZone: "Europe/Paris" }).format(d)}`; })() : "—"}</p>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              <div className="min-w-0 rounded-lg border border-amber-500/20 bg-zinc-900/80 p-3">
+                <p className="text-xs font-semibold text-amber-300">Référence</p>
+                <p className="mt-1 break-all text-sm text-white">{reservation.reference}</p>
+              </div>
+              <div className="rounded-lg border border-amber-500/20 bg-zinc-900/80 p-3">
+                <p className="text-xs font-semibold text-amber-300">Statut</p>
+                <p className="mt-1 text-sm text-white">{statutLisible}</p>
+              </div>
+              <div className="rounded-lg border border-amber-500/20 bg-zinc-900/80 p-3">
+                <p className="text-xs font-semibold text-amber-300">Paiement</p>
+                <p className="mt-1 text-sm text-white">{reservation.statut_paiement === "paye" ? "Paiement confirmé" : "Paiement non confirmé"}</p>
+              </div>
+              <div className="rounded-lg border border-amber-500/20 bg-zinc-900/80 p-3">
+                <p className="text-xs font-semibold text-amber-300">Montant TTC</p>
+                <p className="mt-1 text-sm font-semibold text-white">{Number(reservation.montant_ttc || 0).toFixed(2)} €</p>
+              </div>
+              <div className="min-w-0 rounded-lg border border-amber-500/20 bg-zinc-900/80 p-3 xl:col-span-2">
+                <p className="text-xs font-semibold text-amber-300">Départ</p>
+                <p className="mt-1 break-words text-sm text-white">{reservation.depart || "Non renseigné"}</p>
+              </div>
+              <div className="min-w-0 rounded-lg border border-amber-500/20 bg-zinc-900/80 p-3 xl:col-span-2">
+                <p className="text-xs font-semibold text-amber-300">Arrivée</p>
+                <p className="mt-1 break-words text-sm text-white">{reservation.arrivee || "Non renseignée"}</p>
+              </div>
+              <div className="rounded-lg border border-amber-500/20 bg-zinc-900/80 p-3">
+                <p className="text-xs font-semibold text-amber-300">Passagers</p>
+                <p className="mt-1 text-sm text-white">{reservation.passagers ?? (reservation.details?.passagers as string | number | undefined) ?? "—"}</p>
+              </div>
+              <div className="rounded-lg border border-amber-500/20 bg-zinc-900/80 p-3">
+                <p className="text-xs font-semibold text-amber-300">Bagages</p>
+                <p className="mt-1 text-sm text-white">{reservation.bagages ?? (reservation.details?.bagages as string | number | undefined) ?? "—"}</p>
+              </div>
+              <div className="rounded-lg border border-amber-500/20 bg-zinc-900/80 p-3 xl:col-span-3">
+                <p className="text-xs font-semibold text-amber-300">Date et heure de prise en charge</p>
+                <p className="mt-1 text-sm text-white">{reservation.date_trajet ? new Intl.DateTimeFormat("fr-FR", { dateStyle: "short", timeZone: "Europe/Paris" }).format(new Date(`${reservation.date_trajet}T12:00:00`)) : "—"} à {reservation.heure_trajet ? reservation.heure_trajet.slice(0, 5) : "—"}</p>
+              </div>
+            </div>
           </section>
 
           {!reservationAnnulee && reservation.statut_paiement === "paye" && (
-            <form onSubmit={calculer} className="space-y-4">
+            <form onSubmit={calculer} className="space-y-4 lg:col-span-2">
               <h2 className="text-lg font-bold text-amber-300">Modifier ma réservation</h2>
               <p className="text-sm leading-6 text-zinc-400">Modifiez les champs ci-dessous. Le nouveau tarif sera recalculé avant validation. Seul un éventuel supplément sera à régler ; si le nouveau trajet est moins cher, le montant initial reste inchangé.</p>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <label className="block text-sm text-amber-200">Date du départ<input required type="date" value={date} onChange={(e) => setDate(e.target.value)} className={`${champ} mt-2`} /></label>
-                <label className="block text-sm text-amber-200">Heure du départ<input required type="time" value={heure} onChange={(e) => setHeure(e.target.value)} className={`${champ} mt-2`} /></label>
+
+              <div className="grid gap-6 lg:grid-cols-2">
+                <section className="space-y-4 rounded-xl border border-amber-500/30 bg-black p-4 sm:p-5">
+                  <h3 className="font-semibold text-amber-300">Votre prestation</h3>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <label className="block text-sm text-amber-200">Nombre de passagers<select required value={passagers} onChange={(e) => { const n = Number(e.target.value); setPassagers(String(n)); setBagages((ancien) => String(Math.min(Number(ancien || 0), maxBagagesPour(n, vehicule)))); }} className={`${champ} mt-2`}>{Array.from({ length: maxPassagersPour(vehicule) }, (_, i) => i + 1).map((n) => <option key={n} value={n}>{n} {n > 1 ? "passagers" : "passager"}</option>)}</select></label>
+                    <label className="block text-sm text-amber-200">Nombre de bagages<select required value={bagages} onChange={(e) => setBagages(e.target.value)} className={`${champ} mt-2`}>{Array.from({ length: maxBagagesPour(Number(passagers || 1), vehicule) + 1 }, (_, i) => i).map((n) => <option key={n} value={n}>{n} {n > 1 ? "bagages" : "bagage"}</option>)}</select></label>
+                  </div>
+                  <div className="grid gap-4">
+                    <label className="block text-sm text-amber-200">Type de service<select value={service} onChange={(e) => setService(e.target.value)} className={`${champ} mt-2`}><option value="Transport standard">Transfert standard / Transfert ville</option><option value="Transfert aéroport">Transfert aéroport</option><option value="Mise à disposition">Mise à disposition</option><option value="Séminaire">Séminaire / Conférence / Congrès / Événement</option></select></label>
+                    <label className="block text-sm text-amber-200">Véhicule<select value={vehicule} onChange={(e) => { const v = e.target.value; const p = Math.min(Number(passagers || 1), maxPassagersPour(v)); setVehicule(v); setPassagers(String(p)); setBagages((ancien) => String(Math.min(Number(ancien || 0), maxBagagesPour(p, v)))); }} className={`${champ} mt-2`}><option>Mercedes Classe E</option><option>Mercedes Classe V</option><option>Range Rover</option><option>Mercedes Classe S</option><option>Mercedes-Maybach Classe S</option></select></label>
+                  </div>
+                  {service === "Mise à disposition" && <label className="block text-sm text-amber-200">Durée (heures)<select value={dureeMiseADispo} onChange={(e) => setDureeMiseADispo(e.target.value)} className={`${champ} mt-2`}>{[3,4,5,6,7,8].map((n) => <option key={n} value={n}>{n} heures</option>)}</select></label>}
+                  {service === "Séminaire" && <label className="block text-sm text-amber-200">Durée<select value={dureeSeminaire} onChange={(e) => setDureeSeminaire(e.target.value)} className={`${champ} mt-2`}><option value="4">4 heures</option><option value="8">8 heures</option></select></label>}
+                  <label className="flex items-center gap-3 text-sm text-amber-200"><input type="checkbox" checked={tripType === "aller-retour"} onChange={(e) => setTripType(e.target.checked ? "aller-retour" : "simple")} className="h-4 w-4 accent-amber-400" /> Ajouter un trajet aller-retour</label>
+                </section>
+
+                <section className="space-y-4 rounded-xl border border-amber-500/30 bg-black p-4 sm:p-5">
+                  <h3 className="font-semibold text-amber-300">Votre trajet</h3>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <label className="block text-sm text-amber-200">Date du départ<input required type="date" value={date} onChange={(e) => setDate(e.target.value)} className={`${champ} mt-2`} /></label>
+                    <label className="block text-sm text-amber-200">Heure du départ<input required type="time" value={heure} onChange={(e) => setHeure(e.target.value)} className={`${champ} mt-2`} /></label>
+                  </div>
+                  <div className="relative space-y-1"><label className="block text-sm text-amber-200">Adresse complète de départ<input maxLength={300} placeholder="Numéro, rue, code postal, ville…" value={depart} onChange={(e) => { setDepart(e.target.value); setDepartValide(false); setCalcul(null); void rechercherAdresse(e.target.value, "depart"); }} required={service !== "Mise à disposition" && service !== "Séminaire"} autoComplete="off" className={`${champ} mt-2`} /><span className="mt-1 block text-xs leading-5 text-amber-300/80">Veuillez saisir une adresse précise ou sélectionner un lieu identifié dans les suggestions Google Maps.</span>{departSuggestions.length > 0 && <div className="absolute z-30 mt-1 max-h-56 w-full overflow-y-auto rounded-lg border border-amber-500/60 bg-zinc-950 shadow-xl">{departSuggestions.map((item, index) => <button type="button" key={index} onClick={() => void choisirAdresse(item, "depart")} className="block w-full border-b border-zinc-800 px-4 py-3 text-left text-sm text-white hover:bg-amber-500/15">{item.placePrediction.text?.toString()}</button>)}</div>}</label></div>
+                  <div className="relative space-y-1"><label className="block text-sm text-amber-200">Adresse complète d’arrivée<input maxLength={300} placeholder="Numéro, rue, code postal, ville…" value={arrivee} onChange={(e) => { setArrivee(e.target.value); setArriveeValide(false); setCalcul(null); void rechercherAdresse(e.target.value, "arrivee"); }} required={service !== "Mise à disposition" && service !== "Séminaire"} autoComplete="off" className={`${champ} mt-2`} /><span className="mt-1 block text-xs leading-5 text-amber-300/80">Veuillez saisir une adresse précise ou sélectionner un lieu identifié dans les suggestions Google Maps.</span>{arriveeSuggestions.length > 0 && <div className="absolute z-30 mt-1 max-h-56 w-full overflow-y-auto rounded-lg border border-amber-500/60 bg-zinc-950 shadow-xl">{arriveeSuggestions.map((item, index) => <button type="button" key={index} onClick={() => void choisirAdresse(item, "arrivee")} className="block w-full border-b border-zinc-800 px-4 py-3 text-left text-sm text-white hover:bg-amber-500/15">{item.placePrediction.text?.toString()}</button>)}</div>}</label></div>
+                  {tripType === "aller-retour" && <div className="grid gap-4 sm:grid-cols-2"><label className="block text-sm text-amber-200">Date du retour<input required type="date" min={date} value={returnDate} onChange={(e) => setReturnDate(e.target.value)} className={`${champ} mt-2`} /></label><label className="block text-sm text-amber-200">Heure du retour<input required type="time" value={returnTime} onChange={(e) => setReturnTime(e.target.value)} className={`${champ} mt-2`} /></label></div>}
+                </section>
               </div>
-              <div className="relative space-y-1"><label className="block text-sm text-amber-200">Adresse complète de départ<input maxLength={300} placeholder="Numéro, rue, code postal, ville…" value={depart} onChange={(e) => { setDepart(e.target.value); setDepartValide(false); setCalcul(null); void rechercherAdresse(e.target.value, "depart"); }} required={service !== "Mise à disposition" && service !== "Séminaire"} autoComplete="off" className={`${champ} mt-2`} /><span className="mt-1 block text-xs leading-5 text-amber-300/80">Veuillez saisir une adresse précise ou sélectionner un lieu identifié dans les suggestions Google Maps.</span>{departSuggestions.length > 0 && <div className="absolute z-30 mt-1 max-h-56 w-full overflow-y-auto rounded-lg border border-amber-500/60 bg-zinc-950 shadow-xl">{departSuggestions.map((item, index) => <button type="button" key={index} onClick={() => void choisirAdresse(item, "depart")} className="block w-full border-b border-zinc-800 px-4 py-3 text-left text-sm text-white hover:bg-amber-500/15">{item.placePrediction.text?.toString()}</button>)}</div>}</label></div>
-              <div className="relative space-y-1"><label className="block text-sm text-amber-200">Adresse complète d’arrivée<input maxLength={300} placeholder="Numéro, rue, code postal, ville…" value={arrivee} onChange={(e) => { setArrivee(e.target.value); setArriveeValide(false); setCalcul(null); void rechercherAdresse(e.target.value, "arrivee"); }} required={service !== "Mise à disposition" && service !== "Séminaire"} autoComplete="off" className={`${champ} mt-2`} /><span className="mt-1 block text-xs leading-5 text-amber-300/80">Veuillez saisir une adresse précise ou sélectionner un lieu identifié dans les suggestions Google Maps.</span>{arriveeSuggestions.length > 0 && <div className="absolute z-30 mt-1 max-h-56 w-full overflow-y-auto rounded-lg border border-amber-500/60 bg-zinc-950 shadow-xl">{arriveeSuggestions.map((item, index) => <button type="button" key={index} onClick={() => void choisirAdresse(item, "arrivee")} className="block w-full border-b border-zinc-800 px-4 py-3 text-left text-sm text-white hover:bg-amber-500/15">{item.placePrediction.text?.toString()}</button>)}</div>}</label></div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <label className="block text-sm text-amber-200">Nombre de passagers<select required value={passagers} onChange={(e) => { const n = Number(e.target.value); setPassagers(String(n)); setBagages((ancien) => String(Math.min(Number(ancien || 0), maxBagagesPour(n, vehicule)))); }} className={`${champ} mt-2`}>{Array.from({ length: maxPassagersPour(vehicule) }, (_, i) => i + 1).map((n) => <option key={n} value={n}>{n} {n > 1 ? "passagers" : "passager"}</option>)}</select></label>
-                <label className="block text-sm text-amber-200">Nombre de bagages<select required value={bagages} onChange={(e) => setBagages(e.target.value)} className={`${champ} mt-2`}>{Array.from({ length: maxBagagesPour(Number(passagers || 1), vehicule) + 1 }, (_, i) => i).map((n) => <option key={n} value={n}>{n} {n > 1 ? "bagages" : "bagage"}</option>)}</select></label>
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <label className="block text-sm text-amber-200">Type de prestation<select value={service} onChange={(e) => setService(e.target.value)} className={`${champ} mt-2`}><option>Transport standard</option><option>Transfert aéroport</option><option>Mise à disposition</option><option>Séminaire</option></select></label>
-                <label className="block text-sm text-amber-200">Véhicule<select value={vehicule} onChange={(e) => { const v = e.target.value; const p = Math.min(Number(passagers || 1), maxPassagersPour(v)); setVehicule(v); setPassagers(String(p)); setBagages((ancien) => String(Math.min(Number(ancien || 0), maxBagagesPour(p, v)))); }} className={`${champ} mt-2`}><option>Mercedes Classe E</option><option>Mercedes Classe V</option><option>Range Rover</option><option>Mercedes Classe S</option><option>Mercedes-Maybach Classe S</option></select></label>
-              </div>
-              {service === "Mise à disposition" && <label className="block text-sm text-amber-200">Durée (heures)<select value={dureeMiseADispo} onChange={(e) => setDureeMiseADispo(e.target.value)} className={`${champ} mt-2`}>{[3,4,5,6,7,8].map((n) => <option key={n} value={n}>{n} heures</option>)}</select></label>}
-              {service === "Séminaire" && <label className="block text-sm text-amber-200">Durée<select value={dureeSeminaire} onChange={(e) => setDureeSeminaire(e.target.value)} className={`${champ} mt-2`}><option value="4">4 heures</option><option value="8">8 heures</option></select></label>}
-              <label className="flex items-center gap-3 text-sm text-amber-200"><input type="checkbox" checked={tripType === "aller-retour"} onChange={(e) => setTripType(e.target.checked ? "aller-retour" : "simple")} className="h-4 w-4 accent-amber-400" /> Ajouter un trajet aller-retour</label>
-              {tripType === "aller-retour" && <div className="grid gap-4 sm:grid-cols-2"><label className="block text-sm text-amber-200">Date du retour<input required type="date" min={date} value={returnDate} onChange={(e) => setReturnDate(e.target.value)} className={`${champ} mt-2`} /></label><label className="block text-sm text-amber-200">Heure du retour<input required type="time" value={returnTime} onChange={(e) => setReturnTime(e.target.value)} className={`${champ} mt-2`} /></label></div>}
+
               <button type="submit" disabled={calculEnCours} className="w-full rounded-lg border border-amber-400 bg-amber-400 px-5 py-3.5 font-bold text-black transition hover:bg-amber-300 disabled:opacity-60">{calculEnCours ? "Calcul en cours..." : "Calculer le nouveau tarif"}</button>
             </form>
           )}

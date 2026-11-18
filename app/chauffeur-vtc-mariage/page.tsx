@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Chauffeur VTC Mariage | Voiture avec Chauffeur Premium",
@@ -45,38 +46,65 @@ export default function ChauffeurVtcMariage() {
         </div>
       </nav>
 
-      <section className="relative overflow-hidden border-b border-amber-500/20 px-6 py-28 md:py-36">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.12),transparent_55%)]" />
+      <section className="relative isolate min-h-[640px] overflow-hidden border-b border-amber-500/20 bg-black px-6 py-20 md:flex md:items-center md:py-24">
+        {/* Photo du Range Rover uniquement : le texte reste en HTML pour éviter toute double écriture. */}
+        <div className="absolute inset-y-0 right-0 w-full md:w-[68%]">
+          <Image
+            src="/images/mariage-range-rover-blanc-hero.png"
+            alt="Range Rover blanc décoré de fleurs pour un mariage devant un château"
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, 68vw"
+            className="object-cover object-center"
+          />
+        </div>
+        {/* Voile plus léger : le décor du château reste visible à gauche tout en gardant le texte lisible. */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-black/5 md:bg-transparent" />
 
-        <div className="relative mx-auto max-w-5xl text-center">
-          <p className="mb-6 text-xs tracking-[0.5em] text-amber-400 uppercase">
-            Mariage · Élégance · Sérénité
-          </p>
+        <div className="relative z-10 mx-auto w-full max-w-7xl">
+          <div className="max-w-xl py-8 text-center md:text-left">
+            <p className="mb-6 text-xs font-medium uppercase tracking-[0.32em] text-amber-300 md:text-sm md:tracking-[0.38em]">
+              Mariage · Élégance · Sérénité
+            </p>
 
-          <h1 className="text-4xl font-light tracking-[0.18em] text-white md:text-6xl">
-            Chauffeur VTC Mariage
-          </h1>
+            <h1 className="text-4xl font-light leading-[1.08] tracking-[0.02em] text-white sm:text-5xl md:text-6xl">
+              Chauffeur VTC
+              <span className="block font-serif italic text-amber-400">
+                Mariage
+              </span>
+            </h1>
 
-          <p className="mx-auto mt-8 max-w-3xl text-base leading-8 text-neutral-400 md:text-lg">
-            Une voiture avec chauffeur pour accompagner les mariés et leurs
-            invités avec élégance, ponctualité et discrétion à Paris et en
-            Île-de-France.
-          </p>
+            <div className="mt-6 flex items-center justify-center gap-3 text-amber-400 md:justify-start" aria-label="Alliances de mariage">
+              <span className="h-px w-16 bg-amber-400" />
+              <span className="relative inline-flex h-8 w-12 items-center justify-center" aria-hidden="true">
+                <span className="absolute left-1 h-6 w-6 rounded-full border-2 border-amber-400" />
+                <span className="absolute right-1 h-6 w-6 rounded-full border-2 border-amber-400" />
+              </span>
+              <span className="h-px w-16 bg-amber-400" />
+            </div>
 
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <a
-              href="/reservation"
-              className="rounded-full border border-amber-400 bg-amber-400 px-8 py-4 text-sm font-medium tracking-[0.18em] text-black transition hover:bg-transparent hover:text-amber-400"
-            >
-              DEMANDER UN DEVIS
-            </a>
+            <p className="mt-6 max-w-xl text-base leading-7 text-neutral-200 md:text-lg md:leading-8">
+              Une voiture avec chauffeur pour accompagner les mariés et leurs
+              invités avec élégance, ponctualité et discrétion à Paris et en
+              Île-de-France.
+            </p>
 
-            <a
-              href="/contact"
-              className="rounded-full border border-amber-500/40 px-8 py-4 text-sm tracking-[0.18em] text-amber-400 transition hover:border-amber-400"
-            >
-              NOUS CONTACTER
-            </a>
+            <div className="mt-8 flex flex-col items-center gap-4 sm:flex-row md:items-start">
+              <a
+                href="/reservation"
+                className="inline-flex min-w-[220px] items-center justify-center rounded-full border border-amber-400 bg-gradient-to-b from-amber-300 to-amber-500 px-7 py-4 text-sm font-semibold tracking-[0.12em] text-black transition hover:from-amber-200 hover:to-amber-400"
+              >
+                DEMANDER UN DEVIS <span className="ml-3" aria-hidden="true">›</span>
+              </a>
+
+              <a
+                href="/contact"
+                className="inline-flex min-w-[200px] items-center justify-center rounded-full border border-amber-400 px-7 py-4 text-sm tracking-[0.12em] text-white transition hover:bg-amber-400 hover:text-black"
+              >
+                NOUS CONTACTER <span className="ml-3" aria-hidden="true">›</span>
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -98,40 +126,149 @@ export default function ChauffeurVtcMariage() {
 
           <div className="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {[
-              [
-                "Voiture des mariés",
-                "Un véhicule premium avec chauffeur pour les trajets des mariés entre domicile, cérémonie, réception et hébergement.",
-              ],
-              [
-                "Transport des invités",
-                "Organisation de transferts pour vos invités entre hôtels, gares, cérémonies et lieux de réception.",
-              ],
-              [
-                "Cérémonie et réception",
-                "Une prestation pensée autour de votre planning afin de faciliter les déplacements tout au long de la journée.",
-              ],
-              [
-                "Mise à disposition",
-                "Possibilité de réserver un chauffeur dédié pendant plusieurs heures pour accompagner les différentes étapes de votre mariage.",
-              ],
-              [
-                "Transferts gares et aéroports",
-                "Prise en charge de vos proches arrivant à Paris ou en Île-de-France depuis les principales gares et aéroports.",
-              ],
-              [
-                "Service VIP",
-                "Un accompagnement discret et personnalisé pour les mariés, familles et invités recherchant confort et sérénité.",
-              ],
-            ].map(([title, text]) => (
-              <div
-                key={title}
-                className="rounded-3xl border border-amber-500/20 bg-neutral-950 p-8 transition hover:-translate-y-1 hover:border-amber-400/50"
+              {
+                title: "Voiture des mariés",
+                text: "Un véhicule premium avec chauffeur pour les trajets des mariés entre domicile, cérémonie, réception et hébergement.",
+                image: "/images/mariage-range-rover-blanc-hero.png",
+                alt: "Range Rover blanc décoré pour accompagner les mariés",
+                href: "/reservation",
+              },
+              {
+                title: "Transport des invités",
+                text: "Organisation de transferts pour vos invités entre hôtels, gares, cérémonies et lieux de réception.",
+                image: "/images/mariage-classe-v-fleurs.png",
+                alt: "Mercedes Classe V décorée pour le transport des invités",
+                href: "/reservation",
+              },
+              {
+                title: "Cérémonie et réception",
+                text: "Une prestation pensée autour de votre planning afin de faciliter les déplacements tout au long de la journée.",
+                image: "/images/vaux-le-vicomte-classe-v.png",
+                alt: "Véhicule avec chauffeur devant un château de réception",
+                href: "/reservation",
+              },
+              {
+                title: "Mise à disposition",
+                text: "Possibilité de réserver un chauffeur dédié pendant plusieurs heures pour accompagner les différentes étapes de votre mariage.",
+                image: "/images/mise-a-disposition-hero.png",
+                alt: "Service de chauffeur privé en mise à disposition",
+                href: "/mise-a-disposition",
+              },
+              {
+                title: "Transferts gares et aéroports",
+                text: "Prise en charge de vos proches arrivant à Paris ou en Île-de-France depuis les principales gares et aéroports.",
+                image: "/images/cdg-hero-premium.png",
+                alt: "Transfert aéroport avec chauffeur et véhicule premium",
+                href: "/reservation",
+              },
+              {
+                title: "Service VIP",
+                text: "Un accompagnement discret et personnalisé pour les mariés, familles et invités recherchant confort et sérénité.",
+                image: "/images/place-vendome-flotte-sud-idf.png",
+                alt: "Flotte de véhicules premium SUD IDF Executive Transport",
+                href: "/reservation",
+              },
+            ].map((service) => (
+              <a
+                key={service.title}
+                href={service.href}
+                aria-label={`${service.title} — en savoir plus et réserver`}
+                className="group block overflow-hidden rounded-3xl border border-amber-500/25 bg-neutral-950 transition duration-300 hover:-translate-y-1 hover:border-amber-400/70 hover:shadow-[0_18px_50px_rgba(245,158,11,0.12)] focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400"
               >
-                <h3 className="text-lg tracking-[0.12em] text-amber-400">
-                  {title}
-                </h3>
-                <p className="mt-5 text-sm leading-7 text-neutral-400">{text}</p>
-              </div>
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <Image
+                    src={service.image}
+                    alt={service.alt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-transparent to-transparent" />
+                </div>
+                <div className="p-7">
+                  <h3 className="text-lg tracking-[0.08em] text-amber-400 transition group-hover:text-amber-300">
+                    {service.title}
+                  </h3>
+                  <p className="mt-4 text-sm leading-7 text-neutral-400">
+                    {service.text}
+                  </p>
+                  <span className="mt-5 inline-flex items-center text-xs font-semibold tracking-[0.16em] text-amber-400">
+                    EN SAVOIR PLUS <span className="ml-2 transition group-hover:translate-x-1" aria-hidden="true">›</span>
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+
+      {/* GALERIE DES VEHICULES DE MARIAGE */}
+      <section className="border-b border-amber-500/20 bg-black px-6 py-24">
+        <div className="mx-auto max-w-7xl">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-xs uppercase tracking-[0.45em] text-amber-400">
+              Une arrivée qui vous ressemble
+            </p>
+            <h2 className="mt-5 text-3xl font-light tracking-[0.16em] text-white md:text-4xl">
+              Notre sélection de véhicules de mariage
+            </h2>
+            <p className="mt-7 text-base leading-8 text-neutral-400">
+              Des véhicules élégants décorés avec soin pour accompagner les mariés
+              et leurs proches lors de cette journée exceptionnelle.
+            </p>
+          </div>
+
+          <div className="mt-14 grid gap-7 sm:grid-cols-2 xl:grid-cols-4">
+            {[
+              {
+                name: "Mercedes-Benz Classe V",
+                description: "Espace et confort pour les mariés, la famille et les proches.",
+                image: "/images/mariage-classe-v-fleurs.png",
+                alt: "Mercedes Classe V noire décorée de fleurs blanches pour un mariage",
+              },
+              {
+                name: "Mercedes-Benz Classe S",
+                description: "Élégance et raffinement pour une arrivée tout en distinction.",
+                image: "/images/mariage-classe-s-fleurs.png",
+                alt: "Mercedes Classe S noire décorée de fleurs blanches pour un mariage",
+              },
+              {
+                name: "Range Rover Autobiography",
+                description: "Présence et prestige pour une journée inoubliable.",
+                image: "/images/mariage-range-rover-noir-fleurs.png",
+                alt: "Range Rover noir décoré de fleurs blanches pour un mariage",
+              },
+              {
+                name: "Mercedes-Maybach",
+                description: "Une expérience d’exception pour les moments les plus précieux.",
+                image: "/images/mariage-maybach-fleurs.png",
+                alt: "Mercedes-Maybach noire décorée de fleurs blanches pour un mariage",
+              },
+            ].map((vehicle) => (
+              <article
+                key={vehicle.name}
+                className="group overflow-hidden rounded-3xl border border-amber-500/25 bg-neutral-950 transition duration-300 hover:-translate-y-1 hover:border-amber-400/70"
+              >
+                <div className="relative aspect-[4/5] overflow-hidden">
+                  <Image
+                    src={vehicle.image}
+                    alt={vehicle.alt}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 25vw"
+                    className="object-cover transition duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/70 to-transparent" />
+                </div>
+                <div className="border-t border-amber-500/20 p-6">
+                  <h3 className="text-lg tracking-[0.08em] text-amber-400">
+                    {vehicle.name}
+                  </h3>
+                  <p className="mt-3 text-sm leading-7 text-neutral-400">
+                    {vehicle.description}
+                  </p>
+                </div>
+              </article>
             ))}
           </div>
         </div>
@@ -161,19 +298,29 @@ export default function ChauffeurVtcMariage() {
             </p>
           </div>
 
-          <div className="rounded-3xl border border-amber-500/20 bg-black p-10">
-            <h3 className="text-xl tracking-[0.14em] text-amber-400">
-              Les avantages
-            </h3>
+          <div className="relative isolate overflow-hidden rounded-3xl border border-amber-500/30 bg-black p-10 shadow-[0_18px_55px_rgba(0,0,0,0.35)]">
+            <Image
+              src="/images/vaux-le-vicomte-classe-v.png"
+              alt="Véhicule avec chauffeur dans un cadre de château pour un mariage"
+              fill
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              className="object-cover object-center"
+            />
+            <div className="absolute inset-0 -z-0 bg-black/75" />
+            <div className="relative z-10">
+              <h3 className="text-xl tracking-[0.14em] text-amber-400">
+                Les avantages
+              </h3>
 
-            <ul className="mt-7 space-y-5 text-sm leading-7 text-neutral-400">
-              <li>✓ Chauffeur professionnel et ponctuel</li>
-              <li>✓ Véhicule premium et confortable</li>
-              <li>✓ Prise en charge à l’adresse de votre choix</li>
-              <li>✓ Organisation selon votre planning</li>
-              <li>✓ Service discret et personnalisé</li>
-              <li>✓ Prestation pour mariés et invités</li>
-            </ul>
+              <ul className="mt-7 space-y-5 text-sm leading-7 text-white/90">
+                <li>✓ Chauffeur professionnel et ponctuel</li>
+                <li>✓ Véhicule premium et confortable</li>
+                <li>✓ Prise en charge à l’adresse de votre choix</li>
+                <li>✓ Organisation selon votre planning</li>
+                <li>✓ Service discret et personnalisé</li>
+                <li>✓ Prestation pour mariés et invités</li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>

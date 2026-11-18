@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "Chauffeur VTC Longue Distance | Transport Premium Île-de-France",
@@ -61,10 +62,19 @@ export default function TransportLongueDistance() {
         </div>
       </nav>
 
-      <section className="relative overflow-hidden border-b border-amber-500/20 px-6 py-28 md:py-36">
+      <section className="relative isolate flex min-h-[680px] items-center overflow-hidden border-b border-amber-500/20 px-6 py-28 md:py-36">
+        <Image
+          src="/images/transport-longue-distance-peage.png"
+          alt="Berline premium sur une autoroute à péage au coucher du soleil"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/55 to-black/20" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.12),transparent_55%)]" />
 
-        <div className="relative mx-auto max-w-5xl text-center">
+        <div className="relative mx-auto w-full max-w-5xl text-center">
           <p className="mb-6 text-xs tracking-[0.5em] text-amber-400 uppercase">
             Confort · Ponctualité · Sérénité
           </p>
@@ -73,7 +83,7 @@ export default function TransportLongueDistance() {
             Transport longue distance
           </h1>
 
-          <p className="mx-auto mt-8 max-w-3xl text-base leading-8 text-neutral-400 md:text-lg">
+          <p className="mx-auto mt-8 max-w-3xl text-base leading-8 text-neutral-200 md:text-lg">
             Un service de chauffeur VTC pour vos trajets longue distance depuis
             Paris et l’Île-de-France, avec un véhicule premium, un chauffeur
             professionnel et une organisation adaptée à votre déplacement.
@@ -89,7 +99,7 @@ export default function TransportLongueDistance() {
 
             <a
               href="/contact"
-              className="rounded-full border border-amber-500/40 px-8 py-4 text-sm tracking-[0.18em] text-amber-400 transition hover:border-amber-400"
+              className="rounded-full border border-amber-500/40 bg-black/25 px-8 py-4 text-sm tracking-[0.18em] text-amber-400 transition hover:border-amber-400"
             >
               NOUS CONTACTER
             </a>
@@ -124,37 +134,66 @@ export default function TransportLongueDistance() {
               [
                 "Trajets professionnels",
                 "Déplacez-vous entre Paris et une autre ville sans les contraintes de conduite, avec un service adapté aux rendez-vous, aux horaires professionnels et aux déplacements de dirigeants.",
+                "/images/corbeil-essonnes-business.png",
+                "Véhicule premium pour les déplacements professionnels",
               ],
               [
                 "Déplacements privés",
                 "Voyagez confortablement pour vos vacances, visites familiales, événements ou déplacements personnels longue distance.",
+                "/images/paris-seine-hero.png",
+                "Berline premium dans un décor parisien",
               ],
               [
                 "Transferts entre villes",
                 "Organisation de trajets directs entre l’Île-de-France et votre destination, selon vos horaires et les besoins de votre déplacement.",
+                "/images/accueil-avion-mercedes.png",
+                "Mercedes premium pour un trajet longue distance",
               ],
               [
                 "Aéroports et gares",
                 "Combinez votre trajet longue distance avec une prise en charge depuis ou vers les principaux aéroports et gares de Paris et d’Île-de-France.",
+                "/images/cdg-hero-premium.png",
+                "Transfert en véhicule premium à l'aéroport",
               ],
               [
                 "Voyages en famille",
                 "Un véhicule premium et confortable pour les déplacements de familles et de petits groupes, selon la capacité du véhicule choisi.",
+                "/images/corbeil-essonnes-transfert-orly.png",
+                "Véhicule confortable pour les déplacements en famille",
               ],
               [
                 "Service VIP",
                 "Une prestation discrète et personnalisée pour les clients recherchant confort, tranquillité, ponctualité et qualité de service.",
+                "/images/place-vendome-flotte-sud-idf.png",
+                "Flotte de véhicules de prestige à Paris",
               ],
-            ].map(([title, text]) => (
-              <div
+            ].map(([title, text, image, alt]) => (
+              <a
                 key={title}
-                className="rounded-3xl border border-amber-500/20 bg-neutral-950 p-8 transition hover:-translate-y-1 hover:border-amber-400/50"
+                href="/reservation"
+                aria-label={`${title} — demander un devis`}
+                className="group block overflow-hidden rounded-3xl border border-amber-500/20 bg-neutral-950 transition duration-300 hover:-translate-y-1 hover:border-amber-400/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-400"
               >
-                <h3 className="text-lg tracking-[0.12em] text-amber-400">
-                  {title}
-                </h3>
-                <p className="mt-5 text-sm leading-7 text-neutral-400">{text}</p>
-              </div>
+                <div className="relative aspect-[16/10] overflow-hidden">
+                  <Image
+                    src={image}
+                    alt={alt}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover transition duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/45 to-transparent" />
+                </div>
+                <div className="p-8">
+                  <h3 className="text-lg tracking-[0.12em] text-amber-400">
+                    {title}
+                  </h3>
+                  <p className="mt-5 text-sm leading-7 text-neutral-400">{text}</p>
+                  <span className="mt-6 inline-block text-xs font-semibold uppercase tracking-[0.18em] text-amber-400 transition group-hover:text-amber-300">
+                    Demander un devis →
+                  </span>
+                </div>
+              </a>
             ))}
           </div>
         </div>
@@ -191,20 +230,33 @@ export default function TransportLongueDistance() {
             </p>
           </div>
 
-          <div className="rounded-3xl border border-amber-500/20 bg-black p-10">
-            <h3 className="text-xl tracking-[0.14em] text-amber-400">
-              Les avantages
-            </h3>
+          <div className="overflow-hidden rounded-3xl border border-amber-500/20 bg-black">
+            <div className="relative h-56">
+              <Image
+                src="/images/place-vendome-flotte-sud-idf.png"
+                alt="Flotte de véhicules premium SUD IDF Executive Transport"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover object-center"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/45 via-transparent to-transparent" />
+            </div>
 
-            <ul className="mt-7 space-y-5 text-sm leading-7 text-neutral-400">
-              <li>✓ Chauffeur professionnel</li>
-              <li>✓ Véhicule premium et confortable</li>
-              <li>✓ Prise en charge à l’adresse de votre choix</li>
-              <li>✓ Trajet direct et personnalisé</li>
-              <li>✓ Service discret et ponctuel</li>
-              <li>✓ Organisation adaptée aux déplacements professionnels</li>
-              <li>✓ Tarif sur devis pour les demandes spécifiques</li>
-            </ul>
+            <div className="p-10">
+              <h3 className="text-xl tracking-[0.14em] text-amber-400">
+                Les avantages
+              </h3>
+
+              <ul className="mt-7 space-y-5 text-sm leading-7 text-neutral-300">
+                <li>✓ Chauffeur professionnel</li>
+                <li>✓ Véhicule premium et confortable</li>
+                <li>✓ Prise en charge à l’adresse de votre choix</li>
+                <li>✓ Trajet direct et personnalisé</li>
+                <li>✓ Service discret et ponctuel</li>
+                <li>✓ Organisation adaptée aux déplacements professionnels</li>
+                <li>✓ Tarif sur devis pour les demandes spécifiques</li>
+              </ul>
+            </div>
           </div>
         </div>
       </section>

@@ -528,7 +528,23 @@ export default function ChauffeurPriveSeineEtMarne() {
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-amber-500/20 bg-black px-6 py-12">
+            <section className="border-t border-amber-500/20 bg-zinc-950 px-6 py-16">
+        <div className="mx-auto max-w-6xl">
+          <p className="text-center text-xs font-semibold uppercase tracking-[0.3em] text-amber-400">SUD IDF Executive Transport</p>
+          <h2 className="mt-3 text-center text-2xl font-semibold text-white">Un chauffeur privé en Seine-et-Marne et vers l’Île-de-France</h2>
+          <p className="mx-auto mt-4 max-w-3xl text-center leading-7 text-zinc-400">Pour vos déplacements depuis la Seine-et-Marne, retrouvez nos services à Melun et Fontainebleau, ainsi que nos solutions de transfert aéroport, de transport business et de mise à disposition avec chauffeur.</p>
+          <nav className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <a href="/chauffeur-prive-melun" className="rounded-xl border border-amber-500/30 bg-zinc-900 px-5 py-4 text-sm text-zinc-100 transition hover:border-amber-400">Chauffeur privé à Melun <span className="float-right text-amber-400">→</span></a>
+            <a href="/chauffeur-prive-fontainebleau" className="rounded-xl border border-amber-500/30 bg-zinc-900 px-5 py-4 text-sm text-zinc-100 transition hover:border-amber-400">Chauffeur privé à Fontainebleau <span className="float-right text-amber-400">→</span></a>
+            <a href="/chauffeur-prive-essonne" className="rounded-xl border border-amber-500/30 bg-zinc-900 px-5 py-4 text-sm text-zinc-100 transition hover:border-amber-400">Chauffeur privé en Essonne <span className="float-right text-amber-400">→</span></a>
+            <a href="/transfert-orly" className="rounded-xl border border-amber-500/30 bg-zinc-900 px-5 py-4 text-sm text-zinc-100 transition hover:border-amber-400">Transfert Orly <span className="float-right text-amber-400">→</span></a>
+            <a href="/transfert-cdg" className="rounded-xl border border-amber-500/30 bg-zinc-900 px-5 py-4 text-sm text-zinc-100 transition hover:border-amber-400">Transfert CDG <span className="float-right text-amber-400">→</span></a>
+            <a href="/chauffeur-business" className="rounded-xl border border-amber-500/30 bg-zinc-900 px-5 py-4 text-sm text-zinc-100 transition hover:border-amber-400">Chauffeur business <span className="float-right text-amber-400">→</span></a>
+          </nav>
+        </div>
+      </section>
+
+<footer className="border-t border-amber-500/20 bg-black px-6 py-12">
         <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-3">
           <div>
             <div className="text-lg tracking-[0.35em] text-white">

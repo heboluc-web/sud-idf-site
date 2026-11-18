@@ -648,7 +648,23 @@ export default function ChauffeurAeroportBeauvais() {
       </section>
 
       {/* FOOTER */}
-      <footer className="border-t border-amber-500/20 bg-black px-6 py-12">
+            <section className="border-t border-amber-500/20 bg-zinc-950 px-6 py-16">
+        <div className="mx-auto max-w-6xl">
+          <p className="text-center text-xs font-semibold uppercase tracking-[0.3em] text-amber-400">SUD IDF Executive Transport</p>
+          <h2 className="mt-3 text-center text-2xl font-semibold text-white">Votre chauffeur privé pour les transferts aéroport</h2>
+          <p className="mx-auto mt-4 max-w-3xl text-center leading-7 text-zinc-400">En complément de vos trajets vers l’aéroport de Beauvais, découvrez nos transferts depuis l’Essonne et Paris vers Orly et Charles-de-Gaulle, ainsi que nos prestations pour les déplacements professionnels.</p>
+          <nav className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            <a href="/chauffeur-prive-essonne" className="rounded-xl border border-amber-500/30 bg-zinc-900 px-5 py-4 text-sm text-zinc-100 transition hover:border-amber-400">Chauffeur privé en Essonne <span className="float-right text-amber-400">→</span></a>
+            <a href="/chauffeur-prive-paris" className="rounded-xl border border-amber-500/30 bg-zinc-900 px-5 py-4 text-sm text-zinc-100 transition hover:border-amber-400">Chauffeur privé à Paris <span className="float-right text-amber-400">→</span></a>
+            <a href="/transfert-orly" className="rounded-xl border border-amber-500/30 bg-zinc-900 px-5 py-4 text-sm text-zinc-100 transition hover:border-amber-400">Transfert Orly <span className="float-right text-amber-400">→</span></a>
+            <a href="/transfert-cdg" className="rounded-xl border border-amber-500/30 bg-zinc-900 px-5 py-4 text-sm text-zinc-100 transition hover:border-amber-400">Transfert CDG <span className="float-right text-amber-400">→</span></a>
+            <a href="/chauffeur-business" className="rounded-xl border border-amber-500/30 bg-zinc-900 px-5 py-4 text-sm text-zinc-100 transition hover:border-amber-400">Chauffeur business <span className="float-right text-amber-400">→</span></a>
+            <a href="/transport-vip" className="rounded-xl border border-amber-500/30 bg-zinc-900 px-5 py-4 text-sm text-zinc-100 transition hover:border-amber-400">Transport VIP <span className="float-right text-amber-400">→</span></a>
+          </nav>
+        </div>
+      </section>
+
+<footer className="border-t border-amber-500/20 bg-black px-6 py-12">
 
         <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-3">
 

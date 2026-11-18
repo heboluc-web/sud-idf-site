@@ -172,6 +172,7 @@ export default function ChauffeurVtcDisneylandParis() {
       {[
         {
           title: "Paris → Disneyland Paris",
+          href: "/chauffeur-prive-paris",
           description:
             "Une Mercedes Classe S pour rejoindre le parc depuis Paris dans un cadre confortable et raffiné.",
           image: "/images/disneyland-paris-transfert-paris.png",
@@ -179,6 +180,7 @@ export default function ChauffeurVtcDisneylandParis() {
         },
         {
           title: "Aéroports → Disneyland",
+          href: "/reservation",
           description:
             "Votre transfert depuis Orly, Roissy Charles-de-Gaulle ou Beauvais avec un véhicule premium.",
           image: "/images/disneyland-paris-aeroports.png",
@@ -186,6 +188,7 @@ export default function ChauffeurVtcDisneylandParis() {
         },
         {
           title: "Gare de Marne-la-Vallée",
+          href: "/chauffeur-prive-gare",
           description:
             "Une prise en charge organisée à la gare TGV de Marne-la-Vallée–Chessy pour rejoindre votre destination.",
           image: "/images/disneyland-paris-gare.png",
@@ -193,15 +196,18 @@ export default function ChauffeurVtcDisneylandParis() {
         },
         {
           title: "Hôtels Disneyland Paris",
+          href: "/mise-a-disposition",
           description:
             "Un service de chauffeur privé pour vos arrivées et départs des hôtels de Disneyland Paris.",
           image: "/images/disneyland-paris-hotels.png",
           alt: "Berline de prestige devant le Disneyland Hotel",
         },
       ].map((service) => (
-        <article
+        <Link
           key={service.title}
-          className="group overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 transition duration-300 hover:-translate-y-1 hover:border-amber-400/60"
+          href={service.href}
+          aria-label={`Découvrir : ${service.title}`}
+          className="group block overflow-hidden rounded-2xl border border-amber-500/20 bg-neutral-950 transition duration-300 hover:-translate-y-1 hover:border-amber-400/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-amber-400"
         >
           <div className="relative aspect-[4/3] overflow-hidden">
             <Image
@@ -222,16 +228,26 @@ export default function ChauffeurVtcDisneylandParis() {
               {service.description}
             </p>
           </div>
-        </article>
+        </Link>
       ))}
     </div>
   </div>
 </section>
 
       {/* ================= EXPERIENCE ================= */}
-      <section className="py-32 px-6 bg-neutral-950 border-t border-amber-500/10">
+      <section className="relative isolate overflow-hidden py-32 px-6 border-t border-amber-500/10">
 
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+        <Image
+          src="/images/disneyland-paris-hero.png"
+          alt="Véhicule premium devant Disneyland Paris"
+          fill
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-black/55" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/75 via-black/45 to-black/65" />
+
+        <div className="relative z-10 max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
 
           <div>
 
@@ -265,7 +281,7 @@ export default function ChauffeurVtcDisneylandParis() {
           </div>
 
 
-          <div className="bg-black border border-amber-500/20 rounded-3xl p-10">
+          <div className="bg-black/85 backdrop-blur-sm border border-amber-500/30 rounded-3xl p-10">
 
             <h3 className="text-2xl text-amber-400 mb-8">
               Pourquoi choisir notre service ?

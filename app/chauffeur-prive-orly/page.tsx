@@ -321,50 +321,106 @@ export default function ChauffeurPriveOrly() {
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             <a
               href="/transfert-orly"
-              className="rounded-2xl border border-amber-500/30 bg-black p-7 transition hover:border-amber-400"
+              className="group overflow-hidden rounded-2xl border border-amber-500/30 bg-black transition hover:-translate-y-1 hover:border-amber-400"
             >
-              <h3 className="mb-3 text-xl text-amber-400">
-                Transfert Orly
-              </h3>
-              <p className="text-neutral-400">
-                Service premium de transfert vers l’aéroport d’Orly.
-              </p>
+              <div className="relative aspect-[16/9] overflow-hidden">
+                <Image
+                  src="/images/corbeil-essonnes-transfert-orly.png"
+                  alt="Véhicule premium pour un transfert vers l'aéroport d'Orly"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover transition duration-500 group-hover:scale-105"
+                />
+              </div>
+              <div className="p-7">
+                <h3 className="mb-3 text-xl text-amber-400">
+                  Transfert Orly
+                </h3>
+                <p className="text-neutral-400">
+                  Service premium de transfert vers l’aéroport d’Orly.
+                </p>
+                <span className="mt-5 block font-semibold text-amber-400">
+                  Découvrir →
+                </span>
+              </div>
             </a>
 
             <a
               href="/chauffeur-prive-paris"
-              className="rounded-2xl border border-amber-500/30 bg-black p-7 transition hover:border-amber-400"
+              className="group overflow-hidden rounded-2xl border border-amber-500/30 bg-black transition hover:-translate-y-1 hover:border-amber-400"
             >
-              <h3 className="mb-3 text-xl text-amber-400">
-                Chauffeur privé Paris
-              </h3>
-              <p className="text-neutral-400">
-                Déplacements premium à Paris et en Île-de-France.
-              </p>
+              <div className="relative aspect-[16/9] overflow-hidden">
+                <Image
+                  src="/images/paris-seine-hero.png"
+                  alt="Chauffeur privé et véhicule premium à Paris"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover transition duration-500 group-hover:scale-105"
+                />
+              </div>
+              <div className="p-7">
+                <h3 className="mb-3 text-xl text-amber-400">
+                  Chauffeur privé Paris
+                </h3>
+                <p className="text-neutral-400">
+                  Déplacements premium à Paris et en Île-de-France.
+                </p>
+                <span className="mt-5 block font-semibold text-amber-400">
+                  Découvrir →
+                </span>
+              </div>
             </a>
 
             <a
               href="/chauffeur-business"
-              className="rounded-2xl border border-amber-500/30 bg-black p-7 transition hover:border-amber-400"
+              className="group overflow-hidden rounded-2xl border border-amber-500/30 bg-black transition hover:-translate-y-1 hover:border-amber-400"
             >
-              <h3 className="mb-3 text-xl text-amber-400">
-                Chauffeur business
-              </h3>
-              <p className="text-neutral-400">
-                Transport exécutif pour professionnels et entreprises.
-              </p>
+              <div className="relative aspect-[16/9] overflow-hidden">
+                <Image
+                  src="/images/corbeil-essonnes-business.png"
+                  alt="Véhicule haut de gamme pour le transport business"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover transition duration-500 group-hover:scale-105"
+                />
+              </div>
+              <div className="p-7">
+                <h3 className="mb-3 text-xl text-amber-400">
+                  Chauffeur business
+                </h3>
+                <p className="text-neutral-400">
+                  Transport exécutif pour professionnels et entreprises.
+                </p>
+                <span className="mt-5 block font-semibold text-amber-400">
+                  Découvrir →
+                </span>
+              </div>
             </a>
 
             <a
               href="/reservation"
-              className="rounded-2xl border border-amber-500/30 bg-black p-7 transition hover:border-amber-400"
+              className="group overflow-hidden rounded-2xl border border-amber-500/30 bg-black transition hover:-translate-y-1 hover:border-amber-400"
             >
-              <h3 className="mb-3 text-xl text-amber-400">
-                Réserver un chauffeur
-              </h3>
-              <p className="text-neutral-400">
-                Réservation rapide de votre chauffeur privé premium.
-              </p>
+              <div className="relative aspect-[16/9] overflow-hidden">
+                <Image
+                  src="/images/accueil-avion-mercedes.png"
+                  alt="Véhicule Mercedes premium pour votre réservation de chauffeur"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover transition duration-500 group-hover:scale-105"
+                />
+              </div>
+              <div className="p-7">
+                <h3 className="mb-3 text-xl text-amber-400">
+                  Réserver un chauffeur
+                </h3>
+                <p className="text-neutral-400">
+                  Réservation rapide de votre chauffeur privé premium.
+                </p>
+                <span className="mt-5 block font-semibold text-amber-400">
+                  Réserver →
+                </span>
+              </div>
             </a>
           </div>
 

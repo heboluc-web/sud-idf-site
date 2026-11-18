@@ -49,34 +49,37 @@ export default function ChauffeurVtcVersailles() {
       </nav>
 
       {/* ================= HERO ================= */}
-      <section className="relative pt-44 pb-32 px-6 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-amber-500/10 via-black to-black pointer-events-none" />
-
-        <div className="relative max-w-5xl mx-auto text-center">
-
-          <p className="text-amber-400 uppercase tracking-[0.45em] text-xs md:text-sm mb-8">
-            CHAUFFEUR PRIVÉ · VERSAILLES
-          </p>
-
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-light tracking-wide text-white mb-8">
-            Chauffeur VTC Versailles
-          </h1>
-
-          <p className="text-lg md:text-xl text-neutral-300 max-w-3xl mx-auto leading-8 mb-12">
-            Un service de chauffeur privé pour vos déplacements vers Versailles,
-            au départ de Paris et de toute l’Île-de-France, avec confort,
-            ponctualité et discrétion.
-          </p>
-
-          <Link
-            href="/reservation"
-            className="inline-block bg-amber-500 text-black px-10 py-5 rounded-full tracking-[0.3em] text-xs uppercase hover:bg-amber-400 transition-all duration-500"
-          >
-            Réserver votre chauffeur
-          </Link>
-
+      <section className="relative min-h-[620px] md:min-h-[760px] flex items-center px-6 pt-36 pb-24 overflow-hidden border-b border-amber-500/20">
+        <img
+          src="/images/versailles-classe-v.png"
+          alt="Mercedes Classe V noir devant le Château de Versailles"
+          className="absolute inset-0 w-full h-full object-cover object-center"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/65 to-black/20" />
+        <div className="absolute inset-0 bg-black/15" />
+        <div className="relative z-10 max-w-7xl mx-auto w-full">
+          <div className="max-w-3xl">
+            <p className="text-amber-400 uppercase tracking-[0.45em] text-xs md:text-sm mb-8">
+              CHAUFFEUR PRIVÉ · VERSAILLES
+            </p>
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-light tracking-wide text-white mb-8">
+              Chauffeur VTC <span className="text-amber-400 italic">Versailles</span>
+            </h1>
+            <p className="text-lg md:text-xl text-neutral-200 leading-8 mb-10 max-w-2xl">
+              Un service de chauffeur privé pour vos déplacements vers Versailles,
+              au départ de Paris et de toute l’Île-de-France, avec confort,
+              ponctualité et discrétion.
+            </p>
+            <Link
+              href="/reservation"
+              className="inline-block bg-amber-500 text-black px-10 py-5 rounded-full tracking-[0.3em] text-xs uppercase hover:bg-amber-400 transition-all duration-500"
+            >
+              Réserver votre chauffeur
+            </Link>
+          </div>
         </div>
       </section>
+
 
       {/* ================= INTRODUCTION ================= */}
       <section className="py-28 px-6 bg-neutral-950 border-t border-amber-500/10">
@@ -115,78 +118,88 @@ export default function ChauffeurVtcVersailles() {
       </section>
 
       {/* ================= SERVICES ================= */}
-      <section className="py-32 px-6 bg-black border-t border-amber-500/10">
+      <section className="py-24 md:py-32 px-6 bg-black border-t border-amber-500/10">
         <div className="max-w-7xl mx-auto">
 
-          <h2 className="text-3xl md:text-4xl text-amber-400 tracking-[0.35em] uppercase font-light mb-16 text-center">
+          <h2 className="text-3xl md:text-4xl text-amber-400 tracking-[0.25em] uppercase font-light mb-5 text-center">
             Transferts vers Versailles
           </h2>
+          <p className="text-neutral-400 text-center max-w-3xl mx-auto mb-16 leading-7">
+            Une prise en charge privée adaptée à votre lieu de départ et au motif de votre déplacement.
+          </p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
 
-            <div className="bg-neutral-950 border border-amber-500/20 rounded-3xl p-8">
-              <h3 className="text-xl text-amber-400 mb-5">
-                Paris → Versailles
-              </h3>
-              <p className="text-neutral-400 leading-7">
-                Départ depuis Paris avec une prise en charge privée et un
-                trajet confortable jusqu’à Versailles.
-              </p>
-            </div>
+            <Link href="/chauffeur-prive-paris" className="group block overflow-hidden bg-neutral-950 border border-amber-500/20 rounded-3xl hover:border-amber-400/60 transition focus:outline-none focus:ring-2 focus:ring-amber-400">
+              <img src="/images/paris-seine-hero.png" alt="Chauffeur privé et véhicule premium à Paris" className="w-full h-52 object-cover transition duration-500 group-hover:scale-105" />
+              <div className="p-8">
+                <h3 className="text-xl text-amber-400 mb-4">Paris → Versailles</h3>
+                <p className="text-neutral-400 leading-7">
+                  Départ depuis Paris avec une prise en charge privée et un
+                  trajet confortable jusqu’à Versailles.
+                </p>
+              </div>
+            </Link>
 
-            <div className="bg-neutral-950 border border-amber-500/20 rounded-3xl p-8">
-              <h3 className="text-xl text-amber-400 mb-5">
-                Aéroports → Versailles
-              </h3>
-              <p className="text-neutral-400 leading-7">
-                Transferts privés depuis Orly, Roissy Charles-de-Gaulle ou
-                Beauvais vers Versailles.
-              </p>
-            </div>
+            <Link href="/transfert-cdg" className="group block overflow-hidden bg-neutral-950 border border-amber-500/20 rounded-3xl hover:border-amber-400/60 transition focus:outline-none focus:ring-2 focus:ring-amber-400">
+              <img src="/images/cdg-hero-premium.png" alt="Véhicule premium pour transfert aéroport" className="w-full h-52 object-cover transition duration-500 group-hover:scale-105" />
+              <div className="p-8">
+                <h3 className="text-xl text-amber-400 mb-4">Aéroports → Versailles</h3>
+                <p className="text-neutral-400 leading-7">
+                  Transferts privés depuis Orly, Roissy Charles-de-Gaulle ou
+                  Beauvais vers Versailles.
+                </p>
+              </div>
+            </Link>
 
-            <div className="bg-neutral-950 border border-amber-500/20 rounded-3xl p-8">
-              <h3 className="text-xl text-amber-400 mb-5">
-                Gares → Versailles
-              </h3>
-              <p className="text-neutral-400 leading-7">
-                Prise en charge depuis les principales gares de Paris et
-                d’Île-de-France pour rejoindre Versailles.
-              </p>
-            </div>
+            <Link href="/chauffeur-prive-gare" className="group block overflow-hidden bg-neutral-950 border border-amber-500/20 rounded-3xl hover:border-amber-400/60 transition focus:outline-none focus:ring-2 focus:ring-amber-400">
+              <img src="/images/gare-de-lyon-hero.png" alt="Véhicule avec chauffeur devant une gare parisienne" className="w-full h-52 object-cover transition duration-500 group-hover:scale-105" />
+              <div className="p-8">
+                <h3 className="text-xl text-amber-400 mb-4">Gares → Versailles</h3>
+                <p className="text-neutral-400 leading-7">
+                  Prise en charge depuis les principales gares de Paris et
+                  d’Île-de-France pour rejoindre Versailles.
+                </p>
+              </div>
+            </Link>
 
-            <div className="bg-neutral-950 border border-amber-500/20 rounded-3xl p-8">
-              <h3 className="text-xl text-amber-400 mb-5">
-                Visite et tourisme
-              </h3>
-              <p className="text-neutral-400 leading-7">
-                Un transport privé confortable pour organiser votre déplacement
-                vers le Château de Versailles et ses environs.
-              </p>
-            </div>
+            <Link href="/reservation" className="group block overflow-hidden bg-neutral-950 border border-amber-500/20 rounded-3xl hover:border-amber-400/60 transition focus:outline-none focus:ring-2 focus:ring-amber-400">
+              <img src="/images/versailles-classe-v.png" alt="Mercedes Classe V devant le Château de Versailles" className="w-full h-52 object-cover transition duration-500 group-hover:scale-105" />
+              <div className="p-8">
+                <h3 className="text-xl text-amber-400 mb-4">Visite et tourisme</h3>
+                <p className="text-neutral-400 leading-7">
+                  Un transport privé confortable pour organiser votre déplacement
+                  vers le Château de Versailles et ses environs.
+                </p>
+              </div>
+            </Link>
 
-            <div className="bg-neutral-950 border border-amber-500/20 rounded-3xl p-8">
-              <h3 className="text-xl text-amber-400 mb-5">
-                Déplacements professionnels
-              </h3>
-              <p className="text-neutral-400 leading-7">
-                Une solution adaptée aux rendez-vous, événements et déplacements
-                professionnels à Versailles.
-              </p>
-            </div>
+            <Link href="/chauffeur-business" className="group block overflow-hidden bg-neutral-950 border border-amber-500/20 rounded-3xl hover:border-amber-400/60 transition focus:outline-none focus:ring-2 focus:ring-amber-400">
+              <img src="/images/place-vendome-flotte-sud-idf.png" alt="Véhicules de transport exécutif" className="w-full h-52 object-cover transition duration-500 group-hover:scale-105" />
+              <div className="p-8">
+                <h3 className="text-xl text-amber-400 mb-4">Déplacements professionnels</h3>
+                <p className="text-neutral-400 leading-7">
+                  Une solution adaptée aux rendez-vous, événements et déplacements
+                  professionnels à Versailles.
+                </p>
+              </div>
+            </Link>
 
-            <div className="bg-neutral-950 border border-amber-500/20 rounded-3xl p-8">
-              <h3 className="text-xl text-amber-400 mb-5">
-                Service VIP
-              </h3>
-              <p className="text-neutral-400 leading-7">
-                Une prestation personnalisée pour les clients recherchant
-                confort, discrétion et flexibilité.
-              </p>
-            </div>
+            <Link href="/transport-vip" className="group block overflow-hidden bg-neutral-950 border border-amber-500/20 rounded-3xl hover:border-amber-400/60 transition focus:outline-none focus:ring-2 focus:ring-amber-400">
+              <img src="/images/beauvais-maybach.png" alt="Mercedes-Maybach pour un service VIP" className="w-full h-52 object-cover transition duration-500 group-hover:scale-105" />
+              <div className="p-8">
+                <h3 className="text-xl text-amber-400 mb-4">Service VIP</h3>
+                <p className="text-neutral-400 leading-7">
+                  Une prestation personnalisée pour les clients recherchant
+                  confort, discrétion et flexibilité.
+                </p>
+              </div>
+            </Link>
 
           </div>
         </div>
       </section>
+
 
       {/* ================= EXPERIENCE ================= */}
       <section className="py-32 px-6 bg-neutral-950 border-t border-amber-500/10">
@@ -224,7 +237,15 @@ export default function ChauffeurVtcVersailles() {
 
           </div>
 
-          <div className="bg-black border border-amber-500/20 rounded-3xl p-10">
+          <div
+            className="relative overflow-hidden bg-black border border-amber-500/30 rounded-3xl p-10 shadow-2xl"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(0,0,0,0.84), rgba(0,0,0,0.88)), url('/images/vaux-le-vicomte-classe-v.png')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          >
 
             <h3 className="text-2xl text-amber-400 mb-8">
               Pourquoi choisir notre service ?
@@ -313,8 +334,14 @@ export default function ChauffeurVtcVersailles() {
 
             <Link
               href="/transfert-orly"
-              className="border border-amber-500/20 rounded-2xl p-7 hover:border-amber-400 transition bg-neutral-950"
+              className="group overflow-hidden border border-amber-500/20 rounded-2xl hover:border-amber-400 transition bg-neutral-950"
             >
+              <img
+                src="/images/corbeil-essonnes-transfert-orly.png"
+                alt="Véhicule premium pour un transfert vers l’aéroport d’Orly"
+                className="w-full h-44 object-cover"
+              />
+              <div className="p-7">
               <h3 className="text-lg text-amber-400 mb-3">
                 Transfert depuis Orly
               </h3>
@@ -322,12 +349,19 @@ export default function ChauffeurVtcVersailles() {
                 Chauffeur privé pour vos déplacements depuis ou vers l’aéroport
                 Paris-Orly.
               </p>
+              </div>
             </Link>
 
             <Link
               href="/transfert-cdg"
-              className="border border-amber-500/20 rounded-2xl p-7 hover:border-amber-400 transition bg-neutral-950"
+              className="group overflow-hidden border border-amber-500/20 rounded-2xl hover:border-amber-400 transition bg-neutral-950"
             >
+              <img
+                src="/images/cdg-hero-premium.png"
+                alt="Véhicule premium pour un transfert vers l’aéroport Charles-de-Gaulle"
+                className="w-full h-44 object-cover"
+              />
+              <div className="p-7">
               <h3 className="text-lg text-amber-400 mb-3">
                 Transfert depuis CDG
               </h3>
@@ -335,6 +369,7 @@ export default function ChauffeurVtcVersailles() {
                 Service chauffeur premium depuis ou vers Roissy
                 Charles-de-Gaulle.
               </p>
+              </div>
             </Link>
 
           </div>

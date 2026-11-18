@@ -1,6 +1,7 @@
 
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Chauffeur Privé Paris | Sud IDF Executive Transport",
@@ -291,9 +292,11 @@ export default function ChauffeurPriveParis() {
 
           <div className="mt-16 grid gap-7 md:grid-cols-2 lg:grid-cols-3">
             {parisPlaces.map((place) => (
-              <article
+              <Link
                 key={place.title}
-                className="group overflow-hidden rounded-2xl border border-amber-500/20 bg-black transition duration-300 hover:-translate-y-1 hover:border-amber-400/60"
+                href="/reservation"
+                aria-label={`Réserver un chauffeur pour découvrir ${place.title}`}
+                className="group block overflow-hidden rounded-2xl border border-amber-500/20 bg-black transition duration-300 hover:-translate-y-1 hover:border-amber-400/60"
               >
                 <div className="relative aspect-[4/3] overflow-hidden">
                   <Image
@@ -314,7 +317,7 @@ export default function ChauffeurPriveParis() {
                     {place.description}
                   </p>
                 </div>
-              </article>
+              </Link>
             ))}
           </div>
         </div>

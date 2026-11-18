@@ -1,4 +1,5 @@
-﻿import type { Metadata } from "next";
+﻿
+import type { Metadata } from "next";
 import Stripe from "stripe";
 
 export const metadata: Metadata = {
@@ -47,81 +48,94 @@ export default async function Merci({ searchParams }: MerciPageProps) {
   const demandeDevis = params.type === "devis";
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-black via-gray-900 to-black text-center px-4">
+    <main className="relative min-h-screen w-full flex flex-col items-center justify-center text-center px-4 py-12 overflow-hidden">
 
-      {/* LOGO */}
-      <img
-        src="/logo.png"
-        alt="Logo Sud IDF Executive Transport"
-        className="w-28 mb-6 animate-fade-in"
+      {/* IMAGE DE FOND PLEIN ÉCRAN */}
+      <div
+        className="fixed inset-0 -z-20 bg-cover bg-center bg-no-repeat"
+        style={{
+         backgroundImage: "url('/images/disneyland-paris-transfert-paris.png')",
+        }}
       />
 
-      {/* TITRE */}
-      <h1 className="text-4xl md:text-5xl text-amber-400 mb-6">
-        {paiementConfirme
-          ? "Votre réservation est confirmée"
-          : demandeDevis
-            ? "Votre demande de devis a bien été envoyée"
-            : "Demande envoyée"}
-      </h1>
+      {/* VOILE SOMBRE POUR LA LISIBILITÉ */}
+      <div className="fixed inset-0 -z-10 bg-black/55" />
 
-      {/* MESSAGE PAIEMENT */}
-      {paiementConfirme && (
-        <div className="text-gray-300 mb-8 max-w-md space-y-4">
-          <p>
-            Votre paiement a été effectué avec succès et votre
-            réservation a bien été prise en compte par nos services.
+      {/* CONTENU */}
+      <div className="relative z-10 flex flex-col items-center justify-center w-full">
+
+        {/* LOGO */}
+        <img
+          src="/logo.png"
+          alt="Logo Sud IDF Executive Transport"
+          className="w-28 mb-6 animate-fade-in"
+        />
+
+        {/* TITRE */}
+        <h1 className="text-4xl md:text-5xl text-amber-400 mb-6">
+          {paiementConfirme
+            ? "Votre réservation est confirmée"
+            : demandeDevis
+              ? "Votre demande de devis a bien été envoyée"
+              : "Demande envoyée"}
+        </h1>
+
+        {/* MESSAGE PAIEMENT */}
+        {paiementConfirme && (
+          <div className="text-gray-200 mb-8 max-w-md space-y-4">
+            <p>
+              Votre paiement a été effectué avec succès et votre
+              réservation a bien été prise en compte par nos services.
+            </p>
+
+            <p>
+              Vous recevrez prochainement un e-mail de confirmation
+              contenant les informations relatives à votre réservation
+              ainsi que les éventuels détails complémentaires concernant
+              votre trajet.
+            </p>
+
+            <p>
+              Nous vous remercions pour votre confiance et sommes heureux
+              de vous accompagner dans vos déplacements.
+            </p>
+          </div>
+        )}
+
+        {/* MESSAGE DEVIS */}
+        {!paiementConfirme && demandeDevis && (
+          <div className="text-gray-200 mb-8 max-w-md space-y-4">
+            <p>Merci pour votre demande de devis.</p>
+
+            <p>
+              Nous accusons bonne réception de votre demande et allons
+              l’étudier avec attention afin de vous proposer une offre
+              personnalisée adaptée à vos besoins.
+            </p>
+
+            <p>
+              Notre équipe vous répondra dans les meilleurs délais.
+            </p>
+          </div>
+        )}
+
+        {/* CAS PAR DÉFAUT */}
+        {!paiementConfirme && !demandeDevis && (
+          <p className="text-gray-200 mb-8 max-w-md">
+            Merci pour votre demande. Nous vous répondrons rapidement
+            avec un devis personnalisé.
           </p>
+        )}
 
-          <p>
-            Vous recevrez prochainement un e-mail de confirmation
-            contenant les informations relatives à votre réservation
-            ainsi que les éventuels détails complémentaires concernant
-            votre trajet.
-          </p>
+        {/* BOUTON RETOUR */}
+        <a
+          href="/"
+          className="px-6 py-3 border border-amber-500 text-amber-400 rounded-xl hover:bg-amber-500 hover:text-black transition"
+        >
+          Retour à l’accueil
+        </a>
 
-          <p>
-            Nous vous remercions pour votre confiance et sommes heureux
-            de vous accompagner dans vos déplacements.
-          </p>
-        </div>
-      )}
-
-      {/* MESSAGE DEVIS */}
-      {!paiementConfirme && demandeDevis && (
-        <div className="text-gray-300 mb-8 max-w-md space-y-4">
-          <p>
-            Merci pour votre demande de devis.
-          </p>
-
-          <p>
-            Nous accusons bonne réception de votre demande et allons
-            l’étudier avec attention afin de vous proposer une offre
-            personnalisée adaptée à vos besoins.
-          </p>
-
-          <p>
-            Notre équipe vous répondra dans les meilleurs délais.
-          </p>
-        </div>
-      )}
-
-      {/* CAS PAR DÉFAUT */}
-      {!paiementConfirme && !demandeDevis && (
-        <p className="text-gray-300 mb-8 max-w-md">
-          Merci pour votre demande. Nous vous répondrons rapidement
-          avec un devis personnalisé.
-        </p>
-      )}
-
-      {/* BOUTON RETOUR */}
-      <a
-        href="/"
-        className="px-6 py-3 border border-amber-500 text-amber-400 rounded-xl hover:bg-amber-500 hover:text-black transition"
-      >
-        Retour à l’accueil
-      </a>
-
+      </div>
     </main>
   );
 }
