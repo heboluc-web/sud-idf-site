@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect, useMemo, useState, type FormEvent } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import { useSearchParams } from "next/navigation";
 import Script from "next/script";
 
@@ -28,6 +28,8 @@ type Calcul = {
   nouveauPrixCalculeTTC: number;
   montantFinalTTC: number;
   supplementTTC: number;
+  prixVtcTTC: number;
+  prixGreeterTTC: number;
   detailsTarif: string;
   distance?: string;
   duree?: string;
@@ -68,7 +70,17 @@ function GestionReservation() {
   const [departValide, setDepartValide] = useState(true);
   const [arriveeValide, setArriveeValide] = useState(true);
   const [googlePret, setGooglePret] = useState(false);
+  const departTokenRef = useRef<any>(null);
+  const arriveeTokenRef = useRef<any>(null);
+  const departRequestIdRef = useRef(0);
+  const arriveeRequestIdRef = useRef(0);
   const [tripType, setTripType] = useState("simple");
+  const [greeter, setGreeter] = useState("non");
+const [greeterTripType, setGreeterTripType] = useState("aller-simple");
+  const [numeroVol, setNumeroVol] = useState("");
+  const [numeroVolRetour, setNumeroVolRetour] = useState("");
+  const [numeroTrain, setNumeroTrain] = useState("");
+  const [numeroTrainRetour, setNumeroTrainRetour] = useState("");
   const [returnDate, setReturnDate] = useState("");
   const [returnTime, setReturnTime] = useState("");
   const [dureeMiseADispo, setDureeMiseADispo] = useState("3");
@@ -104,6 +116,13 @@ const heureActuelleLocale = new Date(
         if (r.type !== "reservation") throw new Error("Cet espace est réservé aux réservations confirmées.");
         if (!actif) return;
         const d = (r.details || {}) as Record<string, unknown>;
+        setGreeter(d.greeter === "oui" || d.booking_kind === "greeter_avec_vtc" ? "oui" : "non");
+setGreeterTripType(d.greeterTripType === "aller-retour" ? "aller-retour" : "aller-simple");
+        const detailsPrestation = (d.details_prestation && typeof d.details_prestation === "object" ? d.details_prestation : {}) as Record<string, unknown>;
+        setNumeroVol(String(d.numeroVol ?? detailsPrestation.numeroVol ?? ""));
+        setNumeroVolRetour(String(d.numeroVolRetour ?? detailsPrestation.numeroVolRetour ?? ""));
+        setNumeroTrain(String(d.numeroTrain ?? detailsPrestation.numeroTrain ?? ""));
+        setNumeroTrainRetour(String(d.numeroTrainRetour ?? detailsPrestation.numeroTrainRetour ?? ""));
         const heureEnregistree = r.heure_trajet || (typeof d.heure_trajet === "string" ? d.heure_trajet : typeof d.heure === "string" ? d.heure : typeof d.time === "string" ? d.time : null);
         setReservation({ ...r, heure_trajet: heureEnregistree });
         if (retourPaiement === "success") setConfirmation("Votre paiement a été confirmé par Stripe. La modification est en cours de mise à jour de votre dossier.");
@@ -145,16 +164,28 @@ const heureActuelleLocale = new Date(
 
   async function rechercherAdresse(value: string, field: "depart" | "arrivee") {
     const texte = value.trim();
+    const tokenRef = field === "depart" ? departTokenRef : arriveeTokenRef;
+    const requestIdRef = field === "depart" ? departRequestIdRef : arriveeRequestIdRef;
+    const requestId = ++requestIdRef.current;
     if (field === "depart") setDepartSuggestions([]); else setArriveeSuggestions([]);
-    if (texte.length < 2 || !googlePret || !(window as any).google?.maps?.importLibrary) return;
+    if (texte.length < 2 || !googlePret || typeof window === "undefined" || !(window as any).google?.maps?.importLibrary) return;
     try {
       const places = await (window as any).google.maps.importLibrary("places");
-      const { suggestions } = await places.AutocompleteSuggestion.fetchAutocompleteSuggestions({
-        input: texte, includedRegionCodes: ["fr"], language: "fr", region: "fr",
+      const { AutocompleteSessionToken, AutocompleteSuggestion } = places as any;
+      if (!tokenRef.current) tokenRef.current = new AutocompleteSessionToken();
+      const { suggestions } = await AutocompleteSuggestion.fetchAutocompleteSuggestions({
+        input: texte,
+        includedRegionCodes: ["fr"],
+        language: "fr",
+        region: "fr",
+        sessionToken: tokenRef.current,
       });
-      const resultats = (suggestions || []).filter((x: any) => x.placePrediction).slice(0, 5);
+      if (requestId !== requestIdRef.current) return;
+      const resultats = (suggestions || []).filter((item: any) => item.placePrediction).slice(0, 5);
       if (field === "depart") setDepartSuggestions(resultats); else setArriveeSuggestions(resultats);
-    } catch (error) { console.error("Google Places - gestion réservation :", error); }
+    } catch (error) {
+      console.error("Google Places - gestion réservation :", error);
+    }
   }
 
   async function choisirAdresse(suggestion: any, field: "depart" | "arrivee") {
@@ -221,10 +252,14 @@ const heureActuelleLocale = new Date(
     setErreur("");
 
     if (field === "depart") {
+      departRequestIdRef.current += 1;
+      departTokenRef.current = null;
       setDepart(adresse);
       setDepartValide(true);
       setDepartSuggestions([]);
     } else {
+      arriveeRequestIdRef.current += 1;
+      arriveeTokenRef.current = null;
       setArrivee(adresse);
       setArriveeValide(true);
       setArriveeSuggestions([]);
@@ -239,12 +274,61 @@ const heureActuelleLocale = new Date(
 }
 
   const corpsModification = useMemo(() => ({
-    ...(token ? { token } : {}), date, heure, depart, arrivee, service, vehicule,
-    tripType, returnDate, returnTime, dureeMiseADispo, dureeSeminaire, passagers, bagages,
-  }), [token, date, heure, depart, arrivee, service, vehicule, tripType, returnDate, returnTime, dureeMiseADispo, dureeSeminaire, passagers, bagages]);
+    ...(token ? { token } : {}),
+    date,
+    heure,
+    depart,
+    arrivee,
+    service,
+    vehicule,
+    tripType,
+    returnDate,
+    returnTime,
+    dureeMiseADispo,
+    dureeSeminaire,
+    passagers,
+    bagages,
+    greeter: service === "Transfert aéroport" || service === "Transfert gare" ? greeter : "non",
+    greeterTripType,
+    numeroVol, numeroVolRetour, numeroTrain, numeroTrainRetour,
+  }), [
+    token,
+    date,
+    heure,
+    depart,
+    arrivee,
+    service,
+    vehicule,
+    tripType,
+    returnDate,
+    returnTime,
+    dureeMiseADispo,
+    dureeSeminaire,
+    passagers,
+    bagages,
+    greeter,
+    greeterTripType,
+    numeroVol, numeroVolRetour, numeroTrain, numeroTrainRetour,
+  ]);
 
   async function calculer(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (greeter === "oui" && service === "Transfert aéroport" && !numeroVol.trim()) {
+      setErreur("Le numéro de vol aller est indispensable pour organiser votre accueil Greeter.");
+      return;
+    }
+    if (greeter === "oui" && service === "Transfert gare" && !numeroTrain.trim()) {
+      setErreur("Le numéro de train aller est indispensable pour organiser votre accueil Greeter.");
+      return;
+    }
+    if (greeter === "oui" && greeterTripType === "aller-retour" && tripType === "aller-retour" && service === "Transfert aéroport" && !numeroVolRetour.trim()) {
+      setErreur("Le numéro de vol retour est indispensable pour organiser votre accueil Greeter au retour.");
+      return;
+    }
+    if (greeter === "oui" && greeterTripType === "aller-retour" && tripType === "aller-retour" && service === "Transfert gare" && !numeroTrainRetour.trim()) {
+      setErreur("Le numéro de train retour est indispensable pour organiser votre accueil Greeter au retour.");
+      return;
+    }
     if (service !== "Mise à disposition" && service !== "Séminaire" && (!departValide || !arriveeValide)) {
       setErreur("Veuillez sélectionner une adresse précise dans les suggestions Google Maps pour le départ et l’arrivée. Une ville ou un département seul ne suffit pas pour calculer la distance.");
       return;
@@ -291,17 +375,17 @@ const heureActuelleLocale = new Date(
   if (!reservation) return null;
 
   return (
-    <main className="min-h-screen bg-black px-4 py-10 text-white sm:py-14">
+    <main
+      className="min-h-screen bg-black bg-cover bg-center bg-fixed px-4 py-10 text-white sm:py-14"
+      style={{
+        backgroundImage:
+          "linear-gradient(rgba(0,0,0,0.32), rgba(0,0,0,0.42)), url('/images/cdg-hero-premium.png')",
+      }}
+    >
       <Script src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&loading=async&v=weekly`} strategy="afterInteractive" onLoad={() => setGooglePret(true)} />
-      <div className="mx-auto max-w-6xl overflow-hidden rounded-2xl border border-amber-500/60 bg-zinc-950 shadow-[0_0_35px_rgba(245,158,11,0.08)]">
+      <div className="mx-auto max-w-6xl overflow-hidden rounded-2xl border border-amber-500/60 bg-zinc-950/35 shadow-[0_0_35px_rgba(245,158,11,0.08)]">
         <header
-          className="relative isolate mb-2 flex min-h-[280px] flex-col items-center justify-center overflow-hidden rounded-2xl border border-amber-500/40 px-6 py-9 text-center shadow-xl shadow-amber-500/10"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(0,0,0,0.42), rgba(0,0,0,0.72)), url('/images/cdg-hero-premium.png')",
-            backgroundSize: "cover",
-            backgroundPosition: "center 58%",
-          }}
+          className="relative mb-2 flex min-h-[220px] flex-col items-center justify-center border-b border-amber-500/30 px-6 py-9 text-center"
         >
           <div className="relative z-10 mb-5 h-32 w-72 max-w-full overflow-hidden bg-white p-1.5">
             <img
@@ -316,7 +400,7 @@ const heureActuelleLocale = new Date(
         </header>
 
         <div className="space-y-7 p-5 sm:p-8">
-          <section className="rounded-xl border border-amber-500/30 bg-black p-4 sm:p-5">
+          <section className="rounded-xl border border-amber-500/40 bg-black/45 p-4 sm:p-5">
             <p className="mb-4 border-b border-amber-500/20 pb-3 text-sm font-semibold uppercase tracking-wider text-amber-400">VOTRE RÉSERVATION DU {reservation.created_at && !Number.isNaN(new Date(reservation.created_at).getTime()) ? (() => { const d = new Date(reservation.created_at); return `${new Intl.DateTimeFormat("fr-FR", { dateStyle: "short", timeZone: "Europe/Paris" }).format(d)} À ${new Intl.DateTimeFormat("fr-FR", { timeStyle: "short", timeZone: "Europe/Paris" }).format(d)}`; })() : "—"}</p>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-3">
               <div className="min-w-0 rounded-lg border border-amber-500/20 bg-zinc-900/80 p-3">
@@ -364,22 +448,56 @@ const heureActuelleLocale = new Date(
               <p className="text-sm leading-6 text-zinc-400">Modifiez les champs ci-dessous. Le nouveau tarif sera recalculé avant validation. Seul un éventuel supplément sera à régler ; si le nouveau trajet est moins cher, le montant initial reste inchangé.</p>
 
               <div className="grid gap-6 lg:grid-cols-2">
-                <section className="space-y-4 rounded-xl border border-amber-500/30 bg-black p-4 sm:p-5">
+                <section className="space-y-4 rounded-xl border border-amber-500/40 bg-black/45 p-4 sm:p-5">
                   <h3 className="font-semibold text-amber-300">Votre prestation</h3>
                   <div className="grid gap-4 sm:grid-cols-2">
                     <label className="block text-sm text-amber-200">Nombre de passagers<select required value={passagers} onChange={(e) => { const n = Number(e.target.value); setPassagers(String(n)); setBagages((ancien) => String(Math.min(Number(ancien || 0), maxBagagesPour(n, vehicule)))); }} className={`${champ} mt-2`}>{Array.from({ length: maxPassagersPour(vehicule) }, (_, i) => i + 1).map((n) => <option key={n} value={n}>{n} {n > 1 ? "passagers" : "passager"}</option>)}</select></label>
                     <label className="block text-sm text-amber-200">Nombre de bagages<select required value={bagages} onChange={(e) => setBagages(e.target.value)} className={`${champ} mt-2`}>{Array.from({ length: maxBagagesPour(Number(passagers || 1), vehicule) + 1 }, (_, i) => i).map((n) => <option key={n} value={n}>{n} {n > 1 ? "bagages" : "bagage"}</option>)}</select></label>
                   </div>
                   <div className="grid gap-4">
-                    <label className="block text-sm text-amber-200">Type de service<select value={service} onChange={(e) => setService(e.target.value)} className={`${champ} mt-2`}><option value="Transport standard">Transfert standard / Transfert ville</option><option value="Transfert aéroport">Transfert aéroport</option><option value="Mise à disposition">Mise à disposition</option><option value="Séminaire">Séminaire / Conférence / Congrès / Événement</option></select></label>
+                    <label className="block text-sm text-amber-200">Type de service<select value={service} onChange={(e) => setService(e.target.value)} className={`${champ} mt-2`}><option value="Transport standard">Transfert standard / Transfert ville</option><option value="Transfert aéroport">Transfert aéroport</option><option value="Transfert gare">Transfert gare</option><option value="Mise à disposition">Mise à disposition</option><option value="Séminaire">Séminaire / Conférence / Congrès / Événement</option></select></label>
                     <label className="block text-sm text-amber-200">Véhicule<select value={vehicule} onChange={(e) => { const v = e.target.value; const p = Math.min(Number(passagers || 1), maxPassagersPour(v)); setVehicule(v); setPassagers(String(p)); setBagages((ancien) => String(Math.min(Number(ancien || 0), maxBagagesPour(p, v)))); }} className={`${champ} mt-2`}><option>Mercedes Classe E</option><option>Mercedes Classe V</option><option>Range Rover</option><option>Mercedes Classe S</option><option>Mercedes-Maybach Classe S</option></select></label>
                   </div>
                   {service === "Mise à disposition" && <label className="block text-sm text-amber-200">Durée (heures)<select value={dureeMiseADispo} onChange={(e) => setDureeMiseADispo(e.target.value)} className={`${champ} mt-2`}>{[3,4,5,6,7,8].map((n) => <option key={n} value={n}>{n} heures</option>)}</select></label>}
-                  {service === "Séminaire" && <label className="block text-sm text-amber-200">Durée<select value={dureeSeminaire} onChange={(e) => setDureeSeminaire(e.target.value)} className={`${champ} mt-2`}><option value="4">4 heures</option><option value="8">8 heures</option></select></label>}
+                  {service === "Séminaire" && <label className="block text-sm text-amber-200">Durée<select value={dureeSeminaire} onChange={(e) => setDureeSeminaire(e.target.value)} className={`${champ} mt-2`}><option value="4">Événement : 4 heures / 100 km</option><option value="8">Événement : 8 heures / 200 km</option></select></label>}
                   <label className="flex items-center gap-3 text-sm text-amber-200"><input type="checkbox" checked={tripType === "aller-retour"} onChange={(e) => setTripType(e.target.checked ? "aller-retour" : "simple")} className="h-4 w-4 accent-amber-400" /> Ajouter un trajet aller-retour</label>
+                  {(service === "Transfert aéroport" || service === "Transfert gare") && (
+                    <div className="space-y-3 rounded-xl border border-amber-500/40 bg-zinc-900/45 p-4">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <p className="font-semibold text-amber-300">Service Greeter</p>
+                        <a href="/service-greeter" target="_blank" rel="noopener noreferrer" className="text-sm text-amber-400 underline hover:text-amber-300">Découvrir le service Greeter →</a>
+                      </div>
+                      <p className="text-sm text-zinc-300">Souhaitez-vous ajouter un accueil personnalisé à votre arrivée ?</p>
+                      <div className="flex flex-wrap gap-6 text-sm text-white">
+                        <label className="flex cursor-pointer items-center gap-2"><input type="radio" name="greeter" value="non" checked={greeter === "non"} onChange={() => setGreeter("non")} className="accent-amber-400" /> Non</label>
+                        <label className="flex cursor-pointer items-center gap-2"><input type="radio" name="greeter" value="oui" checked={greeter === "oui"} onChange={() => setGreeter("oui")} className="accent-amber-400" /> Oui</label>
+                      </div>
+                      {greeter === "oui" && (
+                        <label className="block text-sm text-amber-200">
+                          Couverture du service Greeter
+                          <select value={greeterTripType} onChange={(e) => setGreeterTripType(e.target.value)} className={`${champ} mt-2`}>
+                            <option value="aller-simple">Accueil à l’aller uniquement</option>
+                            <option value="aller-retour">Accueil à l’aller et au retour</option>
+                          </select>
+                        </label>
+                      )}
+                      {greeter === "oui" && service === "Transfert aéroport" && (
+                        <div className="grid gap-3 sm:grid-cols-2">
+                          <label className="block text-sm text-amber-200">Suivi du vol – aller<input required value={numeroVol} onChange={(e) => setNumeroVol(e.target.value)} placeholder="Ex. AF1234" className={`${champ} mt-2`} /></label>
+                          {greeterTripType === "aller-retour" && tripType === "aller-retour" && <label className="block text-sm text-amber-200">Suivi du vol – retour<input required value={numeroVolRetour} onChange={(e) => setNumeroVolRetour(e.target.value)} placeholder="Numéro du vol retour" className={`${champ} mt-2`} /></label>}
+                        </div>
+                      )}
+                      {greeter === "oui" && service === "Transfert gare" && (
+                        <div className="grid gap-3 sm:grid-cols-2">
+                          <label className="block text-sm text-amber-200">Suivi du train – aller<input required value={numeroTrain} onChange={(e) => setNumeroTrain(e.target.value)} placeholder="Ex. TGV 6123" className={`${champ} mt-2`} /></label>
+                          {greeterTripType === "aller-retour" && tripType === "aller-retour" && <label className="block text-sm text-amber-200">Suivi du train – retour<input required value={numeroTrainRetour} onChange={(e) => setNumeroTrainRetour(e.target.value)} placeholder="Numéro du train retour" className={`${champ} mt-2`} /></label>}
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </section>
 
-                <section className="space-y-4 rounded-xl border border-amber-500/30 bg-black p-4 sm:p-5">
+                <section className="space-y-4 rounded-xl border border-amber-500/40 bg-black/45 p-4 sm:p-5">
                   <h3 className="font-semibold text-amber-300">Votre trajet</h3>
                   <div className="grid gap-4 sm:grid-cols-2">
                     <label className="block text-sm text-amber-200">Date du départ<input required type="date" value={date} onChange={(e) => setDate(e.target.value)} className={`${champ} mt-2`} /></label>
@@ -398,7 +516,7 @@ const heureActuelleLocale = new Date(
           {calcul && confirmationModification && <section className="space-y-3 rounded-xl border border-amber-400/50 bg-black p-5">
             <h2 className="font-bold text-amber-300">Récapitulatif de la modification</h2>
             {/* Détails du calcul conservés pour le suivi interne, non affichés au client */}
-            <div className="space-y-2 border-t border-amber-500/20 pt-3 text-sm"><p className="flex justify-between gap-3"><span>Tarif initial</span><strong>{calcul.ancienPrixTTC.toFixed(2)} €</strong></p>{tripType === "aller-retour" && (() => { const tarifRetour = calcul.detailsTarif?.match(/Retour\s*:\s*([0-9]+(?:[.,][0-9]+)?)\s*€\s*TTC/i)?.[1]; return tarifRetour ? <p className="flex justify-between gap-3"><span>Tarif du retour</span><strong>{Number(tarifRetour.replace(",", ".")).toFixed(2)} € TTC</strong></p> : null; })()}<p className="flex justify-between gap-3"><span>Nouveau tarif calculé</span><strong>{calcul.nouveauPrixCalculeTTC.toFixed(2)} €</strong></p><p className="flex justify-between gap-3 text-amber-300"><span>Montant total conservé</span><strong>{calcul.montantFinalTTC.toFixed(2)} €</strong></p><p className="flex justify-between gap-3 text-lg font-bold text-amber-400"><span>Supplément à régler</span><strong>{calcul.supplementTTC.toFixed(2)} €</strong></p></div>
+            <div className="space-y-2 border-t border-amber-500/20 pt-3 text-sm"><p className="flex justify-between gap-3"><span>Tarif initial</span><strong>{calcul.ancienPrixTTC.toFixed(2)} €</strong></p><p className="flex justify-between gap-3"><span>Transport VTC</span><strong>{calcul.prixVtcTTC.toFixed(2)} € TTC</strong></p>{calcul.prixGreeterTTC > 0 && <p className="flex justify-between gap-3"><span>Service Greeter</span><strong>{calcul.prixGreeterTTC.toFixed(2)} € TTC</strong></p>}<p className="flex justify-between gap-3 font-semibold"><span>Total de la prestation TTC</span><strong>{calcul.nouveauPrixCalculeTTC.toFixed(2)} € TTC</strong></p><p className="flex justify-between gap-3 text-amber-300"><span>Montant total retenu TTC</span><strong>{calcul.montantFinalTTC.toFixed(2)} €</strong></p><p className="flex justify-between gap-3 text-lg font-bold text-amber-400"><span>Supplément à régler</span><strong>{calcul.supplementTTC.toFixed(2)} €</strong></p></div>
             {calcul.supplementTTC === 0 && <p className="text-sm text-zinc-400">Aucun paiement supplémentaire ne sera demandé. Aucun remboursement ne sera effectué si le nouveau trajet est moins cher.</p>}
             <button type="button" onClick={() => void confirmerModification()} disabled={calculEnCours} className="w-full rounded-lg border border-amber-400 bg-amber-400 px-5 py-3.5 font-bold text-black hover:bg-amber-300 disabled:opacity-60">{calculEnCours ? "Confirmation..." : calcul.supplementTTC > 0 ? `Confirmer et payer ${calcul.supplementTTC.toFixed(2)} €` : "Confirmer ma modification"}</button>
             <button type="button" onClick={() => { setCalcul(null); setConfirmationModification(false); }} className="w-full rounded-lg border border-zinc-600 px-5 py-3 text-zinc-300 hover:border-amber-400">Revenir aux champs</button>

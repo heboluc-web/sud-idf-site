@@ -140,9 +140,36 @@ export async function POST(request: NextRequest) {
     const tripType = body.tripType === "aller-retour" ? "aller-retour" : "simple";
     const returnDate = typeof body.returnDate === "string" ? body.returnDate : "";
     const returnTime = typeof body.returnTime === "string" ? body.returnTime : "";
+    const greeter = body.greeter === "oui" ? "oui" : "non";
+    const numeroVol = typeof body.numeroVol === "string" ? body.numeroVol.trim().slice(0, 40) : "";
+    const numeroVolRetour = typeof body.numeroVolRetour === "string" ? body.numeroVolRetour.trim().slice(0, 40) : "";
+    const numeroTrain = typeof body.numeroTrain === "string" ? body.numeroTrain.trim().slice(0, 40) : "";
+    const numeroTrainRetour = typeof body.numeroTrainRetour === "string" ? body.numeroTrainRetour.trim().slice(0, 40) : "";
 
+const greeterTripType =
+  body.greeterTripType === "aller-retour"
+    ? "aller-retour"
+    : "aller-simple";
     const vehiculesAutorises = ["Mercedes Classe E", "Mercedes Classe V", "Range Rover", "Mercedes Classe S", "Mercedes-Maybach Classe S"];
-    const servicesAutorises = ["Transport standard", "Transfert aéroport", "Mise à disposition", "Séminaire"];
+    const servicesAutorises = [
+  "Transport standard",
+  "Transfert aéroport",
+  "Transfert gare",
+  "Mise à disposition",
+  "Séminaire",
+];
+    if (greeter === "oui" && service === "Transfert aéroport" && !numeroVol) {
+      return NextResponse.json({ error: "Le numéro de vol aller est indispensable pour le service Greeter." }, { status: 400 });
+    }
+    if (greeter === "oui" && service === "Transfert gare" && !numeroTrain) {
+      return NextResponse.json({ error: "Le numéro de train aller est indispensable pour le service Greeter." }, { status: 400 });
+    }
+    if (greeter === "oui" && greeterTripType === "aller-retour" && tripType === "aller-retour" && service === "Transfert aéroport" && !numeroVolRetour) {
+      return NextResponse.json({ error: "Le numéro de vol retour est indispensable pour le service Greeter au retour." }, { status: 400 });
+    }
+    if (greeter === "oui" && greeterTripType === "aller-retour" && tripType === "aller-retour" && service === "Transfert gare" && !numeroTrainRetour) {
+      return NextResponse.json({ error: "Le numéro de train retour est indispensable pour le service Greeter au retour." }, { status: 400 });
+    }
     if (!vehiculesAutorises.includes(vehicule) || !servicesAutorises.includes(service)) {
       return NextResponse.json({ error: "Le service ou le véhicule sélectionné n'est pas disponible pour une modification en ligne." }, { status: 400 });
     }
@@ -219,7 +246,24 @@ export async function POST(request: NextRequest) {
         duree = trajetAller.dureeText;
       }
     }
+    // Calcul du supplément Greeter TTC
+const prixGreeterUnitaire =
+  nombrePassagers >= 1 && nombrePassagers <= 4
+    ? 280
+    : nombrePassagers > 4
+      ? 280 + (nombrePassagers - 4) * 80
+      : 0;
 
+const prixGreeterTTC =
+  greeter === "oui"
+    ? greeterTripType === "aller-retour"
+      ? Math.max(0, prixGreeterUnitaire * 2 - 20)
+      : prixGreeterUnitaire
+    : 0;
+
+// Le montant recalculé comprend le VTC et le Greeter.
+const nouveauPrixVtcTTC = nouveauPrix;
+nouveauPrix = nouveauPrixVtcTTC + prixGreeterTTC;
     const ancienPrix = Number(reservation.montant_ttc);
     if (!Number.isFinite(ancienPrix) || ancienPrix <= 0) {
       return NextResponse.json({ error: "Le montant initial de cette réservation doit être vérifié par notre équipe." }, { status: 409 });
@@ -237,16 +281,25 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: "Le paiement sécurisé est momentanément indisponible." }, { status: 503 });
       }
       const detailsPrestation = {
-        service, vehicule, depart, arrivee, date, heure, tripType,
-        returnDate, returnTime,
-        dureeMiseADispo: body.dureeMiseADispo || null,
-        dureeSeminaire: body.dureeSeminaire || null,
-        passagers: nombrePassagers,
-        bagages: nombreBagages,
-        details_tarif: detailsTarif,
-        distance,
-        duree,
-      };
+  service, vehicule, depart, arrivee, date, heure, tripType,
+  returnDate, returnTime,
+  dureeMiseADispo: body.dureeMiseADispo || null,
+  dureeSeminaire: body.dureeSeminaire || null,
+  passagers: nombrePassagers,
+  bagages: nombreBagages,
+  greeter,
+  greeterTripType: greeter === "oui" ? greeterTripType : null,
+  numeroVol: greeter === "oui" && service === "Transfert aéroport" ? numeroVol : null,
+  numeroVolRetour: greeter === "oui" && service === "Transfert aéroport" ? numeroVolRetour : null,
+  numeroTrain: greeter === "oui" && service === "Transfert gare" ? numeroTrain : null,
+  numeroTrainRetour: greeter === "oui" && service === "Transfert gare" ? numeroTrainRetour : null,
+  booking_kind: greeter === "oui" ? "greeter_avec_vtc" : "reservation_vtc",
+  prixVtcTTC: nouveauPrixVtcTTC,
+  prixGreeterTTC,
+  details_tarif: detailsTarif,
+  distance,
+  duree,
+};
       const detailsModification = {
         montant_initial_ttc: ancienPrix,
         nouveau_prix_calcule_ttc: nouveauPrix,
@@ -351,13 +404,27 @@ export async function POST(request: NextRequest) {
       success: true,
       ancienPrixTTC: ancienPrix,
       nouveauPrixCalculeTTC: nouveauPrix,
+      prixVtcTTC: nouveauPrixVtcTTC,
+      prixGreeterTTC,
       montantFinalTTC: montantFinal,
       supplementTTC: supplement,
       paiementSupplementNecessaire: supplement > 0,
       detailsTarif,
       distance,
       duree,
-      nouvellePrestation: { service, vehicule, depart, arrivee, date, heure, tripType, returnDate, returnTime },
+      nouvellePrestation: {
+        service,
+        vehicule,
+        depart,
+        arrivee,
+        date,
+        heure,
+        tripType,
+        returnDate,
+        returnTime,
+        greeter,
+        greeterTripType: greeter === "oui" ? greeterTripType : null,
+      },
     });
   } catch (error) {
     console.error("Erreur de calcul du tarif de modification :", error);

@@ -2414,6 +2414,18 @@ const reservationData = {
 
           </select>
           
+          {form.service === "Séminaire" && (
+  <select
+    name="dureeSeminaire"
+    value={form.dureeSeminaire}
+    onChange={handleChange}
+    required
+    className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
+  >
+    <option value="4">Événement : 4 heures / 100 km</option>
+    <option value="8">Événement : 8 heures / 200 km</option>
+  </select>
+)}
           
           {/* OPTION SERVICE GREETER */}
           <div className="rounded-xl border border-amber-500/30 bg-neutral-900 p-4 space-y-3">
@@ -2575,29 +2587,7 @@ const reservationData = {
 
           )}
 
-          {form.service === "Séminaire" && (
-
-            <select
-
-              name="dureeSeminaire"
-
-              value={form.dureeSeminaire}
-
-              onChange={handleChange}
-
-              required
-
-              className="w-full p-3 bg-neutral-900 rounded-xl border border-amber-500/20"
-
-            >
-
-              <option value="4">Séminaire : 4 heures / 100 km</option>
-
-              <option value="8">Séminaire : 8 heures / 200 km</option>
-
-            </select>
-
-          )}
+          
 
               </div>
             </section>
