@@ -326,15 +326,14 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
 
 {/* SECTION SUIVANTE */}
 
-
-         {/* ================= QUI NOUS SOMMES ================= */}
+{/* ================= QUI NOUS SOMMES ================= */}
 <section
   id="signature"
   className={`py-24 md:py-28 px-6 bg-black border-t border-amber-500/20 transition-all duration-1000 ${
     visibleSections["signature"] ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"
   }`}
 >
-  <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+  <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-start">
 
     {/* TEXTE */}
     <div className="transition-all duration-700 hover:translate-y-[-4px]">
@@ -343,32 +342,26 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
       </h2>
 
       <p className="text-neutral-300 leading-relaxed text-base mb-6 tracking-wide">
-        SUD IDF EXECUTIVE TRANSPORT est une structure de service de transport privé exécutif avec chauffeur VTC, spécialisé dans les transferts vers les aéroports, les déplacements professionnels, les événements et les trajets privés. Nous proposons un service haut de gamme, ponctuel et personnalisé en Île-de-France, notamment à Paris, Orly, CDG, BVA, Disneyland, Versailles, en Essonne et en Seine-et-Marne.
+        SUD IDF EXECUTIVE TRANSPORT accompagne les entreprises, les professionnels, les institutions, les hôtels, les agences et les particuliers dans tous leurs besoins de transport avec chauffeur. Nous assurons des déplacements sur mesure en Île-de-France et partout en France : transferts vers les aéroports et gares, déplacements professionnels, transport de collaborateurs, rendez-vous d’affaires, événements, séminaires, circuits privés et prestations dédiées. Notre service s’adapte à chaque organisation, avec une exigence constante de qualité, de ponctualité et de confort.
       </p>
 
       <p className="text-neutral-400 leading-relaxed text-sm mb-6">
-        Notre positionnement repose sur trois piliers fondamentaux : fiabilité opérationnelle,
-        discrétion absolue et excellence du service.
-        Chaque mission est organisée avec rigueur afin de garantir une prestation conforme
-        aux standards des maisons de prestige et de l’aviation privée.
+        Nous mettons notre savoir-faire au service d’une clientèle diversifiée, en proposant des solutions de transport adaptées aux exigences de chaque activité. Entreprises, dirigeants, collaborateurs, équipes, partenaires, établissements hôteliers, organisateurs d’événements ou particuliers : chaque client bénéficie d’un accompagnement personnalisé, d’une organisation rigoureuse et d’un service pensé pour répondre à ses contraintes et à ses attentes.
       </p>
 
       <p className="text-neutral-400 leading-relaxed text-sm mb-6">
-        La sécurité, la ponctualité, la confidentialité et le confort sont nos priorités
-        pour assurer la tranquillité de nos clients.
+        Parce que chaque déplacement compte, nous accordons une importance particulière à la ponctualité, à la fiabilité, à la discrétion et au confort. Nous nous engageons à offrir une expérience de transport professionnelle, avec une attention constante portée à la qualité de l’accueil, aux besoins de nos passagers et au bon déroulement de chaque trajet. Notre flexibilité et notre sens du service nous permettent de nous adapter aux exigences de chaque client et aux impératifs de son activité.
       </p>
- 
-      
 
       <p className="text-neutral-500 leading-relaxed text-sm">
-        L’ensemble des opérations est supervisé personnellement par
-        <span className="text-amber-400"> Lucas Chamberlain</span>,
+        Chaque prestation fait l’objet d’un suivi attentif et d’une supervision directe par{" "}
+        <span className="text-amber-400 whitespace-nowrap">Lucas Chamberlain</span>,
         Responsable Dirigeant.
       </p>
     </div>
 
     {/* PHOTO + PROFIL */}
-    <div className="bg-neutral-900/50 backdrop-blur-xl border border-amber-500/20 rounded-3xl p-10 text-center transition-all duration-700 hover:shadow-[0_0_60px_rgba(212,175,55,0.15)]">
+   <div className="mt-32 bg-neutral-900/50 backdrop-blur-xl border border-amber-500/20 rounded-3xl p-10 text-center transition-all duration-700 hover:shadow-[0_0_60px_rgba(212,175,55,0.15)]">
 
       {/* PHOTO */}
       <div className="flex justify-center mb-8">
@@ -393,7 +386,7 @@ const [visibleSections, setVisibleSections] = useState<{[key:string]: boolean}>(
       <div className="w-20 h-[1px] bg-gradient-to-r from-transparent via-amber-500 to-transparent mx-auto mb-6" />
 
       {/* SIGNATURE */}
-     <div className="flex justify-center mt-4 mb-4">
+      <div className="flex justify-center mt-4 mb-4">
         <div className="bg-neutral-900 px-5 py-3 rounded-lg border border-amber-500/20">
           <img src="/signature.png" alt="Signature" className="h-14 object-contain" />
         </div>
