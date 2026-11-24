@@ -703,6 +703,318 @@ const reservationPrioritaire =
     }
   }
 
+    // --------------------------------------------------
+    // NOTIFICATIONS DE REMBOURSEMENT STRIPE
+    // Aucun remboursement n'est créé ici.
+    // --------------------------------------------------
+
+    if (
+  (event.type as string) === "refund.created" ||
+  (event.type as string) === "refund.updated"
+) {
+      const refund = (
+  event.data as unknown as { object: Stripe.Refund }
+).object;
+      if (refund.status === "succeeded") {
+        const montantRembourse = (refund.amount / 100).toFixed(2);
+        const montantAffiche = `${montantRembourse} €`;
+
+        // Retrouver la réservation liée à ce remboursement
+        const { data: reservation, error: rechercheRefundErreur } =
+          await supabaseAdmin
+            .from("reservations")
+            .select("id, reference, email, nom, stripe_refund_id")
+            .eq("stripe_refund_id", refund.id)
+            .maybeSingle();
+
+        if (rechercheRefundErreur) {
+          throw rechercheRefundErreur;
+        }
+
+        // Si la réservation n'est pas encore enregistrée,
+        // Stripe réessaiera grâce à la réponse d'erreur.
+        if (!reservation) {
+          throw new Error(
+            `Réservation introuvable pour le remboursement ${refund.id}`
+          );
+        }
+
+        // Créer ou retrouver le suivi anti-doublon
+        const { data: suiviExistant, error: suiviRechercheErreur } =
+          await supabaseAdmin
+              .from("suivi_notifications_remboursement")
+              .select("*")
+              .eq("stripe_refund_id", refund.id)
+              .maybeSingle();
+
+        if (suiviRechercheErreur) {
+          throw suiviRechercheErreur;
+        }
+
+        let suivi = suiviExistant;
+
+        if (!suivi) {
+          const { data: nouveauSuivi, error: insertionSuiviErreur } =
+            await supabaseAdmin
+              .from("suivi_notifications_remboursement")
+              .insert({
+                stripe_refund_id: refund.id,
+                stripe_event_id: event.id,
+                reservation_id: String(reservation.id),
+                reference_reservation: reservation.reference,
+                montant_rembourse: Number(montantRembourse),
+                statut_remboursement: "succeeded",
+                email_client_envoye: false,
+                email_entreprise_envoye: false,
+              })
+              .select("*")
+              .single();
+
+          // Une autre livraison Stripe peut avoir créé le suivi.
+          if (insertionSuiviErreur) {
+            if (insertionSuiviErreur.code !== "23505") {
+              throw insertionSuiviErreur;
+            }
+
+            const { data: suiviRecupere, error: recuperationErreur } =
+              await supabaseAdmin
+                .from("suivi_notifications_remboursement")
+                .select("*")
+                .eq("stripe_refund_id", refund.id)
+                .single();
+
+            if (recuperationErreur) {
+              throw recuperationErreur;
+            }
+
+            suivi = suiviRecupere;
+          } else {
+            suivi = nouveauSuivi;
+          }
+        }
+
+        const reference = reservation.reference || "Non renseignée";
+        const nomClient = reservation.nom || "Client";
+
+        // E-mail client
+        if (
+          reservation.email &&
+          !suivi.email_client_envoye
+        ) {
+const htmlClient = `
+${construireEnteteEmail(
+  "Remboursement confirmé",
+  "Votre remboursement a bien été effectué."
+)}
+<div style="background:#ffffff;padding:30px 24px;font-family:Arial,Helvetica,sans-serif;color:#222;">
+
+  <div style="text-align:center;margin-bottom:25px;">
+    <div style="font-size:28px;font-weight:700;letter-spacing:3px;">
+      <span style="color:#111111;">SUD</span>
+      <span style="color:#b08d2f;">IDF</span>
+    </div>
+    <div style="font-size:11px;letter-spacing:2px;color:#777;margin-top:5px;">
+      EXECUTIVE TRANSPORT
+    </div>
+    <div style="width:60px;height:2px;background:#b08d2f;margin:15px auto;"></div>
+  </div>
+
+  <p style="font-size:15px;line-height:1.8;">
+    Bonjour ${escapeHtml(nomClient)},
+  </p>
+
+  <p style="font-size:15px;line-height:1.8;">
+    Nous vous confirmons que le remboursement de votre réservation a bien été effectué.
+  </p>
+
+  <div style="border:1px solid #d4b45c;margin:25px 0;padding:20px;background:#faf9f6;">
+    <div style="font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:#777;text-align:center;">
+      Montant remboursé
+    </div>
+    <div style="font-size:30px;font-weight:bold;color:#b08d2f;text-align:center;margin:12px 0;">
+      ${escapeHtml(montantAffiche)}
+    </div>
+    <div style="font-size:14px;text-align:center;color:#444;">
+      Référence : ${escapeHtml(reference)}
+    </div>
+  </div>
+
+  <p style="font-size:14px;line-height:1.8;color:#444;">
+    Le remboursement a été effectué sur votre moyen de paiement initial.
+    Le délai d'apparition des fonds dépend de votre établissement bancaire
+    et peut nécessiter quelques jours.
+  </p>
+
+  <p style="font-size:14px;line-height:1.8;color:#444;">
+    Nous vous souhaitons une excellente continuation.
+  </p>
+
+  <div style="border-top:1px solid #d4b45c;margin-top:30px;padding-top:20px;">
+    <p style="font-size:14px;line-height:1.7;margin-bottom:5px;">
+      Cordialement,
+    </p>
+    <p style="font-size:15px;font-weight:bold;color:#111;margin:0;">
+      SUD IDF Executive Transport
+    </p>
+    <p style="font-size:13px;color:#b08d2f;margin-top:5px;">
+      L'excellence au service de vos déplacements professionnels
+    </p>
+    <p style="font-size:13px;margin-top:15px;">
+      <a href="https://www.sudidfexecutivetransport.fr"
+         style="color:#b08d2f;text-decoration:none;">
+        www.sudidfexecutivetransport.fr
+      </a>
+    </p>
+  </div>
+</div>
+`;
+
+          await envoyerEmailBrevo({
+            destinataire: reservation.email,
+            nomDestinataire: nomClient,
+            sujet: `Confirmation de remboursement – ${reference}`,
+            htmlContent: htmlClient,
+            idempotencyKey: `refund-${refund.id}-client`,
+          });
+
+          const { error: majClientErreur } = await supabaseAdmin
+            .from("suivi_notifications_remboursement")
+            .update({
+              email_client_envoye: true,
+              updated_at: new Date().toISOString(),
+            })
+            .eq("stripe_refund_id", refund.id);
+
+          if (majClientErreur) {
+            throw majClientErreur;
+          }
+        }
+
+        // E-mail entreprise
+        if (!suivi.email_entreprise_envoye) {
+         const htmlEntreprise = `
+${construireEnteteEmail(
+  "Remboursement effectué",
+  "Confirmation automatique Stripe"
+)}
+<div style="background:#ffffff;padding:30px 24px;font-family:Arial,Helvetica,sans-serif;color:#222;">
+
+  <div style="text-align:center;margin-bottom:25px;">
+    <div style="font-size:28px;font-weight:700;letter-spacing:3px;">
+      <span style="color:#111111;">SUD</span>
+      <span style="color:#b08d2f;">IDF</span>
+    </div>
+    <div style="font-size:11px;letter-spacing:2px;color:#777;margin-top:5px;">
+      EXECUTIVE TRANSPORT
+    </div>
+    <div style="width:60px;height:2px;background:#b08d2f;margin:15px auto;"></div>
+  </div>
+
+  <div style="background:#111111;padding:15px;text-align:center;margin-bottom:25px;">
+    <div style="font-size:13px;letter-spacing:1.5px;color:#d4b45c;font-weight:bold;">
+      REMBOURSEMENT CONFIRMÉ
+    </div>
+  </div>
+
+  <p style="font-size:15px;line-height:1.7;">
+    Un remboursement a été confirmé par Stripe à la suite d'une opération manuelle.
+  </p>
+
+  <table style="width:100%;border-collapse:collapse;margin:20px 0;font-size:14px;">
+    <tr>
+      <td style="padding:12px;border:1px solid #ddd;background:#f7f7f7;">
+        Référence réservation
+      </td>
+      <td style="padding:12px;border:1px solid #ddd;font-weight:bold;">
+        ${escapeHtml(reference)}
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:12px;border:1px solid #ddd;background:#f7f7f7;">
+        Client
+      </td>
+      <td style="padding:12px;border:1px solid #ddd;">
+        ${escapeHtml(nomClient)}
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:12px;border:1px solid #ddd;background:#f7f7f7;">
+        E-mail client
+      </td>
+      <td style="padding:12px;border:1px solid #ddd;">
+        ${escapeHtml(reservation.email || "Non renseigné")}
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:12px;border:1px solid #ddd;background:#f7f7f7;">
+        Montant remboursé
+      </td>
+      <td style="padding:12px;border:1px solid #ddd;color:#b08d2f;font-weight:bold;">
+        ${escapeHtml(montantAffiche)}
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:12px;border:1px solid #ddd;background:#f7f7f7;">
+        Identifiant Stripe
+      </td>
+      <td style="padding:12px;border:1px solid #ddd;font-size:12px;word-break:break-all;">
+        ${escapeHtml(refund.id)}
+      </td>
+    </tr>
+    <tr>
+      <td style="padding:12px;border:1px solid #ddd;background:#f7f7f7;">
+        Statut
+      </td>
+      <td style="padding:12px;border:1px solid #ddd;color:#22804a;font-weight:bold;">
+        REMBOURSEMENT EFFECTUÉ
+      </td>
+    </tr>
+  </table>
+
+  <div style="border-top:1px solid #d4b45c;margin-top:30px;padding-top:20px;">
+    <p style="font-size:13px;color:#777;">
+      Notification automatique de suivi — aucune action supplémentaire requise si le remboursement est confirmé dans Stripe.
+    </p>
+    <p style="font-size:15px;font-weight:bold;color:#111;margin-bottom:5px;">
+      SUD IDF Executive Transport
+    </p>
+    <p style="font-size:13px;color:#b08d2f;margin-top:5px;">
+      L'excellence au service de vos déplacements professionnels
+    </p>
+    <p style="font-size:13px;margin-top:15px;">
+      www.sudidfexecutivetransport.fr
+    </p>
+  </div>
+</div>
+`;
+          await envoyerEmailBrevo({
+            destinataire: ENTREPRISE_EMAIL,
+            sujet: `Remboursement confirmé – ${reference}`,
+            htmlContent: htmlEntreprise,
+            idempotencyKey: `refund-${refund.id}-entreprise`,
+          });
+
+          const { error: majEntrepriseErreur } = await supabaseAdmin
+            .from("suivi_notifications_remboursement")
+            .update({
+              email_entreprise_envoye: true,
+              updated_at: new Date().toISOString(),
+            })
+            .eq("stripe_refund_id", refund.id);
+
+          if (majEntrepriseErreur) {
+            throw majEntrepriseErreur;
+          }
+        }
+
+        console.log("✅ Notifications remboursement traitées :", {
+          refundId: refund.id,
+          reference,
+          montantAffiche,
+        });
+      }
+    }
+
       console.log(
      "✅ Traitement des notifications après paiement Stripe terminé."
      );

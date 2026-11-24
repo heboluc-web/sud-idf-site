@@ -108,6 +108,125 @@ async function notifierEntreprise({
   }
 }
 
+
+async function notifierClientAnnulation({
+  email,
+  reference,
+}: {
+  email: string;
+  reference: string;
+}) {
+  const apiKey = process.env.BREVO_API_KEY;
+
+  if (!apiKey) {
+    throw new Error("BREVO_API_KEY est absente.");
+  }
+
+  const response = await fetch(BREVO_API_URL, {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "api-key": apiKey,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      sender: {
+        name: EXPEDITEUR_NOM,
+        email: process.env.BREVO_SENDER_EMAIL || EXPEDITEUR_EMAIL,
+      },
+      to: [{ email }],
+      subject: `Confirmation de votre demande d'annulation - ${reference}`,
+      htmlContent: `
+        <div style="font-family:Arial,Helvetica,sans-serif;color:#222;line-height:1.7;max-width:600px;margin:0 auto;">
+
+          <!-- EN-TETE PREMIUM -->
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+            style="background:#111111;border-collapse:collapse;">
+            <tr>
+              <td align="center" style="padding:25px 15px;text-align:center;">
+
+                <table role="presentation" cellpadding="0" cellspacing="0"
+                  style="border-collapse:collapse;margin:0 auto;">
+                  <tr>
+                    <td width="288" height="128"
+                      style="width:288px;height:128px;background:#ffffff;border:2px solid #ffffff;padding:0;">
+                      <img
+                        src="https://www.sudidfexecutivetransport.fr/logo.png"
+                        alt="SUD IDF Executive Transport"
+                        width="288"
+                        height="128"
+                        style="display:block;width:288px;height:128px;object-fit:fill;border:0;"
+                      />
+                    </td>
+                  </tr>
+                </table>
+
+                <h1 style="color:#D4AF37;font-family:Arial,Helvetica,sans-serif;font-size:23px;margin:20px 0 8px;">
+                  SUD IDF Executive Transport
+                </h1>
+
+                <p style="color:#ffffff;font-family:Arial,Helvetica,sans-serif;font-size:14px;margin:0;">
+                  Confirmation de réception de votre demande d'annulation
+                </p>
+
+              </td>
+            </tr>
+          </table>
+
+          <!-- CONTENU DU MESSAGE -->
+          <div style="padding:25px 20px;background:#ffffff;">
+
+            <p>Bonjour,</p>
+
+            <p>
+              Nous vous confirmons la bonne réception de votre demande d'annulation.
+            </p>
+
+            <div style="margin:20px 0;padding:15px;background:#f8f8f8;border-left:4px solid #D4AF37;">
+              <p style="margin:0;">
+                <strong>Référence de réservation :</strong><br/>
+                ${escapeHtml(reference)}
+              </p>
+            </div>
+
+            <p>
+              Votre demande est actuellement en cours de traitement par notre équipe.
+            </p>
+
+            <p>
+              Si un remboursement est dû, vous recevrez un e-mail de confirmation
+              sous 24 heures une fois le remboursement effectivement réalisé.
+            </p>
+
+            <!-- SIGNATURE -->
+            <div style="margin-top:25px;padding-top:20px;border-top:1px solid #D4AF37;">
+              <p style="margin-bottom:12px;">
+                Merci pour votre confiance.
+              </p>
+
+              <img
+                src="https://www.sudidfexecutivetransport.fr/signature-email.png"
+                alt="Signature SUD IDF Executive Transport"
+                width="420"
+                style="display:block;width:100%;max-width:420px;height:auto;border:0;"
+              />
+            </div>
+
+          </div>
+
+        </div>
+      `,
+    }),
+  });
+
+  if (!response.ok) {
+    const details = await response.text();
+    console.error("Erreur email client annulation Brevo :", response.status, details);
+    throw new Error("L'accusé de réception client n'a pas pu être envoyé.");
+  }
+}
+
+
 async function rembourserReservation(
   reservation: {
     id: string;
@@ -547,6 +666,36 @@ const messageDemande =
       ].join("\n")
     : message;
 
+    // Empêcher plusieurs demandes d'annulation en attente pour la même réservation
+if (typeDemande === "annulation") {
+  const { data: demandeExistante, error: erreurRecherche } =
+    await supabaseAdmin
+      .from("demandes_reservation")
+      .select("id")
+      .eq("reservation_id", reservation.id)
+      .eq("type_demande", "annulation")
+      .eq("statut", "en_attente")
+      .limit(1);
+
+  if (erreurRecherche) {
+    console.error("Erreur de vérification de l'annulation :", erreurRecherche.message);
+
+    return NextResponse.json(
+      { error: "Impossible de vérifier votre demande d'annulation pour le moment." },
+      { status: 500 }
+    );
+  }
+
+  if (demandeExistante && demandeExistante.length > 0) {
+    return NextResponse.json(
+      {
+        error: "Une demande d'annulation est déjà en cours de traitement pour cette réservation.",
+      },
+      { status: 409 }
+    );
+  }
+}
+
     const { error } = await supabaseAdmin
       .from("demandes_reservation")
          .insert({
@@ -573,28 +722,38 @@ const messageDemande =
 
 
     try {
-      await notifierEntreprise({
-        reference: reservation.reference,
-        typeDemande,
-       message: messageDemande,
-      });
-    } catch (error) {
-      console.error("Demande enregistrée, mais notification échouée :", error);
-      return NextResponse.json(
-        {
-          success: true,
-          notification: false,
-          message:
-            "Votre demande est enregistrée, mais la notification par e-mail a échoué. Notre équipe devra vérifier la demande.",
-        },
-        { status: 200 }
-      );
-    }
+  await notifierEntreprise({
+    reference: reservation.reference,
+    typeDemande,
+    message: messageDemande,
+  });
+
+  if (typeDemande === "annulation") {
+    await notifierClientAnnulation({
+  email: reservation.email,
+  reference: reservation.reference,
+});
+  }
+} catch (error) {
+  console.error("Demande enregistrée, mais notification échouée :", error);
+  return NextResponse.json(
+    {
+      success: true,
+      notification: false,
+      message:
+        "Votre demande est enregistrée, mais la notification par e-mail a échoué. Notre équipe devra vérifier la demande.",
+    },
+    { status: 200 }
+  );
+}
 
     return NextResponse.json({
       success: true,
       notification: true,
-      message: "Votre demande a été enregistrée et notre équipe a été notifiée.",
+message:
+  typeDemande === "annulation"
+    ? "Votre demande d'annulation a bien été reçue. Elle est en cours de traitement par notre équipe. Vous recevrez un retour par e-mail sous 24 heures."
+    : "Votre demande a été enregistrée et notre équipe a été notifiée.",
     });
   } catch {
     return NextResponse.json(

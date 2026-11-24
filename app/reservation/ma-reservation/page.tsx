@@ -531,7 +531,7 @@ setGreeterTripType(d.greeterTripType === "aller-retour" ? "aller-retour" : "alle
 
           {erreur && <p role="alert" className="rounded-lg border border-red-500/40 bg-red-950/40 p-3 text-red-300">{erreur}</p>}
           {confirmation && <p role="status" className="rounded-lg border border-emerald-500/40 bg-emerald-950/40 p-4 leading-6 text-emerald-300">{confirmation}</p>}
-          {reservationAnnulee && <p className="rounded-xl border border-amber-500/40 bg-amber-950/20 p-4 text-center leading-6 text-amber-200">Cette réservation est annulée. Le remboursement éventuel est traité manuellement par SUD IDF Executive Transport.</p>}
+          {reservationAnnulee && <p className="rounded-xl border border-amber-500/40 bg-amber-950/20 p-4 text-center leading-6 text-amber-200">Votre demande d'annulation est en cours de traitement et n'est pas encore confirmée. Tout éventuel remboursement sera traité par SUD IDF EXECUTIVE TRANSPORT.</p>}
           <a href="/" className="flex w-full items-center justify-center rounded-xl border border-[#C6A04A] px-6 py-3 font-semibold text-[#C6A04A] transition hover:bg-[#C6A04A] hover:text-black">← Retour à l’accueil</a>
         </div>
         <footer className="border-t border-amber-500/30 px-5 py-4 text-center text-xs tracking-wide text-zinc-500">L’excellence au service de vos déplacements professionnels</footer>
