@@ -752,10 +752,6 @@ const isTrainStation =
 
     const heures = Math.max(2, parseInt(form.dureeMiseADispo || "3", 10));
 
-    const heureCourse = parseInt(form.heure.split(":")[0] || "12", 10);
-
-    const estNuit = heureCourse >= 19 || heureCourse < 7;
-
     const tarifsHoraires: Record<string, number> = {
 
       "Mercedes Classe E": 90,
@@ -772,13 +768,7 @@ const isTrainStation =
 
     const tarifHoraire = tarifsHoraires[form.vehicule] || 100;
 
-    const tarifHoraireFinal = estNuit
-
-      ? Math.round(tarifHoraire * 1.12)
-
-      : tarifHoraire;
-
-    const prixTTC = heures * tarifHoraireFinal;
+    const prixTTC = heures * tarifHoraire;
 
     const kmInclus = heures * 25;
 
@@ -792,11 +782,7 @@ const isTrainStation =
 
       prix: `${Math.round(prixTTC)} € TTC`,
 
-      detailsPrix: `${heures} h / ${Math.round(kmInclus)} km inclus${
-
-        estNuit ? " — tarif nuit" : ""
-
-      }`,
+      detailsPrix: `${heures} h / ${Math.round(kmInclus)} km inclus`,
 
     }));
 
@@ -820,7 +806,7 @@ const texteTrajet = `${departNormalise} ${arriveeNormalisee}`;
 
 const heureCourse = parseInt(heureTrajet.split(":")[0] || "12", 10);
 
-const estNuit = heureCourse >= 19 || heureCourse < 7;
+const estNuit = heureCourse >= 19 || heureCourse < 6;
 
 const contientParis = texteTrajet.includes("paris");
 
@@ -1010,83 +996,37 @@ const trajetParisParis = departEstParis && arriveeEstParis;
 
 const tarifsJour: Record<string, Record<string, number>> = {
   "Mercedes Classe E": {
-    parisParis: 100,
-    parisAsterix: 129,
-    parisOrly: 110,
-    parisCDG: 127,
-    cdgOrly: 152,
-    parisLeBourget: 127,
-    parisDisney: 152,
-    parisVersailles: 127,
-    parisBeauvais: 212,
-    parisChantilly: 169,
+    parisParis: 90, parisAsterix: 129, parisOrly: 94, parisCDG: 108,
+    cdgOrly: 129, parisLeBourget: 108, parisDisney: 108,
+    parisVersailles: 108, parisBeauvais: 144, parisChantilly: 144,
   },
-
   "Mercedes Classe V": {
-    parisParis: 110,
-    parisAsterix: 169,
-    parisOrly: 144,
-    parisCDG: 161,
-    cdgOrly: 195,
-    parisLeBourget: 161,
-    parisDisney: 186,
-    parisVersailles: 161,
-    parisBeauvais: 254,
-    parisChantilly: 212,
+    parisParis: 99, parisAsterix: 169, parisOrly: 122, parisCDG: 136,
+    cdgOrly: 166, parisLeBourget: 136, parisDisney: 136,
+    parisVersailles: 136, parisBeauvais: 180, parisChantilly: 180,
   },
-
-
   "Range Rover": {
-    parisParis: 130,
-    parisAsterix: 199,
-    parisOrly: 169,
-    parisCDG: 186,
-    cdgOrly: 220,
-    parisLeBourget: 186,
-    parisDisney: 220,
-    parisVersailles: 186,
-    parisBeauvais: 297,
-    parisChantilly: 246,
+    parisParis: 117, parisAsterix: 199, parisOrly: 144, parisCDG: 158,
+    cdgOrly: 187, parisLeBourget: 158, parisDisney: 158,
+    parisVersailles: 158, parisBeauvais: 209, parisChantilly: 209,
   },
-
   "Mercedes Classe S": {
-    parisParis: 150,
-    parisAsterix: 219,
-    parisOrly: 152,
-    parisCDG: 169,
-    cdgOrly: 203,
-    parisLeBourget: 195,
-    parisDisney: 212,
-    parisVersailles: 169,
-    parisBeauvais: 280,
-    parisChantilly: 237,
+    parisParis: 135, parisAsterix: 219, parisOrly: 129, parisCDG: 144,
+    cdgOrly: 173, parisLeBourget: 166, parisDisney: 144,
+    parisVersailles: 143, parisBeauvais: 202, parisChantilly: 202,
   },
-
   "Mercedes-Maybach Classe S": {
-    parisParis: 170,
-    parisAsterix: 269,
-    parisOrly: 212,
-    parisCDG: 237,
-    cdgOrly: 254,
-    parisLeBourget: 254,
-    parisDisney: 280,
-    parisVersailles: 237,
-    parisBeauvais: 339,
-    parisChantilly: 297,
+    parisParis: 153, parisAsterix: 269, parisOrly: 180, parisCDG: 201,
+    cdgOrly: 216, parisLeBourget: 216, parisDisney: 201,
+    parisVersailles: 202, parisBeauvais: 253, parisChantilly: 253,
   },
 };
         const tarifsKmJour: Record<string, number> = {
-
-          "Mercedes Classe E": 2.2,
-
-          "Mercedes Classe V": 2.8,
-
-          "Range Rover": 3.2,
-
-          "Mercedes Classe S": 3.5,
-
-          "Mercedes-Maybach Classe S": 4.5,
-
+          "Mercedes Classe E": 2.00,
+          "Mercedes Classe V": 2.25,
+          "Range Rover": 2.80,
+          "Mercedes Classe S": 3.20,
+          "Mercedes-Maybach Classe S": 3.80,
         };
 
         const minimumJour: Record<string, number> = {
@@ -1111,19 +1051,17 @@ const tarifsJour: Record<string, Record<string, number>> = {
 
         const minimumJourVehicule = minimumJour[form.vehicule] || 70;
 
-        const tarifKm = estNuit ? tarifKmJour * 1.12 : tarifKmJour;
+        const tarifKm = tarifKmJour;
 
-        const minimum = estNuit
+        const minimum = minimumJourVehicule;
 
-          ? Math.round(minimumJourVehicule * 1.12)
-
-          : minimumJourVehicule;
-
-        const tarifsNuit = (tarif: number) => Math.round(tarif * 1.12);
+        const tarifsNuit = (tarif: number) => tarif + 10;
 
         let prixTTC = 0;
 
         let detailsPrix = "";
+
+        let calculKilometrique = false;
 
 const trajetParisParisApplicable =
 
@@ -1229,6 +1167,8 @@ if (trajetParisParisApplicable) {
 
 } else {
 
+    calculKilometrique = true;
+
   const distanceKm =
 
     typeof element.distance?.value === "number"
@@ -1309,9 +1249,10 @@ if (trajetParisParisApplicable) {
 
   }
 
-  detailsPrix += " — tarif nuit";
+  detailsPrix += " — tarif nuit : +10 € TTC";
 
 }
+
 
 const trajetAvecAeroport =
 
@@ -1323,36 +1264,10 @@ const trajetAvecAeroport =
 
   contientBeauvais;
 
-// Les frais fixes concernent uniquement les trajets régionaux.
-
-// Les forfaits Paris-aéroport restent inchangés.
-
-const trajetRegionalAvecAeroport =
-
-  trajetAvecAeroport &&
-
-  !contientParis;
-
-// Seuil évalué sur le tarif de base avant la majoration de nuit.
-
-const prixBasePourSeuilAeroport = estNuit
-
-  ? prixTTC / 1.12
-
-  : prixTTC;
-
-if (
-
-  trajetRegionalAvecAeroport &&
-
-  prixBasePourSeuilAeroport <= 154
-
-) {
-
-  prixTTC += 20;
-
-  detailsPrix += " — frais fixes aéroport : 20 € TTC";
-
+// Supplément aéroport uniquement sur les trajets calculés au kilomètre.
+if (calculKilometrique && trajetAvecAeroport) {
+  prixTTC += 10;
+  detailsPrix += " — supplément aéroport : +10 € TTC";
 }
 
     const prixArrondi = Math.max(0, Math.round(prixTTC));
@@ -1439,15 +1354,13 @@ if (
 
       const heureCourse = parseInt(form.heure.split(":")[0] || "12", 10);
 
-      const estNuit = heureCourse >= 19 || heureCourse < 7;
-
       const tarifBase =
 
         tarifsSeminaire[form.vehicule]?.[dureeSeminaire] ??
 
         (estForfait8h ? 780 : 430);
 
-      const prixTTC = estNuit ? Math.round(tarifBase * 1.12) : tarifBase;
+      const prixTTC = tarifBase;
 
       const kmInclus = estForfait8h ? 200 : 100;
 
@@ -1461,11 +1374,7 @@ if (
 
         prix: `${prixTTC} € TTC`,
 
-        detailsPrix: `Forfait séminaire : ${dureeSeminaire} h / ${kmInclus} km inclus${
-
-          estNuit ? " — tarif nuit" : ""
-
-        }`,
+        detailsPrix: `Forfait séminaire : ${dureeSeminaire} h / ${kmInclus} km inclus`,
 
         tarification: "",
 
